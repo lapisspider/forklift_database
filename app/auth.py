@@ -116,17 +116,21 @@ def login_page(request: Request):
 @router.post("/auth/password")
 def auth_password(request: Request, password: str = Form(...),
                   db: Session = Depends(get_db)):
-    """Shared-password sign-in (view-only) — for review/preview access."""
-    if not settings.password_enabled or not secrets.compare_digest(
-        password, settings.access_password
-    ):
-        return RedirectResponse("/login?error=Incorrect+password", status_code=303)
-    user = _upsert_user(db, "reviewer@preview.local", "Reviewer")
-    if user.role != "viewer":       # keep the shared login view-only
-        user.role = "viewer"
-        db.commit()
-    _establish_session(request, user)
-    return RedirectResponse("/", status_code=303)
+    """Shared-password sign-in. The admin password grants full access; the
+    review/access password grants view-only. Used for preview/demo access."""
+    def _login_as(email: str, name: str, role: str):
+        user = _upsert_user(db, email, name)
+        if user.role != role:
+            user.role = role
+            db.commit()
+        _establish_session(request, user)
+        return RedirectResponse("/", status_code=303)
+
+    if settings.admin_password and secrets.compare_digest(password, settings.admin_password):
+        return _login_as("admin@preview.local", "Admin", "admin")
+    if settings.access_password and secrets.compare_digest(password, settings.access_password):
+        return _login_as("reviewer@preview.local", "Reviewer", "viewer")
+    return RedirectResponse("/login?error=Incorrect+password", status_code=303)
 
 
 @router.get("/auth/{provider}/login")

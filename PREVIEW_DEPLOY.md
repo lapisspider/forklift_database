@@ -42,10 +42,14 @@ popup) — that's you authenticating as yourself. Your API keys are **not** incl
 2. **New +** → **Blueprint** → pick your `forklift-database` repo. Render reads
    `render.yaml` and proposes the service automatically.
 3. It will ask you to fill the secret values (the ones marked "will be set"):
-   - **ACCESS_PASSWORD** — the review password you'll give the reviewer (pick anything, e.g. `ForkliftReview2026`).
+   - **ACCESS_PASSWORD** — the review password you'll give the reviewer, **view-only** (e.g. `ForkliftReview2026`).
+   - **ADMIN_PASSWORD** — your own **admin** password (full access: add/edit/delete). Keep this private.
    - **ANTHROPIC_API_KEY** — your Claude key (for the AI features).
    - **TAVILY_API_KEY** — your Tavily key.
    - `SESSION_SECRET` is generated for you; `SESSION_HTTPS_ONLY` and `DEV_LOGIN` are preset.
+
+Both passwords use the same "Access password" box on the sign-in page — the app grants
+admin when you enter the admin one, and view-only for the review one.
 4. **Apply / Create** → Render builds the Docker image and deploys. First build takes
    a few minutes; watch the logs until it says *Live*.
 5. Your link appears at the top: `https://forklift-database-XXXX.onrender.com`.

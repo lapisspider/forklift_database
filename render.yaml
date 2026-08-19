@@ -14,7 +14,9 @@ services:
         value: "true"
       - key: DEV_LOGIN
         value: "false"
-      - key: ACCESS_PASSWORD   # the review password you give the reviewer
+      - key: ACCESS_PASSWORD   # the review password you give the reviewer (view-only)
+        sync: false
+      - key: ADMIN_PASSWORD    # your admin password (full access: add/edit/delete)
         sync: false
       - key: ANTHROPIC_API_KEY # for the AI features
         sync: false
