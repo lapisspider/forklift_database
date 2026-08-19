@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Forklift Spec Database{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/htmx.min.js" defer></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">Forklift Spec Database</a>
+    <nav class="nav-right">
+      {% if not ai_enabled %}
+        <span class="badge warn">AI off — add API keys in .env</span>
+      {% elif not web_lookup_enabled %}
+        <span class="badge warn">Web lookup off — add TAVILY_API_KEY</span>
+      {% else %}
+        <span class="badge ok">AI ready</span>
+      {% endif %}
+      {% if user %}
+        {% if is_admin %}<a class="nav-link" href="/users">Users</a>{% endif %}
+        <span class="nav-user">{{ user.name or user.email }}{% if is_admin %} · admin{% else %} · viewer{% endif %}</span>
+        <a class="nav-link" href="/logout">Log out</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <small>Local build · SQLite · FastAPI · Tavily + Claude</small>
+  </footer>
+
+  <!-- Modal for search results (Ask / Look up) -->
+  <div id="modal-overlay" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <strong id="modal-title">Result</strong>
+        <button type="button" id="modal-close" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Render Blueprint — deploys the app as a Docker web service with HTTPS.
+# When you connect this repo on render.com, Render reads this file and sets it
+# all up; you only fill in the secrets marked "sync: false" in the dashboard.
+services:
+  - type: web
+    name: forklift-database
+    runtime: docker
+    plan: free                 # free tier; sleeps after ~15 min idle (cold start ~30s)
+    healthCheckPath: /health
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true    # Render generates a strong random value
+      - key: SESSION_HTTPS_ONLY
+        value: "true"
+      - key: DEV_LOGIN
+        value: "false"
+      - key: ACCESS_PASSWORD   # the review password you give the reviewer
+        sync: false
+      - key: ANTHROPIC_API_KEY # for the AI features
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false

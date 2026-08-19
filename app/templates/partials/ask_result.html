@@ -1,0 +1,29 @@
+{% set r = result %}
+<div class="result-card">
+  {% if r.error %}
+    <p class="warn">{{ r.error }}</p>
+    {% if r.sql %}<pre class="sql">{{ r.sql }}</pre>{% endif %}
+  {% else %}
+    {% if r.answer %}<p class="answer">{{ r.answer }}</p>{% endif %}
+    {% if r.sql %}
+      <details>
+        <summary>SQL used</summary>
+        <pre class="sql">{{ r.sql }}</pre>
+      </details>
+    {% endif %}
+    {% if r.rows %}
+      <div class="table-scroll">
+        <table class="result-table">
+          <thead><tr>{% for c in r.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+          <tbody>
+            {% for row in r.rows %}
+              <tr>{% for cell in row %}<td title="{{ cell if cell is not none else '' }}">{{ cell if cell is not none else "—" }}</td>{% endfor %}</tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">No matching rows.</p>
+    {% endif %}
+  {% endif %}
+</div>

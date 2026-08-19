@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Users — Forklift Spec Database{% endblock %}
+{% block content %}
+
+<a href="/" class="muted">← Back to database</a>
+
+<section class="panel">
+  <h2>Users &amp; access</h2>
+  <p class="muted">Admins can add/edit/delete forklifts, kits, and manage users.
+     Viewers have read-only access. Anyone from your company who signs in appears here.</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.email }}</td>
+          <td>{{ u.name or "—" }}</td>
+          <td>{{ u.role }}</td>
+          <td>
+            <div class="row">
+              <form method="post" action="/users/{{ u.id }}/role" class="row">
+                <select name="role">
+                  <option value="viewer" {% if u.role == 'viewer' %}selected{% endif %}>viewer</option>
+                  <option value="admin" {% if u.role == 'admin' %}selected{% endif %}>admin</option>
+                </select>
+                <button type="submit">Set role</button>
+              </form>
+              <form method="post" action="/users/{{ u.id }}/delete"
+                    onsubmit="return confirm('Remove {{ u.email }}? They can sign in again unless the account is disabled at the provider.');">
+                <button class="danger" type="submit">Remove</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="margin-top:1rem">Note: removing a user here just clears their role
+     record — they can sign in again (as a viewer) unless their access is revoked at Google/Microsoft.
+     Sign-in is limited to your configured company email domain.</p>
+</section>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+# Secrets — never commit
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Live database + archived PDFs (the deploy seed lives in deploy/seed.db)
+data/*.db
+data/pdfs/
+
+# Local working artifacts
+*.csv
+*.log
+no_sku_report.txt
+.DS_Store

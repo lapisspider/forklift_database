@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Edit kit — {{ kit.sku }}{% endblock %}
+{% block content %}
+
+<a href="/#kits" class="muted">← Back to kits</a>
+
+<section class="panel">
+  <h2>Edit kit — {{ kit.sku }}{% if kit.name %} ({{ kit.name }}){% endif %}</h2>
+
+  <form method="post" action="/kit/{{ kit.id }}/edit">
+    <div class="grid2">
+      <label>SKU / Part number <input name="sku" value="{{ kit.sku }}" required></label>
+      <label>Kit name <input name="name" value="{{ kit.name or '' }}" placeholder="optional (e.g. Apollo)"></label>
+      <label>Price (USD) <input name="price" type="number" step="0.01" value="{{ '%g'|format(kit.price) if kit.price is not none else '' }}"></label>
+    </div>
+    {% set selected_ids = kit.forklifts | map(attribute='id') | list %}
+    {% include "partials/forklift_multiselect.html" %}
+    <label>Notes <textarea name="notes" rows="2">{{ kit.notes or '' }}</textarea></label>
+    <div class="row form-actions">
+      <button type="submit">Save changes</button>
+      <a class="button" href="/#kits">Cancel</a>
+    </div>
+  </form>
+</section>
+
+{% endblock %}

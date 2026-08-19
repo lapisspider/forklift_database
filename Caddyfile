@@ -1,0 +1,7 @@
+# Caddy automatically obtains and renews a free Let's Encrypt HTTPS certificate
+# for APP_DOMAIN, and reverse-proxies to the app container. It also sets
+# X-Forwarded-Proto=https so the app builds correct OAuth redirect URLs.
+{$APP_DOMAIN} {
+	encode gzip
+	reverse_proxy app:8000
+}

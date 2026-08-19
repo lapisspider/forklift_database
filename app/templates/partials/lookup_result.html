@@ -1,0 +1,37 @@
+{% set r = result %}
+<div class="result-card">
+  <p class="{{ 'ok' if r.found else 'warn' }}">{{ r.message }}</p>
+
+  {% if r.already_in_db and r.existing_id %}
+    <a class="button" href="/forklift/{{ r.existing_id }}">Open existing record →</a>
+
+  {% elif r.found and r.specs and not is_admin %}
+    <p class="muted">Found online. Only an admin can add it to the database.</p>
+    {% if r.source_url %}<p class="muted">Source: <a href="{{ r.source_url }}" target="_blank">{{ r.source_url }}</a></p>{% endif %}
+
+  {% elif r.found and r.specs %}
+    <p class="muted">Review the extracted specs, edit anything that looks off, then save.</p>
+    <form method="post" action="/forklift">
+      <div class="grid2">
+        <label>OEM / Manufacturer <input name="manufacturer" value="{{ r.specs.manufacturer or '' }}"></label>
+        <label>Series <input name="series" value="{{ r.specs.series or '' }}" required placeholder="required (e.g. FC 5700 series)"></label>
+        <label>Model <input name="model" value="{{ r.specs.model or '' }}"></label>
+        <label>Year from <input name="year_start" type="number" min="1950" max="2050" value="{{ r.specs.year_start or '' }}" placeholder="e.g. 2005"></label>
+        <label>Year to <input name="year_end" type="number" min="1950" max="2050" value="{{ r.specs.year_end or '' }}" placeholder="blank = present"></label>
+        <label>Our serial # <input name="internal_serial" placeholder="blank = auto (FLT-…)"></label>
+        <label>Capacity (kg) <input name="capacity_kg" value="{{ r.specs.capacity_kg or '' }}"></label>
+        <label>Fuel type <input name="fuel_type" value="{{ r.specs.fuel_type or '' }}"></label>
+      </div>
+      <label>Notes <textarea name="notes" rows="2">{{ r.specs.notes or '' }}</textarea></label>
+      <input type="hidden" name="source_url" value="{{ r.source_url or '' }}">
+      <input type="hidden" name="pdf_url" value="{{ r.pdf_url or '' }}">
+      {% if r.source_url %}<p class="muted">Source: <a href="{{ r.source_url }}" target="_blank">{{ r.source_url }}</a></p>{% endif %}
+      <div class="row">
+        <button type="submit">Add this forklift to the database</button>
+      </div>
+    </form>
+
+  {% elif r.source_url %}
+    <a href="{{ r.source_url }}" target="_blank">Open the source page →</a>
+  {% endif %}
+</div>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — Forklift Spec Database</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <span class="brand">Forklift Spec Database</span>
+  </header>
+  <main>
+    <div class="login-wrap">
+      <section class="panel login-card">
+        <h2>Employee sign-in</h2>
+        <p class="muted">This tool is for company staff only. Sign in with your work account.</p>
+
+        {% if error %}<p class="warn login-error">{{ error }}</p>{% endif %}
+
+        <div class="login-buttons">
+          {% if google_enabled %}
+            <a class="button login-btn" href="/auth/google/login">Sign in with Google</a>
+          {% endif %}
+          {% if microsoft_enabled %}
+            <a class="button login-btn" href="/auth/microsoft/login">Sign in with Microsoft</a>
+          {% endif %}
+          {% if password_enabled %}
+            <form method="post" action="/auth/password" class="login-buttons">
+              <input type="password" name="password" placeholder="Access password" required>
+              <button class="button login-btn" type="submit">Enter</button>
+            </form>
+          {% endif %}
+          {% if dev_login %}
+            <a class="button login-btn" href="/dev-login?role=admin">Dev login (admin)</a>
+            <a class="button login-btn" href="/dev-login?role=viewer">Dev login (viewer)</a>
+          {% endif %}
+          {% if not google_enabled and not microsoft_enabled and not password_enabled and not dev_login %}
+            <p class="warn">No sign-in method is configured yet. Set a Google/Microsoft
+              provider or an access password in the server's environment.</p>
+          {% endif %}
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer><small>Local build · SQLite · FastAPI</small></footer>
+</body>
+</html>

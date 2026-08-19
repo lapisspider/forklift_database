@@ -1,0 +1,21 @@
+{# Multi-select forklift picker. Reads `all_forklifts` and optional `selected_ids`
+   (a set/list of forklift ids already linked). Submits `forklift_ids` (multiple). #}
+{% set selected_ids = selected_ids | default([]) %}
+<label>Fits forklifts (type to filter, click to add — leave empty for none)
+  <div class="combo multi" data-multi="1">
+    <div class="chips"></div>
+    <input type="text" autocomplete="off"
+           placeholder='Click or start typing, e.g. "CR" for Crown…'>
+    <div class="combo-list" hidden>
+      {% for f in all_forklifts %}
+        <div class="combo-item" data-id="{{ f.id }}"
+             data-label="{{ f.manufacturer }} {{ f.model }}{% if f.internal_serial %} ({{ f.internal_serial }}){% endif %}"
+             {% if f.id in selected_ids %}data-preselected="1"{% endif %}>
+          {{ f.manufacturer }} {{ f.model }}
+          <span class="muted">{% if f.series %}· {{ f.series }} {% endif %}{% if f.internal_serial %}({{ f.internal_serial }}){% endif %}</span>
+        </div>
+      {% endfor %}
+      <div class="combo-empty muted" hidden>No matching forklift</div>
+    </div>
+  </div>
+</label>

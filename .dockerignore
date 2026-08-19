@@ -1,0 +1,13 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+data/*.db
+data/pdfs/
+data/*.backup-*.db
+*.csv
+.git/
+.claude/
+*.md
+!README.md

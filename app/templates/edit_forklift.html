@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ fk.manufacturer }} {{ fk.model }}{% endblock %}
+{% block content %}
+
+<a href="/forklift/{{ fk.id }}" class="muted">← Back to record</a>
+
+<section class="panel">
+  <h2>Edit — {{ fk.manufacturer }} {{ fk.model }}</h2>
+  {% if error %}<p class="warn">{{ error }}</p>{% endif %}
+
+  {% macro numval(v) %}{{ '%g'|format(v) if v is not none else '' }}{% endmacro %}
+  <form method="post" action="/forklift/{{ fk.id }}/edit">
+    <div class="grid2">
+      <label>OEM / Manufacturer <input name="manufacturer" value="{{ fk.manufacturer }}" required></label>
+      <label>Series <input name="series" value="{{ fk.series or '' }}" required placeholder="required (e.g. FC 5700 series)"></label>
+      <label>Model <input name="model" value="{{ fk.model }}" required></label>
+      <label>Year from <input name="year_start" type="number" min="1950" max="2050" value="{{ fk.year_start or '' }}" placeholder="e.g. 2005"></label>
+      <label>Year to <input name="year_end" type="number" min="1950" max="2050" value="{{ fk.year_end or '' }}" placeholder="blank = present"></label>
+      <label>Our serial # <input name="internal_serial" value="{{ fk.internal_serial or '' }}" placeholder="blank = keep current"></label>
+      <label>Capacity (kg) <input name="capacity_kg" value="{{ numval(fk.capacity_kg) }}"></label>
+      <label>Fuel type <input name="fuel_type" value="{{ fk.fuel_type or '' }}"></label>
+    </div>
+    <label>Source page URL <input name="source_url" value="{{ fk.source_url or '' }}"></label>
+    <label>Spec-sheet PDF URL <input name="pdf_url" value="{{ fk.pdf_url or '' }}"></label>
+    <label>Notes <textarea name="notes" rows="3">{{ fk.notes or '' }}</textarea></label>
+    <div class="row form-actions">
+      <button type="submit">Save changes</button>
+      <a class="button" href="/forklift/{{ fk.id }}">Cancel</a>
+    </div>
+  </form>
+  <p class="muted" style="margin-top:.8rem">Changing "Our serial #" automatically
+     re-links any kits that reference this forklift.</p>
+</section>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - "8000"
+    volumes:
+      - forklift-data:/app/data      # SQLite DB + archived PDFs persist here
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - APP_DOMAIN=${APP_DOMAIN}     # e.g. forklifts.yourcompany.com (from .env)
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data             # Let's Encrypt certificates
+      - caddy-config:/config
+    depends_on:
+      - app
+
+volumes:
+  forklift-data:
+  caddy-data:
+  caddy-config:

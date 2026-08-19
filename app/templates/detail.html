@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ fk.manufacturer }} {{ fk.model }}{% endblock %}
+{% block content %}
+
+<a href="/" class="muted">← Back to database</a>
+
+<section class="panel">
+  <div class="row space-between">
+    <h2>{{ fk.manufacturer }} {{ fk.model }}</h2>
+    {% if is_admin %}
+    <div class="row">
+      <a class="button" href="/forklift/{{ fk.id }}/edit">Edit</a>
+      <form method="post" action="/forklift/{{ fk.id }}/delete"
+            onsubmit="return confirm('Delete this forklift?');">
+        <button class="danger" type="submit">Delete</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+
+  <table class="specs">
+    <tbody>
+      <tr><th>OEM</th><td>{{ fk.manufacturer }}</td></tr>
+      <tr><th>Series</th><td>{{ fk.series or "—" }}</td></tr>
+      <tr><th>Production years</th><td>{{ fk.year_display }}</td></tr>
+      <tr><th>SSC serial #</th><td>{{ fk.internal_serial or "—" }}</td></tr>
+      <tr><th>Capacity</th><td>{{ (fk.capacity_kg ~ ' kg') if fk.capacity_kg else "—" }}</td></tr>
+      <tr><th>Fuel type</th><td>{{ fk.fuel_type or "—" }}</td></tr>
+      {% if fk.notes %}<tr><th>Notes</th><td>{{ fk.notes }}</td></tr>{% endif %}
+      {% if fk.fetched_at %}<tr><th>Fetched</th><td>{{ fk.fetched_at.strftime("%Y-%m-%d") }}</td></tr>{% endif %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h3>Spec sheet</h3>
+  {% if fk.source_url or fk.pdf_url %}
+    <div class="row">
+      {% if fk.pdf_url %}<a class="button" href="{{ fk.pdf_url }}" target="_blank">Direct PDF link ↗</a>{% endif %}
+      {% if fk.source_url %}<a class="button" href="{{ fk.source_url }}" target="_blank">Source page ↗</a>{% endif %}
+      <a class="button" href="/forklift/{{ fk.id }}/pdf" target="_blank">Open / download PDF</a>
+    </div>
+    <div class="row" style="margin-top:.6rem">
+      {% if fk.pdf_path %}
+        <span class="badge ok">Permanent copy saved</span>
+      {% elif is_admin %}
+        <form method="post" action="/forklift/{{ fk.id }}/archive-pdf">
+          <button type="submit">Save a permanent copy</button>
+        </form>
+      {% endif %}
+    </div>
+  {% else %}
+    <p class="muted">No source link on this record.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h3>Kits that fit this forklift ({{ fk.kits|length }})</h3>
+  {% if fk.kits %}
+  <table>
+    <thead><tr><th>SKU</th><th>Name</th><th>Price</th><th></th></tr></thead>
+    <tbody>
+      {% for k in fk.kits %}
+      <tr>
+        <td>{{ k.sku }}</td>
+        <td>{{ k.name or "—" }}</td>
+        <td>{{ "$%.2f"|format(k.price) if k.price is not none else "—" }}</td>
+        <td>{% if is_admin %}<a href="/kit/{{ k.id }}/edit">Edit kit →</a>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No kits linked to this forklift yet. Link one from the Kits tab on the home page.</p>
+  {% endif %}
+</section>
+
+{% endblock %}
