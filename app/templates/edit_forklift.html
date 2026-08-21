@@ -19,6 +19,7 @@
       <label>Our serial # <input name="internal_serial" value="{{ fk.internal_serial or '' }}" placeholder="blank = keep current"></label>
       <label>Capacity (kg) <input name="capacity_kg" value="{{ numval(fk.capacity_kg) }}"></label>
       <label>Fuel type <input name="fuel_type" value="{{ fk.fuel_type or '' }}"></label>
+      <label>Chassis <input name="chassis" value="{{ fk.chassis or '' }}" placeholder="e.g. Large-Capacity Frame"></label>
     </div>
     <label>Source page URL <input name="source_url" value="{{ fk.source_url or '' }}"></label>
     <label>Spec-sheet PDF URL <input name="pdf_url" value="{{ fk.pdf_url or '' }}"></label>

@@ -31,6 +31,7 @@ Columns:
   internal_serial TEXT       -- serial number assigned by the company (unique)
   capacity_kg REAL           -- rated load capacity, kilograms
   fuel_type TEXT             -- electric | LPG | diesel | gasoline
+  chassis TEXT               -- shared-chassis grouping/frame (may be NULL)
   source_url TEXT
   pdf_url TEXT
   notes TEXT

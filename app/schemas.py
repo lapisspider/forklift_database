@@ -11,6 +11,7 @@ class ForkliftSpecs(BaseModel):
     year_end: int | None = Field(None, description="Last production year of this model; null if still in production. Leave null if unknown — do not guess.")
     capacity_kg: float | None = Field(None, description="Rated load capacity in kilograms")
     fuel_type: str | None = Field(None, description="electric, LPG, diesel, or gasoline")
+    chassis: str | None = Field(None, description="Shared-chassis grouping/frame this model uses, if stated (e.g. 'Large-Capacity Frame')")
     notes: str | None = None
 
 

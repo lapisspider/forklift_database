@@ -21,6 +21,7 @@
         <label>Our serial # <input name="internal_serial" placeholder="blank = auto (FLT-…)"></label>
         <label>Capacity (kg) <input name="capacity_kg" value="{{ r.specs.capacity_kg or '' }}"></label>
         <label>Fuel type <input name="fuel_type" value="{{ r.specs.fuel_type or '' }}"></label>
+        <label>Chassis <input name="chassis" value="{{ r.specs.chassis or '' }}" placeholder="optional"></label>
       </div>
       <label>Notes <textarea name="notes" rows="2">{{ r.specs.notes or '' }}</textarea></label>
       <input type="hidden" name="source_url" value="{{ r.source_url or '' }}">

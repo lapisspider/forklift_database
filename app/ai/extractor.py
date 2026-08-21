@@ -12,6 +12,8 @@ _SYSTEM = """You extract forklift specifications from raw web/PDF text.
 Return ONLY the fields you are confident about; leave anything uncertain as null.
 Rated load capacity must be in kilograms (kg) — convert from pounds if needed.
 fuel_type must be one of: electric, LPG, diesel, gasoline.
+chassis: the shared-chassis grouping/frame the model uses, if the source names one
+(e.g. a frame/chassis class); leave null if not stated.
 
 ALWAYS determine the `series`: the manufacturer's OFFICIAL published
 series/family NAME that THIS specific model belongs to, as named in the spec

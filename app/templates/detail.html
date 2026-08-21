@@ -26,6 +26,7 @@
       <tr><th>SSC serial #</th><td>{{ fk.internal_serial or "—" }}</td></tr>
       <tr><th>Capacity</th><td>{{ (fk.capacity_kg ~ ' kg') if fk.capacity_kg else "—" }}</td></tr>
       <tr><th>Fuel type</th><td>{{ fk.fuel_type or "—" }}</td></tr>
+      <tr><th>Chassis</th><td>{{ fk.chassis or "—" }}</td></tr>
       {% if fk.notes %}<tr><th>Notes</th><td>{{ fk.notes }}</td></tr>{% endif %}
       {% if fk.fetched_at %}<tr><th>Fetched</th><td>{{ fk.fetched_at.strftime("%Y-%m-%d") }}</td></tr>{% endif %}
     </tbody>

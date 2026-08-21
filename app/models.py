@@ -42,6 +42,7 @@ class Forklift(Base):
     # Core specs (all optional — the web may not surface every field)
     capacity_kg: Mapped[float | None] = mapped_column(Float)          # rated load capacity
     fuel_type: Mapped[str | None] = mapped_column(String(40))         # electric / LPG / diesel / gas
+    chassis: Mapped[str | None] = mapped_column(String(80))           # shared-chassis grouping/frame
 
     # Provenance
     source_url: Mapped[str | None] = mapped_column(Text)             # where the spec sheet lives
