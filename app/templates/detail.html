@@ -35,23 +35,23 @@
 
 <section class="panel">
   <h3>Spec sheet</h3>
-  {% if fk.source_url or fk.pdf_url %}
+  {% if fk.pdf_url or fk.source_url or fk.pdf_path %}
     <div class="row">
-      {% if fk.pdf_url %}<a class="button" href="{{ fk.pdf_url }}" target="_blank">Direct PDF link ↗</a>{% endif %}
+      {% if fk.pdf_url %}<a class="button" href="{{ fk.pdf_url }}" target="_blank">View spec-sheet PDF ↗</a>{% endif %}
       {% if fk.source_url %}<a class="button" href="{{ fk.source_url }}" target="_blank">Source page ↗</a>{% endif %}
-      <a class="button" href="/forklift/{{ fk.id }}/pdf" target="_blank">Open / download PDF</a>
+      {% if fk.pdf_path %}<a class="button" href="/forklift/{{ fk.id }}/pdf" target="_blank">Download saved copy</a>{% endif %}
     </div>
     <div class="row" style="margin-top:.6rem">
       {% if fk.pdf_path %}
         <span class="badge ok">Permanent copy saved</span>
-      {% elif is_admin %}
+      {% elif is_admin and (fk.pdf_url or fk.source_url) %}
         <form method="post" action="/forklift/{{ fk.id }}/archive-pdf">
           <button type="submit">Save a permanent copy</button>
         </form>
       {% endif %}
     </div>
   {% else %}
-    <p class="muted">No source link on this record.</p>
+    <p class="muted">No spec-sheet link on this record.</p>
   {% endif %}
 </section>
 

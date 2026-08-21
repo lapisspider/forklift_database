@@ -395,7 +395,10 @@ def delete_user(uid: int, request: Request, db: Session = Depends(get_db)):
 # ----------------------------------------------------------------------------
 @app.get("/forklift/{fid}/pdf")
 def get_pdf(fid: int, db: Session = Depends(get_db)):
-    """Return the archived PDF if saved, else stream it live from the source."""
+    """Serve the locally archived PDF if saved; otherwise redirect the browser to
+    the spec-sheet link. We never proxy remote content as a PDF — many sources
+    403 the server or return HTML, which would produce a broken 'PDF'. The
+    browser handles the real link (PDF or page) directly."""
     fk = db.get(Forklift, fid)
     if not fk:
         raise HTTPException(404, "Forklift not found")
@@ -406,16 +409,8 @@ def get_pdf(fid: int, db: Session = Depends(get_db)):
 
     target = fk.pdf_url or fk.source_url
     if not target:
-        raise HTTPException(404, "No PDF or source link on this record.")
-
-    try:
-        r = httpx.get(target, follow_redirects=True, timeout=30)
-        r.raise_for_status()
-    except httpx.HTTPError as e:
-        raise HTTPException(502, f"Could not fetch the PDF from source: {e}")
-
-    media = r.headers.get("content-type", "application/pdf")
-    return Response(r.content, media_type=media)
+        raise HTTPException(404, "No spec-sheet link on this record.")
+    return RedirectResponse(target, status_code=307)
 
 
 @app.post("/forklift/{fid}/archive-pdf")
