@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     session_secret: str = "change-me-in-production"     # signs session cookies
     session_https_only: bool = False                     # True in production (behind HTTPS)
     access_password: str = ""                            # shared review password (view-only); blank = off
+    editor_password: str = ""                            # shared editor password (add/edit); blank = off
     admin_password: str = ""                             # shared admin password (full access); blank = off
     allowed_email_domain: str = ""                       # e.g. "company.com"; blank = any
     admin_emails: str = ""                               # comma-separated bootstrap admins
@@ -39,7 +40,7 @@ class Settings(BaseSettings):
 
     @property
     def password_enabled(self) -> bool:
-        return bool(self.access_password or self.admin_password)
+        return bool(self.access_password or self.editor_password or self.admin_password)
 
     @property
     def google_enabled(self) -> bool:

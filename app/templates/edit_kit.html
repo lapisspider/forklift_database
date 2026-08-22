@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/indicators.html" import tier_badge %}
 {% block title %}Edit kit — {{ kit.sku }}{% endblock %}
 {% block content %}
 
@@ -22,5 +23,45 @@
     </div>
   </form>
 </section>
+
+{% if kit.forklift_links %}
+<section class="panel">
+  <h3>Connection tiers ({{ kit.forklift_links|length }})</h3>
+  <p class="muted">Each kit↔forklift connection has a validation tier:
+    {{ tier_badge('bronze') }} Bronze (editor reviewed, initial) ·
+    {{ tier_badge('silver') }} Silver (admin reviewed) ·
+    {{ tier_badge('gold') }} Gold (admin + install sign-off: technician + date).
+    {% if not is_admin %}<br>Only an admin can change tiers.{% endif %}</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Forklift</th><th>Tier</th>{% if is_admin %}<th>Set tier</th>{% endif %}</tr></thead>
+      <tbody>
+        {% for link in kit.forklift_links %}
+        <tr>
+          <td><a href="/forklift/{{ link.forklift.id }}">{{ link.forklift.manufacturer }} {{ link.forklift.model }}</a></td>
+          <td>{{ tier_badge(link.tier) }} {{ link.tier|capitalize }}
+            {% if link.tier == 'gold' and link.technician_name %}<span class="muted">— {{ link.technician_name }}{% if link.install_date %}, {{ link.install_date }}{% endif %}</span>{% endif %}</td>
+          {% if is_admin %}
+          <td>
+            <form method="post" action="/connection/{{ kit.id }}/{{ link.forklift.id }}/tier" class="review-controls">
+              <input type="hidden" name="return_to" value="/kit/{{ kit.id }}/edit">
+              <select name="tier">
+                <option value="bronze" {% if link.tier=='bronze' %}selected{% endif %}>Bronze</option>
+                <option value="silver" {% if link.tier=='silver' %}selected{% endif %}>Silver</option>
+                <option value="gold" {% if link.tier=='gold' %}selected{% endif %}>Gold</option>
+              </select>
+              <input name="technician_name" placeholder="Technician (for gold)" value="{{ link.technician_name or '' }}" style="max-width:150px">
+              <input name="install_date" type="date" value="{{ link.install_date or '' }}" title="Install date (for gold)">
+              <button type="submit">Set</button>
+            </form>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
 
 {% endblock %}

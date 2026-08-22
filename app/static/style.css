@@ -190,6 +190,31 @@ form > label { margin: .6rem 0; }
 .combo-item:hover, .combo-item.active { background: var(--red-soft); border-left-color: var(--red); }
 .combo-empty { padding: .55rem .85rem; cursor: default; }
 
+/* ----- Review indicators: connection tier + forklift status ----- */
+.tier {
+  display: inline-block; width: 14px; height: 14px; border-radius: 50%;
+  vertical-align: middle; border: 1px solid rgba(0,0,0,.35); box-shadow: 0 1px 1px rgba(0,0,0,.15);
+}
+.tier-gold   { background: linear-gradient(135deg,#f5d76e,#c99a2e); }
+.tier-silver { background: linear-gradient(135deg,#e4e4ea,#a9a9b3); }
+.tier-bronze { background: linear-gradient(135deg,#cd9b6a,#9c5a2a); }
+.tier-none   { background: transparent; border-style: dashed; }
+
+.status-dot {
+  display: inline-block; width: 13px; height: 13px; border-radius: 50%;
+  vertical-align: middle; border: 1px solid rgba(0,0,0,.3);
+}
+.status-green  { background: #2ea043; }
+.status-yellow { background: #e3b341; }
+.status-red    { background: var(--red); }
+
+/* Top-left status cluster on the forklift detail page (role-independent) */
+.status-cluster { display: flex; align-items: center; gap: .8rem; margin-bottom: .6rem; flex-wrap: wrap; }
+.status-cluster .chip-label { font-size: .82rem; color: var(--muted); display: inline-flex; align-items: center; gap: .35rem; }
+.tier-legend { font-size: .8rem; color: var(--muted); }
+.review-controls { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; margin-top: .4rem; }
+.review-controls form { display: inline-flex; gap: .3rem; align-items: center; }
+
 /* ----- OEM accordion ----- */
 .oem-group { margin-bottom: .5rem; }
 .series-group { margin: .3rem 0 .3rem 1rem; }

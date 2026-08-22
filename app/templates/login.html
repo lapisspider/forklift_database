@@ -33,6 +33,7 @@
           {% endif %}
           {% if dev_login %}
             <a class="button login-btn" href="/dev-login?role=admin">Dev login (admin)</a>
+            <a class="button login-btn" href="/dev-login?role=editor">Dev login (editor)</a>
             <a class="button login-btn" href="/dev-login?role=viewer">Dev login (viewer)</a>
           {% endif %}
           {% if not google_enabled and not microsoft_enabled and not password_enabled and not dev_login %}

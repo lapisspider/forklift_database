@@ -128,6 +128,8 @@ def auth_password(request: Request, password: str = Form(...),
 
     if settings.admin_password and secrets.compare_digest(password, settings.admin_password):
         return _login_as("admin@preview.local", "Admin", "admin")
+    if settings.editor_password and secrets.compare_digest(password, settings.editor_password):
+        return _login_as("editor@preview.local", "Editor", "editor")
     if settings.access_password and secrets.compare_digest(password, settings.access_password):
         return _login_as("reviewer@preview.local", "Reviewer", "viewer")
     return RedirectResponse("/login?error=Incorrect+password", status_code=303)

@@ -1,0 +1,11 @@
+{# Reusable review indicators. Import:
+   {% from "partials/indicators.html" import tier_badge, status_dot %} #}
+{% macro tier_badge(tier, label=False) -%}
+  {%- if tier -%}<span class="tier tier-{{ tier }}" title="{{ tier|capitalize }} tier"></span>{%- if label %} <span class="muted">{{ tier|capitalize }}</span>{% endif -%}
+  {%- else -%}<span class="tier tier-none" title="No tier / unlinked"></span>{%- endif -%}
+{%- endmacro %}
+
+{% macro status_dot(status, label=False) -%}
+  {%- set s = status or 'yellow' -%}
+  <span class="status-dot status-{{ s }}" title="{{ s|capitalize }} — data review status"></span>{%- if label %} <span class="muted">{{ s|capitalize }}</span>{% endif -%}
+{%- endmacro %}

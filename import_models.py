@@ -21,7 +21,7 @@ import sys
 from openpyxl import load_workbook
 
 from app.database import SessionLocal, engine, init_db
-from app.models import Forklift, Kit, kit_forklift
+from app.models import Forklift, Kit, KitForklift
 
 OEM_HEADERS = {
     "cat-yellow": "CAT (Yellow)", "byd": "BYD", "ottowa": "Ottawa",
@@ -62,7 +62,7 @@ def main(path: str) -> None:
 
     db = SessionLocal()
     # Authorized reset.
-    db.execute(kit_forklift.delete())
+    db.execute(KitForklift.__table__.delete())
     db.query(Kit).delete()
     db.query(Forklift).delete()
     db.commit()

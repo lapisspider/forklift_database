@@ -1,13 +1,20 @@
 {% extends "base.html" %}
+{% from "partials/indicators.html" import tier_badge, status_dot %}
 {% block title %}{{ fk.manufacturer }} {{ fk.model }}{% endblock %}
 {% block content %}
 
 <a href="/" class="muted">← Back to database</a>
 
 <section class="panel">
+  {# Top-left review cluster — same position for admin / editor / viewer #}
+  <div class="status-cluster">
+    <span class="chip-label">{{ status_dot(fk.info_status) }} Info: {{ (fk.info_status or 'yellow')|capitalize }}</span>
+    <span class="chip-label">{{ tier_badge(fk.best_tier) }} Best tier: {{ (fk.best_tier or 'none')|capitalize }}</span>
+  </div>
+
   <div class="row space-between">
     <h2>{{ fk.manufacturer }} {{ fk.model }}</h2>
-    {% if is_admin %}
+    {% if can_edit %}
     <div class="row">
       <a class="button" href="/forklift/{{ fk.id }}/edit">Edit</a>
       <form method="post" action="/forklift/{{ fk.id }}/delete"
@@ -17,6 +24,18 @@
     </div>
     {% endif %}
   </div>
+
+  {% if is_admin %}
+  <div class="review-controls">
+    <span class="muted">Set info status:</span>
+    {% for s in ['green','yellow','red'] %}
+    <form method="post" action="/forklift/{{ fk.id }}/status">
+      <input type="hidden" name="status" value="{{ s }}">
+      <button type="submit" {% if fk.info_status == s %}disabled{% endif %}>{{ status_dot(s) }} {{ s|capitalize }}</button>
+    </form>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <table class="specs">
     <tbody>
@@ -44,7 +63,7 @@
     <div class="row" style="margin-top:.6rem">
       {% if fk.pdf_path %}
         <span class="badge ok">Permanent copy saved</span>
-      {% elif is_admin and (fk.pdf_url or fk.source_url) %}
+      {% elif can_edit and (fk.pdf_url or fk.source_url) %}
         <form method="post" action="/forklift/{{ fk.id }}/archive-pdf">
           <button type="submit">Save a permanent copy</button>
         </form>
@@ -56,17 +75,19 @@
 </section>
 
 <section class="panel">
-  <h3>Kits that fit this forklift ({{ fk.kits|length }})</h3>
-  {% if fk.kits %}
+  <h3>Kits that fit this forklift ({{ fk.kit_links|length }})</h3>
+  {% if fk.kit_links %}
   <table>
-    <thead><tr><th>SKU</th><th>Name</th><th>Price</th><th></th></tr></thead>
+    <thead><tr><th>Tier</th><th>SKU</th><th>Name</th><th>Price</th><th></th></tr></thead>
     <tbody>
-      {% for k in fk.kits %}
+      {% for link in fk.kit_links %}
       <tr>
-        <td>{{ k.sku }}</td>
-        <td>{{ k.name or "—" }}</td>
-        <td>{{ "$%.2f"|format(k.price) if k.price is not none else "—" }}</td>
-        <td>{% if is_admin %}<a href="/kit/{{ k.id }}/edit">Edit kit →</a>{% endif %}</td>
+        <td>{{ tier_badge(link.tier) }} <span class="muted">{{ link.tier|capitalize }}</span>
+          {% if link.tier == 'gold' and link.technician_name %}<br><span class="muted" style="font-size:.75rem">✓ {{ link.technician_name }}{% if link.install_date %}, {{ link.install_date }}{% endif %}</span>{% endif %}</td>
+        <td>{{ link.kit.sku }}</td>
+        <td>{{ link.kit.name or "—" }}</td>
+        <td>{{ "$%.2f"|format(link.kit.price) if link.kit.price is not none else "—" }}</td>
+        <td>{% if can_edit %}<a href="/kit/{{ link.kit.id }}/edit">Edit kit →</a>{% endif %}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -75,5 +96,9 @@
     <p class="muted">No kits linked to this forklift yet. Link one from the Kits tab on the home page.</p>
   {% endif %}
 </section>
+
+<p class="tier-legend">Tier: {{ tier_badge('gold') }} Gold (admin + install sign-off) ·
+  {{ tier_badge('silver') }} Silver (admin reviewed) ·
+  {{ tier_badge('bronze') }} Bronze (editor reviewed).</p>
 
 {% endblock %}

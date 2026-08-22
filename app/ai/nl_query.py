@@ -32,6 +32,7 @@ Columns:
   capacity_kg REAL           -- rated load capacity, kilograms
   fuel_type TEXT             -- electric | LPG | diesel | gasoline
   chassis TEXT               -- shared-chassis grouping/frame (may be NULL)
+  info_status TEXT           -- data review status: green | yellow | red
   source_url TEXT
   pdf_url TEXT
   notes TEXT

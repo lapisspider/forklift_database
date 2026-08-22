@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/indicators.html" import tier_badge, status_dot %}
 {% block content %}
 
 <div class="duo">
@@ -78,12 +79,13 @@
                   <div class="table-scroll">
                     <table>
                       <thead><tr>
-                        <th>Model</th><th>SSC #</th><th>Years</th>
+                        <th></th><th>Model</th><th>SSC #</th><th>Years</th>
                         <th>Capacity (kg)</th><th>Fuel</th><th></th>
                       </tr></thead>
                       <tbody>
                         {% for f in models %}
                         <tr>
+                          <td style="white-space:nowrap">{{ status_dot(f.info_status) }}{{ tier_badge(f.best_tier) }}</td>
                           <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
                           <td>{{ f.internal_serial or "—" }}</td>
                           <td>{{ f.year_display }}</td>
@@ -107,12 +109,13 @@
       <div class="table-scroll">
       <table>
         <thead><tr>
-          <th>OEM</th><th>Series</th><th>Model</th><th>SSC #</th>
+          <th></th><th>OEM</th><th>Series</th><th>Model</th><th>SSC #</th>
           <th>Capacity (kg)</th><th>Fuel</th><th></th>
         </tr></thead>
         <tbody>
           {% for f in forklifts %}
           <tr>
+            <td style="white-space:nowrap">{{ status_dot(f.info_status) }}{{ tier_badge(f.best_tier) }}</td>
             <td>{{ f.manufacturer }}</td>
             <td>{{ f.series or "—" }}</td>
             <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
@@ -149,14 +152,14 @@
             <td>{{ k.name or "—" }}</td>
             <td>{{ "$%.2f"|format(k.price) if k.price is not none else "—" }}</td>
             <td>
-              {% if k.forklifts %}
-                {% for f in k.forklifts %}
-                  <a href="/forklift/{{ f.id }}">{{ f.manufacturer }} {{ f.model }}</a>{% if not loop.last %}, {% endif %}
+              {% if k.forklift_links %}
+                {% for link in k.forklift_links %}
+                  <span style="white-space:nowrap">{{ tier_badge(link.tier) }} <a href="/forklift/{{ link.forklift.id }}">{{ link.forklift.manufacturer }} {{ link.forklift.model }}</a></span>{% if not loop.last %}, {% endif %}
                 {% endfor %}
               {% else %}<span class="muted">— none —</span>{% endif %}
             </td>
             <td>
-              {% if is_admin %}
+              {% if can_edit %}
               <div class="row">
                 <a class="button" href="/kit/{{ k.id }}/edit">Edit</a>
                 <form method="post" action="/kit/{{ k.id }}/delete"
@@ -175,7 +178,7 @@
       <p class="muted">No kits yet. Add one below.</p>
     {% endif %}
 
-    {% if is_admin %}
+    {% if can_edit %}
     <div class="subsection">
     <h3>Add a kit</h3>
     <form method="post" action="/kit">
