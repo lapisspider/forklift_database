@@ -282,6 +282,11 @@ async def edit_forklift(fid: int, request: Request, db: Session = Depends(get_db
         fk.internal_serial = new_serial
         # Kit links are by forklift id (many-to-many), so they survive a
         # serial change automatically — nothing to update here.
+
+    # An editor's edit invalidates a prior admin review -> back to Yellow.
+    # An admin's own edit leaves the status as they set it.
+    if (current_user(request) or {}).get("role") == "editor":
+        fk.info_status = "yellow"
     db.commit()
     return RedirectResponse(url=f"/forklift/{fid}", status_code=303)
 
