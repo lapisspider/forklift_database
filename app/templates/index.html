@@ -79,18 +79,19 @@
                   <div class="table-scroll">
                     <table>
                       <thead><tr>
-                        <th></th><th>Model</th><th>SSC #</th><th>Years</th>
-                        <th>Capacity (kg)</th><th>Fuel</th><th></th>
+                        <th>Status</th><th>Model</th><th>SSC #</th><th>Years</th>
+                        <th>Capacity (kg)</th><th>Fuel</th><th>Tier</th><th></th>
                       </tr></thead>
                       <tbody>
                         {% for f in models %}
                         <tr>
-                          <td style="white-space:nowrap">{{ status_dot(f.info_status) }}{{ tier_badge(f.best_tier) }}</td>
+                          <td>{{ status_dot(f.info_status) }}</td>
                           <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
                           <td>{{ f.internal_serial or "—" }}</td>
                           <td>{{ f.year_display }}</td>
                           <td>{{ f.capacity_kg or "—" }}</td>
                           <td>{{ f.fuel_type or "—" }}</td>
+                          <td>{{ tier_badge(f.best_tier) }}</td>
                           <td><a href="/forklift/{{ f.id }}">View →</a></td>
                         </tr>
                         {% endfor %}
@@ -109,19 +110,20 @@
       <div class="table-scroll">
       <table>
         <thead><tr>
-          <th></th><th>OEM</th><th>Series</th><th>Model</th><th>SSC #</th>
-          <th>Capacity (kg)</th><th>Fuel</th><th></th>
+          <th>Status</th><th>OEM</th><th>Series</th><th>Model</th><th>SSC #</th>
+          <th>Capacity (kg)</th><th>Fuel</th><th>Tier</th><th></th>
         </tr></thead>
         <tbody>
           {% for f in forklifts %}
           <tr>
-            <td style="white-space:nowrap">{{ status_dot(f.info_status) }}{{ tier_badge(f.best_tier) }}</td>
+            <td>{{ status_dot(f.info_status) }}</td>
             <td>{{ f.manufacturer }}</td>
             <td>{{ f.series or "—" }}</td>
             <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
             <td>{{ f.internal_serial or "—" }}</td>
             <td>{{ f.capacity_kg or "—" }}</td>
             <td>{{ f.fuel_type or "—" }}</td>
+            <td>{{ tier_badge(f.best_tier) }}</td>
             <td><a href="/forklift/{{ f.id }}">View →</a></td>
           </tr>
           {% endfor %}
