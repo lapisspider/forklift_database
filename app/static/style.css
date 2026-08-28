@@ -192,20 +192,29 @@ form > label { margin: .6rem 0; }
 
 /* ----- Review indicators: connection tier + forklift status ----- */
 .tier {
-  display: inline-block; width: 14px; height: 14px; border-radius: 50%;
-  vertical-align: middle; border: 1px solid rgba(0,0,0,.35); box-shadow: 0 1px 1px rgba(0,0,0,.15);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; box-sizing: border-box;
+  vertical-align: middle; border: 1px solid rgba(0,0,0,.3);
+  box-shadow: 0 1px 1px rgba(0,0,0,.18);
+  color: #fff; font-size: 12px; line-height: 22px; text-align: center;
+  text-shadow: 0 1px 1px rgba(0,0,0,.35);
 }
 .tier-gold   { background: linear-gradient(135deg,#f5d76e,#c99a2e); }
-.tier-silver { background: linear-gradient(135deg,#e4e4ea,#a9a9b3); }
-.tier-bronze { background: linear-gradient(135deg,#cd9b6a,#9c5a2a); }
-.tier-none   { background: transparent; border-style: dashed; }
+.tier-silver { background: linear-gradient(135deg,#e4e4ea,#a9a9b3); color: #5a5a63; text-shadow: 0 1px 1px rgba(255,255,255,.5); }
+.tier-bronze { background: linear-gradient(135deg,#cd9b6a,#9c5a2a); color: #5a3212; text-shadow: 0 1px 1px rgba(255,255,255,.25); }
+.tier-none   { background: transparent; border-style: dashed; box-shadow: none; }
 
 .status-dot {
-  display: inline-block; width: 13px; height: 13px; border-radius: 50%;
-  vertical-align: middle; border: 1px solid rgba(0,0,0,.3);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  vertical-align: middle; border: 1px solid rgba(0,0,0,.22);
+  color: #fff !important; font-weight: 800;
+  font-size: 13px; line-height: 22px; text-align: center;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box; padding: 0;
 }
 .status-green  { background: #2ea043; }
-.status-yellow { background: #e3b341; }
+.status-yellow { background: #e3a70f; }
 .status-red    { background: var(--red); }
 
 /* Top-left status cluster on the forklift detail page (role-independent) */

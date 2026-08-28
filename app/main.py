@@ -28,6 +28,18 @@ PDF_DIR = BASE_DIR.parent / "data" / "pdfs"
 app = FastAPI(title="Forklift Spec Database")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
+
+
+def _asset_version() -> str:
+    """Cache-busting token from the newest static file's mtime."""
+    try:
+        static = BASE_DIR / "static"
+        return str(int(max(p.stat().st_mtime for p in static.glob("*"))))
+    except (ValueError, OSError):
+        return "1"
+
+
+templates.env.globals["asset_v"] = _asset_version()
 app.include_router(auth.router)
 
 

@@ -71,6 +71,20 @@ def lookup(db: Session, query: str) -> LookupResult:
             message="Found a page but couldn't extract specs. Check the source link.",
         )
 
+    # Spec sheets often omit the production years and the official series name
+    # from the text the extractor sees — run dedicated searches to fill them.
+    if specs.year_start is None and specs.year_end is None:
+        ys, ye = extractor.find_production_years(
+            specs.manufacturer or "", specs.model or query
+        )
+        if ys is not None or ye is not None:
+            specs.year_start, specs.year_end = ys, ye
+
+    if not (specs.series or "").strip():
+        series = extractor.find_series(specs.manufacturer or "", specs.model or query)
+        if series:
+            specs.series = series
+
     return LookupResult(
         found=True,
         already_in_db=False,
