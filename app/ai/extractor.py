@@ -12,7 +12,13 @@ from . import tavily_client
 _SYSTEM = """You extract forklift specifications from raw web/PDF text.
 Return ONLY the fields you are confident about; leave anything uncertain as null.
 Rated load capacity must be in kilograms (kg) — convert from pounds if needed.
-fuel_type must be one of: electric, LPG, diesel, gasoline.
+fuel_type must be EXACTLY one of these canonical values (match the casing):
+  "Electric", "Diesel", "LPG", "Gasoline",
+  "Gasoline/LPG"  (gasoline/LP dual-fuel — runs on either gasoline or LP gas),
+  "Diesel/LPG"    (offered in either diesel or LP gas).
+Map synonyms: propane/LP/LP gas/liquefied petroleum -> "LPG"; battery -> "Electric".
+A dual-fuel gasoline+LP truck is "Gasoline/LPG"; a diesel+LP truck is "Diesel/LPG".
+Leave fuel_type null if the source doesn't state it — do not guess.
 chassis: the shared-chassis grouping/frame the model uses, if the source names one
 (e.g. a frame/chassis class); leave null if not stated.
 
