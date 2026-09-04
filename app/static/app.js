@@ -122,15 +122,69 @@
 })();
 
 // ----- Accordion (OEM view): toggle the element named by data-target -----
+// Open sections are remembered in localStorage so navigating into a record and
+// back (a full page load) restores whatever OEM/series tabs you had open.
 (function () {
-  document.querySelectorAll('.accordion-toggle').forEach(btn => {
+  const toggles = document.querySelectorAll('.accordion-toggle');
+  if (!toggles.length) return;
+  const KEY = 'forklift_accordion_open';
+
+  function load() {
+    try { return new Set(JSON.parse(localStorage.getItem(KEY)) || []); }
+    catch (e) { return new Set(); }
+  }
+  function save(set) {
+    try { localStorage.setItem(KEY, JSON.stringify(Array.from(set))); }
+    catch (e) { /* storage unavailable — degrade to no persistence */ }
+  }
+
+  const open = load();
+
+  // Restore: reopen any remembered section that still exists on this page.
+  toggles.forEach(btn => {
+    const body = document.getElementById(btn.dataset.target);
+    if (body && open.has(btn.dataset.target)) {
+      body.hidden = false;
+      btn.classList.add('open');
+    }
+  });
+
+  toggles.forEach(btn => {
     btn.addEventListener('click', () => {
       const body = document.getElementById(btn.dataset.target);
       if (!body) return;
       body.hidden = !body.hidden;
       btn.classList.toggle('open', !body.hidden);
+      if (body.hidden) open.delete(btn.dataset.target);
+      else open.add(btn.dataset.target);
+      save(open);
     });
   });
+})();
+
+// ----- Preserve scroll position on the database list across navigation -----
+// Entering a record is a full page load, which resets scroll. Remember where
+// the list was scrolled and restore it on return. Per-tab (sessionStorage) and
+// keyed by the current view (path+sort+filter) so different views don't cross.
+(function () {
+  if (!document.querySelector('.tabs')) return; // list/index page only
+  const KEY = 'forklift_scroll:' + location.pathname + location.search;
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  let saved = null;
+  try { saved = sessionStorage.getItem(KEY); } catch (e) { /* unavailable */ }
+  if (saved !== null) {
+    const y = parseInt(saved, 10) || 0;
+    // rAF so any restored accordion heights are applied before we scroll.
+    requestAnimationFrame(() => window.scrollTo(0, y));
+  }
+
+  function store() {
+    try { sessionStorage.setItem(KEY, String(window.scrollY)); }
+    catch (e) { /* storage unavailable — degrade to no persistence */ }
+  }
+  window.addEventListener('pagehide', store);
+  window.addEventListener('beforeunload', store);
 })();
 
 // ----- Modal for search results -----
