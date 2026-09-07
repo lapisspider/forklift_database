@@ -30,6 +30,9 @@ from app.database import SessionLocal
 from app.models import Forklift
 
 REPORT = "spec_pass_report.csv"
+# Extraction-from-text pass — Haiku is accurate and much cheaper. Override with --model.
+DEFAULT_MODEL = "claude-haiku-4-5-20251001"
+MODEL = DEFAULT_MODEL
 CLASSES = {"Class I", "Class II", "Class III", "Class IV", "Class V", "Class VI", "Class VII"}
 _FUEL_FIX = {
     "electric": "Electric", "battery": "Electric", "diesel": "Diesel",
@@ -110,7 +113,7 @@ def _extract(client, fk, context, source):
         "values are well-supported for THIS model."
     )
     resp = client.messages.create(
-        model=settings.claude_model, max_tokens=500,
+        model=MODEL, max_tokens=500,
         tools=[_TOOL], tool_choice={"type": "tool", "name": "record"},
         messages=[{"role": "user", "content": prompt}],
     )
@@ -155,8 +158,12 @@ def main():
     ap.add_argument("--include-byd", action="store_true")
     ap.add_argument("--resume", action="store_true",
                     help="skip forklifts already in spec_pass_report.csv and append")
+    ap.add_argument("--model", default=DEFAULT_MODEL,
+                    help=f"Claude model (default {DEFAULT_MODEL}; cheap, good for extraction)")
     ap.add_argument("--sleep", type=float, default=0.4)
     args = ap.parse_args()
+    global MODEL
+    MODEL = args.model
     if not settings.web_lookup_enabled:
         raise SystemExit("ANTHROPIC_API_KEY and TAVILY_API_KEY must be set.")
 

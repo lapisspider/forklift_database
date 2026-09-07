@@ -35,6 +35,9 @@ from app.database import SessionLocal
 from app.models import Forklift
 
 REPORT = "forklift_audit_report.csv"
+# Judgment pass (series/class reasoning) — keep Sonnet for accuracy. Override with --model.
+DEFAULT_MODEL = "claude-sonnet-5"
+MODEL = DEFAULT_MODEL
 FIELDS = ["id", "manufacturer", "model", "current_series", "proposed_series",
           "proposed_class", "proposed_capacity_kg", "proposed_fuel",
           "proposed_year_start", "proposed_year_end", "confident", "issues", "apply"]
@@ -134,7 +137,7 @@ def audit_family(oem: str, fks: list[Forklift]) -> list[dict]:
     )
     client = Anthropic(api_key=settings.anthropic_api_key)
     resp = client.messages.create(
-        model=settings.claude_model, max_tokens=3000,
+        model=MODEL, max_tokens=3000,
         tools=[_TOOL], tool_choice={"type": "tool", "name": "record_audit"},
         messages=[{"role": "user", "content": prompt}],
     )
@@ -254,8 +257,12 @@ def main() -> None:
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--apply", metavar="CSV", default=None,
                     help="apply approved (apply=yes) rows from a report CSV")
+    ap.add_argument("--model", default=DEFAULT_MODEL,
+                    help=f"Claude model (default {DEFAULT_MODEL}; judgment task, keep Sonnet)")
     ap.add_argument("--sleep", type=float, default=1.0)
     args = ap.parse_args()
+    global MODEL
+    MODEL = args.model
 
     if args.apply:
         apply_report(args.apply)
