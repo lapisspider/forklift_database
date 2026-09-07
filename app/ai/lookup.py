@@ -85,6 +85,11 @@ def lookup(db: Session, query: str) -> LookupResult:
         if series:
             specs.series = series
 
+    if not (specs.truck_class or "").strip():
+        tc = extractor.find_truck_class(specs.manufacturer or "", specs.model or query)
+        if tc:
+            specs.truck_class = tc
+
     return LookupResult(
         found=True,
         already_in_db=False,

@@ -22,6 +22,14 @@
         <label>Capacity (kg) <input name="capacity_kg" value="{{ r.specs.capacity_kg or '' }}"></label>
         <label>Fuel type <input name="fuel_type" value="{{ r.specs.fuel_type or '' }}"></label>
         <label>Chassis <input name="chassis" value="{{ r.specs.chassis or '' }}" placeholder="optional"></label>
+        <label>Class (OSHA)
+          <select name="truck_class">
+            <option value="">—</option>
+            {% for val, desc in [('Class I','Electric Rider'),('Class II','Electric Narrow-Aisle'),('Class III','Electric Hand/Walkie'),('Class IV','IC Cushion tire'),('Class V','IC Pneumatic tire'),('Class VI','Electric/IC Tractor'),('Class VII','Rough Terrain')] %}
+            <option value="{{ val }}" {% if r.specs.truck_class == val %}selected{% endif %}>{{ val }} — {{ desc }}</option>
+            {% endfor %}
+          </select>
+        </label>
       </div>
       <label>Notes <textarea name="notes" rows="2">{{ r.specs.notes or '' }}</textarea></label>
       <input type="hidden" name="source_url" value="{{ r.source_url or '' }}">

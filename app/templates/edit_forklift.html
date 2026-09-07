@@ -20,6 +20,14 @@
       <label>Capacity (kg) <input name="capacity_kg" value="{{ numval(fk.capacity_kg) }}"></label>
       <label>Fuel type <input name="fuel_type" value="{{ fk.fuel_type or '' }}"></label>
       <label>Chassis <input name="chassis" value="{{ fk.chassis or '' }}" placeholder="e.g. Large-Capacity Frame"></label>
+      <label>Class (OSHA)
+        <select name="truck_class">
+          <option value="">—</option>
+          {% for val, desc in [('Class I','Electric Rider'),('Class II','Electric Narrow-Aisle'),('Class III','Electric Hand/Walkie'),('Class IV','IC Cushion tire'),('Class V','IC Pneumatic tire'),('Class VI','Electric/IC Tractor'),('Class VII','Rough Terrain')] %}
+          <option value="{{ val }}" {% if fk.truck_class == val %}selected{% endif %}>{{ val }} — {{ desc }}</option>
+          {% endfor %}
+        </select>
+      </label>
     </div>
     <label>Source page URL <input name="source_url" value="{{ fk.source_url or '' }}"></label>
     <label>Spec-sheet PDF URL <input name="pdf_url" value="{{ fk.pdf_url or '' }}"></label>

@@ -111,7 +111,7 @@
       <table>
         <thead><tr>
           <th>Status</th><th>OEM</th><th>Series</th><th>Model</th><th>SSC #</th>
-          <th>Capacity (kg)</th><th>Fuel</th><th>Tier</th><th></th>
+          <th>Capacity (kg)</th><th>Fuel</th><th>Class</th><th>Tier</th><th></th>
         </tr></thead>
         <tbody>
           {% for f in forklifts %}
@@ -123,6 +123,7 @@
             <td>{{ f.internal_serial or "—" }}</td>
             <td>{{ f.capacity_kg or "—" }}</td>
             <td>{{ f.fuel_type or "—" }}</td>
+            <td>{{ f.truck_class or "—" }}</td>
             <td>{{ tier_badge(f.best_tier) }}</td>
             <td><a href="/forklift/{{ f.id }}">View →</a></td>
           </tr>

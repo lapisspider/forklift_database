@@ -36,6 +36,7 @@ class Forklift(Base):
     capacity_kg: Mapped[float | None] = mapped_column(Float)          # rated load capacity
     fuel_type: Mapped[str | None] = mapped_column(String(40))         # electric / LPG / diesel / gas
     chassis: Mapped[str | None] = mapped_column(String(80))           # shared-chassis grouping/frame
+    truck_class: Mapped[str | None] = mapped_column(String(20), index=True)  # OSHA class, e.g. "Class V"
 
     # Review status of this forklift's data: green|yellow|red (set manually).
     info_status: Mapped[str] = mapped_column(String(10), default="yellow", index=True)

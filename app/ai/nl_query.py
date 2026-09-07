@@ -30,8 +30,9 @@ Columns:
   year_end INTEGER           -- last production year; NULL can mean still in production
   internal_serial TEXT       -- serial number assigned by the company (unique)
   capacity_kg REAL           -- rated load capacity, kilograms
-  fuel_type TEXT             -- electric | LPG | diesel | gasoline
+  fuel_type TEXT             -- Electric | LPG | Diesel | Gasoline | Gasoline/LPG | Diesel/LPG
   chassis TEXT               -- shared-chassis grouping/frame (may be NULL)
+  truck_class TEXT           -- OSHA class: 'Class I'..'Class VII' (may be NULL)
   info_status TEXT           -- data review status: green | yellow | red
   source_url TEXT
   pdf_url TEXT
