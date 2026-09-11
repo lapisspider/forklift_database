@@ -149,7 +149,7 @@ def index(request: Request, q: str = "", sort: str = "oem", db: Session = Depend
                 Forklift.internal_serial.ilike(like),
             )
         )
-    forklifts = query.limit(500).all()
+    forklifts = query.limit(5000).all()
 
     # For the OEM view, group into OEM -> series -> [forklifts] (ordered).
     oem_groups: dict[str, dict[str, list]] = {}
@@ -158,7 +158,7 @@ def index(request: Request, q: str = "", sort: str = "oem", db: Session = Depend
             series = f.series or "(no series)"
             oem_groups.setdefault(f.manufacturer, {}).setdefault(series, []).append(f)
 
-    kits = db.query(Kit).order_by(Kit.sku).limit(500).all()
+    kits = db.query(Kit).order_by(Kit.sku).limit(5000).all()
     # Full forklift list for the "add kit" picker (unaffected by the filter).
     all_forklifts = db.query(Forklift).order_by(Forklift.manufacturer, Forklift.model).all()
     return templates.TemplateResponse(
