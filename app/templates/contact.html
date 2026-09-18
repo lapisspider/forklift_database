@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="panel">
+  <h1>Contact Us</h1>
+  <p class="muted">Get in touch with Safety Systems & Controls for product inquiries, support, or partnership opportunities.</p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; margin-top: 2rem;">
+    <!-- Contact Info -->
+    <div>
+      <h2>Contact Information</h2>
+
+      <div style="margin: 2rem 0;">
+        <h3 style="margin-top: 0; color: var(--red);">Headquarters</h3>
+        <p>
+          <strong>Safety Systems & Controls, Inc.</strong><br>
+          Houston, TX<br>
+          USA
+        </p>
+      </div>
+
+      <div style="margin: 2rem 0;">
+        <h3 style="margin-top: 0; color: var(--red);">Phone</h3>
+        <p>
+          <a href="tel:+17135508839">(713) 555-0839</a>
+        </p>
+      </div>
+
+      <div style="margin: 2rem 0;">
+        <h3 style="margin-top: 0; color: var(--red);">Email</h3>
+        <p>
+          <a href="mailto:info@safetysystems.com">info@safetysystems.com</a><br>
+          <a href="mailto:sales@safetysystems.com">sales@safetysystems.com</a><br>
+          <a href="mailto:support@safetysystems.com">support@safetysystems.com</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Message Form -->
+    <div>
+      <h2>Send us a Message</h2>
+      <form style="display: flex; flex-direction: column; gap: 1rem;">
+        <label>
+          <span style="display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: var(--muted); font-weight: 600;">Your Name</span>
+          <input type="text" name="name" placeholder="Full name" required style="width: 100%;">
+        </label>
+
+        <label>
+          <span style="display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: var(--muted); font-weight: 600;">Email</span>
+          <input type="email" name="email" placeholder="your@email.com" required style="width: 100%;">
+        </label>
+
+        <label>
+          <span style="display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: var(--muted); font-weight: 600;">Subject</span>
+          <input type="text" name="subject" placeholder="How can we help?" required style="width: 100%;">
+        </label>
+
+        <label>
+          <span style="display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: var(--muted); font-weight: 600;">Message</span>
+          <textarea name="message" placeholder="Your message..." rows="6" required style="width: 100%;"></textarea>
+        </label>
+
+        <button type="submit" style="align-self: flex-start;">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--line);">
+
+  <div>
+    <h2>Business Hours</h2>
+    <p>
+      <strong>Monday – Friday:</strong> 8:00 AM – 5:00 PM CST<br>
+      <strong>Saturday – Sunday:</strong> Closed<br>
+      <strong>Holidays:</strong> Closed
+    </p>
+  </div>
+</section>
+
+{% endblock %}
