@@ -181,11 +181,6 @@ def about(request: Request):
     return templates.TemplateResponse(request, "about.html", _ctx(request))
 
 
-@app.get("/contact", response_class=HTMLResponse)
-def contact(request: Request):
-    return templates.TemplateResponse(request, "contact.html", _ctx(request))
-
-
 # ----------------------------------------------------------------------------
 # Web lookup -> review -> confirm-save
 # ----------------------------------------------------------------------------
