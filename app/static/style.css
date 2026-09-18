@@ -176,31 +176,22 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  /* Bottoms align while the taller centre tile breaks the top line. */
-  align-items: end;
 }
 
 .gallery-item {
   position: relative;
   overflow: hidden;
-  border-radius: 14px;
-  aspect-ratio: 3 / 4;
-  border: 1px solid var(--line);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  border-radius: 10px;
+  aspect-ratio: 1;
+  border: 2px solid var(--line);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
 }
 
-.gallery-item:nth-child(2) {
-  aspect-ratio: 3 / 4.7;
-}
-
-/* Sinks the photo's base into the page background. */
-.gallery-item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.12) 45%, transparent 72%);
-  pointer-events: none;
+.gallery-item:hover {
+  border-color: var(--red);
+  box-shadow: 0 12px 48px rgba(225, 6, 0, 0.2);
+  transform: translateY(-4px);
 }
 
 .gallery-img {
@@ -209,30 +200,6 @@ body {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-
-.gallery-item:hover {
-  transform: translateY(-6px);
-  border-color: var(--red);
-  box-shadow: 0 18px 44px rgba(225, 6, 0, 0.22);
-}
-
-.gallery-item:hover .gallery-img {
-  transform: scale(1.06);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gallery-item,
-  .gallery-img {
-    transition: none;
-  }
-  .gallery-item:hover {
-    transform: none;
-  }
-  .gallery-item:hover .gallery-img {
-    transform: none;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -245,11 +212,6 @@ body {
   .hero-gallery {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  /* Staggering only reads as deliberate on the 3-up row. */
-  .gallery-item:nth-child(2) {
-    aspect-ratio: 3 / 4;
-  }
 }
 
 @media (max-width: 768px) {
@@ -261,10 +223,9 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .gallery-item,
-  .gallery-item:nth-child(2) {
-    aspect-ratio: 16 / 10;
-    min-height: 0;
+  .gallery-item {
+    aspect-ratio: auto;
+    min-height: 250px;
   }
 }
 
