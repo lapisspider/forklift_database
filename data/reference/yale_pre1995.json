@@ -1,0 +1,470 @@
+[
+  {
+    "era": "1995 onward",
+    "key": "structure",
+    "value": "MMMM P NNNNN Y (11 alphanumeric chars)",
+    "notes": "Example C813D11364W: C813=model family+design series, D=plant, 11364=sequence, W=1999"
+  },
+  {
+    "era": "1995 onward",
+    "key": "sequence_start",
+    "value": "01501",
+    "notes": "First production of a model series starts at 01501; same sequence number can repeat across series"
+  },
+  {
+    "era": "1995 onward",
+    "key": "design_series_letter",
+    "value": "leading letter of model code",
+    "notes": "e.g. C in C813 = current design series; increments to next letter when model is updated"
+  },
+  {
+    "era": "1940-1957",
+    "key": "Electric & Gas Rider",
+    "value": "first two digits = year",
+    "notes": "Serial 421835 = 1942; serial 546798 = 1954"
+  },
+  {
+    "era": "1940-1957",
+    "key": "Worksaver & warehouse",
+    "value": "2nd and 3rd digits = year",
+    "notes": "Serial 141677 = 1941; serial 253798 = 1953"
+  },
+  {
+    "era": "1958-1968",
+    "key": "H",
+    "value": "1958",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "J",
+    "value": "1959",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AB",
+    "value": "1960",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AC",
+    "value": "1961",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AD",
+    "value": "1962",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AE",
+    "value": "1963",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AF",
+    "value": "1964",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AG",
+    "value": "1965",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AH",
+    "value": "1966",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AJ",
+    "value": "1967",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1958-1968",
+    "key": "AK",
+    "value": "1968",
+    "notes": "alpha prefix indicates year"
+  },
+  {
+    "era": "1969-1972",
+    "key": "1969",
+    "value": "136789-171934",
+    "notes": "serial number block"
+  },
+  {
+    "era": "1969-1972",
+    "key": "1970",
+    "value": "171935-184549",
+    "notes": "serial number block"
+  },
+  {
+    "era": "1969-1972",
+    "key": "1971",
+    "value": "184550-201000",
+    "notes": "serial number block"
+  },
+  {
+    "era": "1969-1972",
+    "key": "1972",
+    "value": "201001-214399",
+    "notes": "serial number block"
+  },
+  {
+    "era": "1983-1995",
+    "key": "1983",
+    "value": "376300-377299",
+    "notes": "approximate; serials not strictly sequential"
+  },
+  {
+    "era": "1983-1995",
+    "key": "1983",
+    "value": "378601-379299",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1983",
+    "value": "382401-384800",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1983",
+    "value": "389901-390899",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1983",
+    "value": "391751-392800",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1983",
+    "value": "393400-396500",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1984",
+    "value": "384801-385299",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1984",
+    "value": "396501-399150",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1984",
+    "value": "399400-404950",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1984",
+    "value": "411000-415500",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1985",
+    "value": "404951-410999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1985",
+    "value": "415501-421999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1985",
+    "value": "424550-425700",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1986",
+    "value": "422000-423425",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1986",
+    "value": "425710-433100",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1986",
+    "value": "437700-444500",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1986",
+    "value": "465600-466350",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1987",
+    "value": "433200-437699",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1987",
+    "value": "444501-452840",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1988",
+    "value": "452841-453249",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1988",
+    "value": "453981-458299",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1988",
+    "value": "459531-459699",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1988",
+    "value": "459851-459999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1988",
+    "value": "463251-464900",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1988",
+    "value": "466351-473999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1989",
+    "value": "465000-465590",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1989",
+    "value": "474000-477399",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1989",
+    "value": "477400-477864",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1989",
+    "value": "477865-490899",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1990",
+    "value": "490900-505200",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1991",
+    "value": "505201-509999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1991",
+    "value": "511001-513999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1991",
+    "value": "517056-518946",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1992",
+    "value": "514000-515129",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1992",
+    "value": "516000-516837",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1992",
+    "value": "519100-525991",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1992",
+    "value": "527000-532957",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1992",
+    "value": "534000-536821",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1993",
+    "value": "526000-526999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1993",
+    "value": "532958-533999",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1993",
+    "value": "536822-547124",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1993",
+    "value": "550001-550859",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1993",
+    "value": "552001-555623",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1993",
+    "value": "556081-583495",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "546124-550000",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "550861-552000",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "555609-565409",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "567001-569869",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "573000-574360",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "580001-581078",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "591501-591685",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "601407-601768",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "701402-701947",
+    "notes": null
+  },
+  {
+    "era": "1983-1995",
+    "key": "1994",
+    "value": "851402-854579",
+    "notes": null
+  },
+  {
+    "era": "1973-1982",
+    "key": "NOT_TRANSCRIBED",
+    "value": "see notes",
+    "notes": "Source page uses a 4-column layout that text extraction interleaved; year-to-range attribution could not be reliably recovered. Verify against original doc page 1 before use."
+  },
+  {
+    "era": "Two cautions on this table:",
+    "key": null,
+    "value": null,
+    "notes": null
+  },
+  {
+    "era": "1973-1982 is missing. That page of the source uses a four-column layout that text extraction scrambled, so the year-to-range mapping could not be recovered reliably. It was left out rather than guessed at.",
+    "key": null,
+    "value": null,
+    "notes": null
+  },
+  {
+    "era": "1983-1995 ranges are approximate. The source states plainly that serials in this era are not strictly sequential, and several year ranges overlap. A serial near a boundary can belong to either year.",
+    "key": null,
+    "value": null,
+    "notes": null
+  }
+]

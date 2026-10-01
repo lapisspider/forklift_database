@@ -1,0 +1,164 @@
+{% set s = s if s is defined else result.serial %}
+<div class="serial-body">
+
+  {% if s.summary %}
+    <div class="serial-summary">
+      <p class="serial-summary__lead">{{ s.summary }}</p>
+      {% if s.summary_note %}<p class="serial-summary__note">{{ s.summary_note }}</p>{% endif %}
+    </div>
+  {% endif %}
+
+  {% if s.kind == 'yale_pre1995' %}
+    <p class="ok serial-status">Pre-1995 Yale serial format (not the 11-character Hyster/Yale scheme).</p>
+    {% if s.candidate_years %}
+      <p><strong>Candidate year(s):</strong> {{ s.candidate_years|join(', ') }}</p>
+    {% endif %}
+    {% for note in s.notes %}<p class="muted">{{ note }}</p>{% endfor %}
+    <details class="serial-more">
+      <summary>Yale numbering systems before Q3 1995</summary>
+      {% for era, era_rows in s.pre1995_eras|groupby('era') %}
+        <div class="serial-era">
+          <h4>{{ era }}</h4>
+          <div class="table-scroll">
+            <table>
+              <tbody>
+                {% for row in era_rows %}
+                <tr><td>{{ row.key }}</td><td>{{ row.value }}</td><td class="muted">{{ row.notes or '' }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {% endfor %}
+    </details>
+
+  {% elif s.kind == 'unrecognized' %}
+    <p class="warn">{{ s.notes[0] if s.notes else 'Not recognized as a serial number or prefix.' }}</p>
+
+  {% elif s.kind.startswith('doosan') %}
+    <p class="{{ 'ok' if s.matches else ('warn' if s.kind == 'doosan_unknown_prefix' else 'muted') }} serial-status">
+      {% if s.kind == 'doosan_unknown_prefix' %}
+        Prefix not on file — nothing decoded.
+      {% elif s.matches %}
+        Decoded — {{ s.matches|length }} matching model{{ 's' if s.matches|length != 1 }} in the catalog.
+      {% else %}
+        Decoded, but this model isn't in the catalog yet.
+      {% endif %}
+    </p>
+
+    <div class="serial-parts">
+      <div><strong>Prefix</strong><span>{{ s.prefix }}</span></div>
+      {% if s.sequence %}<div><strong>Sequence</strong><span>{{ s.sequence }}</span></div>{% endif %}
+    </div>
+
+    {% if s.doosan_rows %}
+      <div class="serial-section">
+        <h4>Per prefix row</h4>
+        {% for row in s.doosan_rows %}
+          <div class="doosan-row">
+            <p class="doosan-row__model">{{ row.model }}</p>
+            <dl>
+              {% for label, val in [('Power', row.power), ('Engine', row.engine), ('Certification', row.certification), ('Fuel / trans', row.fuel_trans), ('Brake', row.brake), ('Voltage', row.voltage), ('System', row.system), ('Configuration', row.configuration)] if val %}
+                <div><dt>{{ label }}</dt><dd>{{ val }}</dd></div>
+              {% endfor %}
+            </dl>
+          </div>
+        {% endfor %}
+      </div>
+    {% elif s.families and not s.orphan %}
+      <div class="serial-section">
+        <h4>Model family/families</h4>
+        <ul>{% for fam in s.families %}<li>{{ fam }}</li>{% endfor %}</ul>
+      </div>
+    {% elif s.orphan and s.families %}
+      <div class="serial-section">
+        <h4>Model family (from year table only)</h4>
+        <p>{{ s.families|join(', ') }}</p>
+      </div>
+    {% endif %}
+
+    {% if s.chassis_note %}
+      <p class="muted">{{ s.chassis_note }}</p>
+    {% endif %}
+
+    {% if s.year_note %}
+      <div class="serial-section">
+        <h4>Year</h4>
+        <p>{{ s.year_note }}</p>
+      </div>
+    {% endif %}
+
+    {% if s.anomalies %}
+      {% for a in s.anomalies %}<p class="warn serial-flag">{{ a }}</p>{% endfor %}
+    {% endif %}
+
+    {% if s.matches %}
+      <div class="serial-section">
+        <h4>In the catalog</h4>
+        <ul>
+          {% for m in s.matches %}
+          <li><a href="/forklift/{{ m.id }}">{{ m.manufacturer }} {{ m.model }} →</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% for note in s.notes %}<p class="{{ 'warn serial-flag' if s.orphan else 'muted' }}">{{ note }}</p>{% endfor %}
+
+  {% else %}
+    <p class="{{ 'ok' if s.matches else ('warn' if s.kind == 'unknown_prefix' else 'muted') }} serial-status">
+      {% if s.kind == 'unknown_prefix' %}
+        Prefix not on file — decoded from family digits only.
+      {% elif s.matches %}
+        Decoded — {{ s.matches|length }} matching model{{ 's' if s.matches|length != 1 }} in the catalog.
+      {% else %}
+        Decoded, but this model isn't in the catalog yet.
+      {% endif %}
+    </p>
+
+    <div class="serial-parts">
+      <div><strong>Prefix</strong><span>{{ s.prefix }}</span></div>
+      <div><strong>Generation</strong><span>{{ s.generation }}</span></div>
+      <div><strong>Family digits</strong><span>{{ s.family_digits }}</span></div>
+      {% if s.plant %}<div><strong>Plant ({{ s.plant }})</strong><span>{{ s.plant_location or 'unknown' }}</span></div>{% endif %}
+      {% if s.sequence %}<div><strong>Sequence</strong><span>{{ s.sequence }}</span></div>{% endif %}
+      {% if s.year_code %}<div><strong>Year code</strong><span>{{ s.year_code }}</span></div>{% endif %}
+    </div>
+
+    {% if s.candidate_years %}
+      <div class="serial-section">
+        <h4>Candidate year(s)</h4>
+        <p>{{ s.candidate_years|join(', ') }}</p>
+      </div>
+    {% endif %}
+    {% if s.correction_note %}
+      <p class="warn serial-flag">{{ s.correction_note }}</p>
+    {% endif %}
+
+    {% if s.families %}
+      <div class="serial-section">
+        <h4>Model family/families</h4>
+        <ul>{% for fam in s.families %}<li>{{ fam }}</li>{% endfor %}</ul>
+      </div>
+    {% endif %}
+
+    {% if s.matches %}
+      <div class="serial-section">
+        <h4>In the catalog</h4>
+        <ul>
+          {% for m in s.matches %}
+          <li><a href="/forklift/{{ m.id }}">{{ m.manufacturer }} {{ m.model }} →</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if s.twin_prefix %}
+      <p><strong>Twin-brand prefix:</strong> {{ s.twin_prefix }}
+        {% if s.twin_families %} — {{ s.twin_families|join('; ') }}{% endif %}
+      </p>
+    {% endif %}
+
+    {% for note in s.notes %}<p class="muted">{{ note }}</p>{% endfor %}
+  {% endif %}
+</div>

@@ -1,0 +1,62 @@
+[
+  {
+    "code": "A",
+    "location": "Irvine, Scotland",
+    "brands": "Hyster + Yale"
+  },
+  {
+    "code": "B",
+    "location": "Craigavon, Northern Ireland",
+    "brands": "Hyster + Yale"
+  },
+  {
+    "code": "D",
+    "location": "Danville, IL, USA",
+    "brands": "Hyster + Yale"
+  },
+  {
+    "code": "E",
+    "location": "Nijmegen, Netherlands",
+    "brands": "Hyster"
+  },
+  {
+    "code": "F",
+    "location": "Flemington, NJ, USA",
+    "brands": "Hyster"
+  },
+  {
+    "code": "G",
+    "location": "Government contracts",
+    "brands": "Hyster"
+  },
+  {
+    "code": "L",
+    "location": "Lenoir, NC, USA",
+    "brands": "Hyster"
+  },
+  {
+    "code": "N",
+    "location": "Greenville, NC, USA",
+    "brands": "Hyster + Yale"
+  },
+  {
+    "code": "R",
+    "location": "OBU-shi, Aichi-ken, Japan (Sumitomo-NACCO)",
+    "brands": "Hyster + Yale"
+  },
+  {
+    "code": "S",
+    "location": "Sulligent, AL, USA",
+    "brands": "Hyster"
+  },
+  {
+    "code": "T",
+    "location": "Masate, Italy",
+    "brands": "Hyster"
+  },
+  {
+    "code": "V",
+    "location": "Berea, KY, USA",
+    "brands": "Hyster + Yale"
+  }
+]

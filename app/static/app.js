@@ -1,17 +1,25 @@
 // Shared page behaviors: tabs, filtering dropdowns (single + multi),
 // accordion (OEM view), and the search-result modal.
 
-// ----- Tabs (Forklifts / Kits) -----
+// ----- Tabs (Forklifts / Kits, and separately Model / Serial lookup) -----
+// Scoped per `.tabs` group: each group only toggles its own buttons and the
+// `.tab-panel`s inside its own parent, so a second tab group on the page
+// (e.g. the lookup panel) can't hide/show the Forklifts/Kits panels.
 (function () {
-  const tabs = document.querySelectorAll('.tab');
-  const panels = document.querySelectorAll('.tab-panel');
-  if (!tabs.length) return;
-  function activate(name) {
-    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-    panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
-  }
-  tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
-  if (location.hash === '#kits') activate('kits');
+  document.querySelectorAll('.tabs').forEach(tabs => {
+    const scope = tabs.parentElement;
+    if (!scope) return;
+    const buttons = tabs.querySelectorAll('.tab');
+    const panels = scope.querySelectorAll('.tab-panel');
+    if (!buttons.length) return;
+    function activate(name) {
+      buttons.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+      panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+    }
+    buttons.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
+    const hashTab = tabs.dataset.hashTab;
+    if (hashTab && location.hash === '#' + hashTab) activate(hashTab);
+  });
 })();
 
 // ----- Filtering dropdown (.combo). data-multi => chips, else single hidden value.

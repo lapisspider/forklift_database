@@ -1,4 +1,5 @@
 """SQLAlchemy models for the forklift database."""
+import json
 from datetime import datetime, timezone
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
@@ -37,6 +38,7 @@ class Forklift(Base):
     fuel_type: Mapped[str | None] = mapped_column(String(40))         # electric / LPG / diesel / gas
     chassis: Mapped[str | None] = mapped_column(String(80))           # shared-chassis grouping/frame
     truck_class: Mapped[str | None] = mapped_column(String(20), index=True)  # OSHA class, e.g. "Class V"
+    platform_group: Mapped[str | None] = mapped_column(String(40), index=True)  # shared-platform key (Hyster/Yale twins)
 
     # Review status of this forklift's data: green|yellow|red (set manually).
     info_status: Mapped[str] = mapped_column(String(10), default="yellow", index=True)
@@ -62,6 +64,18 @@ class Forklift(Base):
         """Highest connection tier across this forklift's kits (gold>silver>bronze)."""
         tiers = [l.tier for l in self.kit_links]
         return max(tiers, key=lambda t: TIER_RANK.get(t, 0)) if tiers else None
+
+    def twins(self, db) -> list["Forklift"]:
+        """Same platform_group, different manufacturer (never same-brand fuel variants)."""
+        if not self.platform_group:
+            return []
+        return (
+            db.query(Forklift)
+            .filter(Forklift.platform_group == self.platform_group,
+                    Forklift.manufacturer != self.manufacturer)
+            .order_by(Forklift.manufacturer, Forklift.model)
+            .all()
+        )
 
     @property
     def year_display(self) -> str:
@@ -143,3 +157,89 @@ class KitForklift(Base):
 
     kit: Mapped["Kit"] = relationship(back_populates="forklift_links")
     forklift: Mapped["Forklift"] = relationship(back_populates="kit_links")
+
+
+class SerialPrefix(Base):
+    """Chars 1-4 of a Hyster/Yale OEM serial: design generation + model family.
+
+    No FK to forklifts -- a prefix names a model family, resolved at query time
+    (app/ai/serial_decode.py). A prefix can repeat across rows (regional/sub-model
+    variants, or one row per source), so duplicates are kept, not merged."""
+    __tablename__ = "serial_prefixes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    prefix: Mapped[str] = mapped_column(String(4), index=True)
+    brand: Mapped[str] = mapped_column(String(20))
+    models_raw: Mapped[str] = mapped_column(Text)     # JSON list of model designators
+    ita_class: Mapped[str | None] = mapped_column(String(10))
+    capacity_text: Mapped[str | None] = mapped_column(String(60))
+    product_type: Mapped[str | None] = mapped_column(String(120))
+    twin_prefix: Mapped[str | None] = mapped_column(String(4))
+    source: Mapped[str] = mapped_column(String(40))
+
+    @property
+    def models(self) -> list[str]:
+        return json.loads(self.models_raw)
+
+
+class SerialPlantCode(Base):
+    """Char 5 of a Hyster/Yale OEM serial: the factory that built the truck."""
+    __tablename__ = "serial_plant_codes"
+
+    code: Mapped[str] = mapped_column(String(2), primary_key=True)
+    location: Mapped[str] = mapped_column(String(120))
+    brands: Mapped[str] = mapped_column(String(40))
+
+
+class SerialYearCode(Base):
+    """Last char of a Hyster/Yale OEM serial: one letter maps to several
+    candidate years (the 23-letter alphabet repeats every 23 years)."""
+    __tablename__ = "serial_year_codes"
+
+    code: Mapped[str] = mapped_column(String(2), primary_key=True)
+    y1: Mapped[int | None] = mapped_column(Integer)
+    y2: Mapped[int | None] = mapped_column(Integer)
+    y3: Mapped[int | None] = mapped_column(Integer)
+    y4: Mapped[int | None] = mapped_column(Integer)
+
+    @property
+    def years(self) -> list[int]:
+        return [y for y in (self.y1, self.y2, self.y3, self.y4) if y is not None]
+
+
+class DoosanPrefix(Base):
+    """Chars 1-2 (+ trailing dash) of a Doosan/Bobcat serial: power/engine/
+    brake/voltage spec for that build. A prefix can legitimately repeat
+    (e.g. 'FH-' has two rows) -- duplicates are kept, not merged. No FK to
+    forklifts -- resolved against the catalog at query time, same pattern as
+    SerialPrefix for Hyster/Yale."""
+    __tablename__ = "doosan_prefixes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    prefix: Mapped[str] = mapped_column(String(4), index=True)   # e.g. "L7-", "FH-", "21-"
+    power: Mapped[str | None] = mapped_column(String(20))        # IC | Electric
+    model: Mapped[str] = mapped_column(String(120))              # raw model-family text (may be a range)
+    engine: Mapped[str | None] = mapped_column(String(80))
+    certification: Mapped[str | None] = mapped_column(String(40))
+    fuel_trans: Mapped[str | None] = mapped_column(String(40))
+    brake: Mapped[str | None] = mapped_column(String(40))
+    voltage: Mapped[str | None] = mapped_column(String(20))
+    system: Mapped[str | None] = mapped_column(String(20))
+    configuration: Mapped[str | None] = mapped_column(String(120))
+
+
+class DoosanYearSerial(Base):
+    """One 'first serial of the model-year' batch marker for a Doosan prefix.
+    Sequences are batch-allocated, not calendar counters -- a higher sequence
+    can predate a lower one (see app/ai/decoders/doosan.py:estimate_year).
+    No FK to forklifts."""
+    __tablename__ = "doosan_year_serials"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    model: Mapped[str] = mapped_column(String(120), index=True)
+    year: Mapped[int] = mapped_column(Integer, index=True)
+    prefix: Mapped[str] = mapped_column(String(4), index=True)
+    sequence: Mapped[int] = mapped_column(Integer)        # parsed int, for comparison
+    sequence_raw: Mapped[str] = mapped_column(String(10))  # as printed (e.g. "0389" vs "00389")
+    raw: Mapped[str] = mapped_column(String(20))           # full marker as printed, e.g. "21-00932"
+    flag: Mapped[str | None] = mapped_column(Text)         # source anomaly note, if any

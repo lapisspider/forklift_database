@@ -6,7 +6,7 @@ import json
 from anthropic import Anthropic
 
 from ..config import settings
-from ..schemas import ForkliftSpecs
+from ..schemas import ForkliftSpecs, SerialWebGuess
 from . import tavily_client
 
 _SYSTEM = """You extract forklift specifications from raw web/PDF text.
@@ -61,20 +61,34 @@ def _client() -> Anthropic:
     return Anthropic(api_key=settings.anthropic_api_key)
 
 
-def extract_specs(raw_text: str, hint: str = "") -> ForkliftSpecs:
+_PUBLISHED_YEARS_ONLY = (
+    "\n\nOVERRIDE for production years: set year_start/year_end ONLY if the text "
+    "explicitly states them. Otherwise leave both null -- never estimate them here; "
+    "estimation is handled separately and labelled."
+)
+
+
+def extract_specs(raw_text: str, hint: str = "", published_years_only: bool = False) -> ForkliftSpecs:
     """Extract structured specs from spec-sheet text.
 
     `hint` is the user's original query (e.g. "Toyota 8FGCU25"), used to
-    disambiguate when a page lists several models.
+    disambiguate when a page lists several models. `published_years_only`
+    stops the model guessing years, so any year returned is a stated one.
     """
     client = _client()
     # Keep the payload bounded — spec sheets are small, web pages can be huge.
     text = raw_text[:60_000]
 
+    schema = ForkliftSpecs.model_json_schema()
+    system = _SYSTEM
+    if published_years_only:
+        system += _PUBLISHED_YEARS_ONLY
+        for f in ("year_start", "year_end"):
+            schema["properties"][f]["description"] = "Production year, only if explicitly stated in the text; else null."
     tool = {
         "name": "record_specs",
         "description": "Record the extracted forklift specifications.",
-        "input_schema": ForkliftSpecs.model_json_schema(),
+        "input_schema": schema,
     }
     user = (
         f"User asked about: {hint}\n\n" if hint else ""
@@ -83,7 +97,7 @@ def extract_specs(raw_text: str, hint: str = "") -> ForkliftSpecs:
     resp = client.messages.create(
         model=settings.claude_model,
         max_tokens=1024,
-        system=_SYSTEM,
+        system=system,
         tools=[tool],
         tool_choice={"type": "tool", "name": "record_specs"},
         messages=[{"role": "user", "content": user}],
@@ -99,8 +113,8 @@ def find_production_years(manufacturer: str, model: str) -> tuple[int | None, in
     """Best-effort production-year span via a dedicated web search.
 
     Spec sheets rarely print production years, so the main extractor almost
-    always returns null. This runs a targeted Tavily AI-answer search (same
-    technique as backfill_years.py) and asks Claude to read it. Returns
+    always returns null. This runs a targeted Tavily AI-answer search and
+    asks Claude to read it. Returns
     (year_start, year_end); either/both may be None. Never raises.
     """
     name = f"{manufacturer or ''} {model or ''}".strip()
@@ -223,6 +237,110 @@ def find_series(manufacturer: str, model: str) -> str | None:
     return None
 
 
+def find_core_specs(manufacturer: str, model: str, missing: list[str]) -> dict:
+    """One targeted web re-query for any of capacity_kg / fuel_type / chassis the
+    first extraction missed. Returns only the fields it could source. Never raises."""
+    name = f"{manufacturer or ''} {model or ''}".strip()
+    wanted = [f for f in missing if f in ("capacity_kg", "fuel_type", "chassis")]
+    if not name or not wanted:
+        return {}
+    query = (f"{name} forklift rated load capacity lb, fuel type (electric, LPG, gasoline, diesel), "
+             f"and chassis or frame")
+    try:
+        search = tavily_client.answer_search(query)
+    except Exception:  # noqa: BLE001
+        return {}
+    results = search.get("results", [])
+    answer = search.get("answer") or ""
+    content = (("AI SEARCH ANSWER:\n" + answer + "\n\n") if answer else "") + "\n\n".join(
+        (r.get("raw_content") or r.get("content") or "") for r in results[:3]
+    )
+    content = content[:15_000]
+    if not content.strip():
+        return {}
+
+    props = {
+        "capacity_kg": {"type": ["number", "null"],
+                        "description": "Rated load capacity in kilograms (convert from lb)."},
+        "fuel_type": {"type": ["string", "null"],
+                      "description": "Exactly one of: Electric, Diesel, LPG, Gasoline, "
+                                     "Gasoline/LPG, Diesel/LPG."},
+        "chassis": {"type": ["string", "null"],
+                    "description": "Shared chassis/frame grouping, only if a source names one."},
+    }
+    tool = {
+        "name": "record_core",
+        "description": "Record the missing core specs.",
+        "input_schema": {"type": "object", "properties": {k: props[k] for k in wanted}},
+    }
+    prompt = (
+        f"Model: {name}\n\nWeb search results:\n{content}\n\n"
+        f"Fill in these fields for this exact model: {', '.join(wanted)}. Use only what the "
+        "results support (or well-established fact for capacity/fuel). Leave a field null "
+        "rather than guess; never invent a chassis name."
+    )
+    try:
+        resp = _client().messages.create(
+            model=settings.claude_model,
+            max_tokens=300,
+            tools=[tool],
+            tool_choice={"type": "tool", "name": "record_core"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        for block in resp.content:
+            if block.type == "tool_use" and block.name == "record_core":
+                out = {k: v for k, v in block.input.items() if k in wanted and v not in (None, "")}
+                return out
+    except Exception:  # noqa: BLE001
+        return {}
+    return {}
+
+
+def estimate_production_years(manufacturer: str, model: str, series: str | None,
+                              evidence: str) -> tuple[int | None, int | None]:
+    """Educated production-year estimate when no source states them.
+    year_end None = probably still in production."""
+    name = f"{manufacturer or ''} {model or ''}".strip()
+    if not name:
+        return None, None
+    tool = {
+        "name": "record_estimate",
+        "description": "Record the estimated production span.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "year_start": {"type": ["integer", "null"]},
+                "year_end": {"type": ["integer", "null"],
+                             "description": "null if the model is probably still in production"},
+            },
+        },
+    }
+    prompt = (
+        f"Truck: {name}\n"
+        + (f"Series: {series}\n" if series else "")
+        + f"\nSource text (no production years are stated in it):\n{(evidence or '')[:6000]}\n\n"
+        "No published production years could be found. Make your best EDUCATED ESTIMATE of "
+        "year_start and year_end from the series generation, engine/emissions tier, catalogue "
+        "or brochure context, and your knowledge of this product line. Prefer a plausible "
+        "span over null; null year_end if probably still sold. Only return null years if the "
+        "truck cannot be identified at all."
+    )
+    try:
+        resp = _client().messages.create(
+            model=settings.claude_model,
+            max_tokens=200,
+            tools=[tool],
+            tool_choice={"type": "tool", "name": "record_estimate"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        for block in resp.content:
+            if block.type == "tool_use" and block.name == "record_estimate":
+                return block.input.get("year_start"), block.input.get("year_end")
+    except Exception:  # noqa: BLE001
+        return None, None
+    return None, None
+
+
 _CLASS_RULES = (
     "OSHA powered-industrial-truck classes: "
     "Class I = electric motor rider (electric counterbalance); "
@@ -297,3 +415,69 @@ def find_truck_class(manufacturer: str, model: str) -> str | None:
     except Exception:  # noqa: BLE001
         return None
     return None
+
+
+_SERIAL_ID_SYSTEM = """You identify what forklift a serial number belongs to,
+from web search excerpts. State ONLY what the excerpts actually support --
+never guess a manufacturer, model, or year that isn't backed by the text.
+NEVER infer a year from the digits of the serial/sequence number itself
+(e.g. do not read "00116" as "2016" or similar) -- a year is only valid if
+the excerpts state it in words or as a documented production span.
+If the excerpts don't support a field, leave it null. Set confidence "low"
+if the match is a guess from partial context, "medium" if plausible but not
+explicit, "high" only if a source directly names this exact serial or a
+clearly matching model/serial pattern."""
+
+
+def identify_from_serial(raw: str, manufacturer: str | None, content: str,
+                          source_url: str | None) -> SerialWebGuess:
+    """Best-effort manufacturer/model/year guess for a serial that didn't
+    decode offline. Always unverified -- the caller renders it as such and
+    hands off to the normal review-then-save form; this never writes anything."""
+    if not content.strip():
+        return SerialWebGuess(confidence="low", reasoning="No web content retrieved.",
+                               source_url=source_url)
+
+    tool = {
+        "name": "record_guess",
+        "description": "Record the best-effort identification of a forklift from its serial number.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "manufacturer": {"type": ["string", "null"]},
+                "model_family": {"type": ["string", "null"],
+                                  "description": "series/family name, if the excerpts name one"},
+                "model": {"type": ["string", "null"]},
+                "year_start": {"type": ["integer", "null"]},
+                "year_end": {"type": ["integer", "null"]},
+                "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+                "reasoning": {"type": "string",
+                              "description": "1-2 sentences: what in the excerpts supports this"},
+            },
+            "required": ["confidence", "reasoning"],
+        },
+    }
+    prompt = (
+        f"Serial number: {raw}\n"
+        + (f"User-supplied OEM hint: {manufacturer}\n" if manufacturer else "")
+        + f"\nWeb search results:\n{content}\n\n"
+        "Identify the manufacturer, model family, and specific model this serial belongs to, "
+        "and its production year span, using ONLY what the excerpts support."
+    )
+    try:
+        resp = _client().messages.create(
+            model=settings.claude_model,
+            max_tokens=400,
+            system=_SERIAL_ID_SYSTEM,
+            tools=[tool],
+            tool_choice={"type": "tool", "name": "record_guess"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        for block in resp.content:
+            if block.type == "tool_use" and block.name == "record_guess":
+                data = dict(block.input)
+                data["source_url"] = source_url
+                return SerialWebGuess.model_validate(data)
+    except Exception as e:  # noqa: BLE001
+        return SerialWebGuess(confidence="low", reasoning=f"Lookup failed: {e}", source_url=source_url)
+    return SerialWebGuess(confidence="low", reasoning="No identification returned.", source_url=source_url)

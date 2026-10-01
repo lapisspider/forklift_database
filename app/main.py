@@ -173,7 +173,8 @@ def detail(fid: int, request: Request, db: Session = Depends(get_db)):
     fk = db.get(Forklift, fid)
     if not fk:
         raise HTTPException(404, "Forklift not found")
-    return templates.TemplateResponse(request, "detail.html", _ctx(request, fk=fk))
+    twins = fk.twins(db)
+    return templates.TemplateResponse(request, "detail.html", _ctx(request, fk=fk, twins=twins))
 
 
 @app.get("/about", response_class=HTMLResponse)
@@ -185,8 +186,9 @@ def about(request: Request):
 # Web lookup -> review -> confirm-save
 # ----------------------------------------------------------------------------
 @app.post("/lookup", response_class=HTMLResponse)
-def lookup(request: Request, query: str = Form(...), db: Session = Depends(get_db)):
-    result = lookup_service.lookup(db, query)
+def lookup(request: Request, query: str = Form(...), web: bool = Form(False),
+           mode: str = Form(""), db: Session = Depends(get_db)):
+    result = lookup_service.lookup(db, query, web=web, mode=mode)
     return templates.TemplateResponse(
         request, "partials/lookup_result.html", _ctx(request, result=result, query=query)
     )

@@ -10,19 +10,13 @@
   </div>
   <div class="hero-gallery">
     <div class="gallery-item">
-      <img src="/static/images/forklift-1.png" alt="Bobcat Forklift" class="gallery-img">
-    </div>
-    <div class="gallery-item">
-      <img src="/static/images/forklift-2.jpg" alt="CAT Forklift" class="gallery-img">
-    </div>
-    <div class="gallery-item">
-      <img src="/static/images/forklift-3.jpg" alt="Hyster Forklift" class="gallery-img">
+      <img src="/static/images/forklift-1.png" alt="Forklift moving stacked pallets in a warehouse" class="gallery-img">
     </div>
   </div>
 </section>
 
 <div class="duo">
-  <section class="panel">
+  <section class="panel panel--media panel--ask">
     <h2>Ask about forklifts</h2>
     <p class="muted">Plain English — e.g. "which electric forklifts lift over 5 meters?"
        or "which kits fit the Crown FC5200?".</p>
@@ -36,23 +30,50 @@
     </form>
   </section>
 
-  <section class="panel">
-    <h2>Look up a forklift by code</h2>
-    <p class="muted">Checks the database first. If it's not here, searches the web
-       for the spec sheet and asks before saving.</p>
-    <form hx-post="/lookup" hx-target="#modal-body" hx-indicator="#lk-spin"
-          data-modal-title="Look-up result">
-      <div class="row">
-        <input type="text" name="query" placeholder="e.g. Toyota 8FGCU25" required>
-        <button type="submit">Look up</button>
-        <span id="lk-spin" class="htmx-indicator">…searching</span>
-      </div>
-    </form>
+  <section class="panel panel--media panel--lookup">
+    <h2>Lookup by forklift OEM and model/serial number</h2>
+    <p class="muted">Checks the database first. If nothing is found then it searches the web
+       and adds it to the database.</p>
+
+    <div class="tabs">
+      <button type="button" class="tab active" data-tab="lookup-model">Model</button>
+      <button type="button" class="tab" data-tab="lookup-serial">Serial</button>
+    </div>
+
+    <div id="tab-lookup-model" class="tab-panel active">
+      <form hx-post="/lookup" hx-target="#modal-body" hx-indicator="#lk-model-spin"
+            data-modal-title="Look-up result">
+        <input type="hidden" name="mode" value="model">
+        <div class="row">
+          <input type="text" name="query" placeholder="e.g. Toyota 8FGCU25" required
+                 title="Start with the manufacturer, then the model: Toyota 8FGCU25, not just 8FGCU25"
+                 aria-describedby="lk-model-help">
+          <button type="submit">Look up</button>
+          <span id="lk-model-spin" class="htmx-indicator">…searching</span>
+        </div>
+        <p id="lk-model-help" class="muted">Manufacturer required: type it first, e.g. Toyota 8FGCU25 or Hyster H50FT.</p>
+      </form>
+    </div>
+
+    <div id="tab-lookup-serial" class="tab-panel">
+      <form hx-post="/lookup" hx-target="#modal-body" hx-indicator="#lk-serial-spin"
+            data-modal-title="Serial decode">
+        <input type="hidden" name="mode" value="serial">
+        <div class="row">
+          <input type="text" name="query" placeholder="e.g. Hyster G004V01515D or Doosan L7-00116" required
+                 title="Start with the manufacturer, then the serial: Hyster G004V01515D, not just G004V01515D"
+                 aria-describedby="lk-serial-help">
+          <button type="submit">Decode</button>
+          <span id="lk-serial-spin" class="htmx-indicator">…decoding</span>
+        </div>
+        <p id="lk-serial-help" class="muted">Manufacturer required: type it first, e.g. Hyster G004V01515D or Doosan L7-00116.</p>
+      </form>
+    </div>
   </section>
 </div>
 
 <section class="panel">
-  <div class="tabs">
+  <div class="tabs" data-hash-tab="kits">
     <button type="button" class="tab active" data-tab="forklifts">Forklifts ({{ forklifts|length }})</button>
     <button type="button" class="tab" data-tab="kits">Kits ({{ kits|length }})</button>
   </div>
@@ -75,7 +96,7 @@
     </div>
 
     {% if not forklifts %}
-      <p class="muted">No forklifts yet. Use "Look up a forklift by code" above to add one.</p>
+      <p class="muted">No forklifts yet. Use "Lookup by forklift OEM and model/serial number" above to add one.</p>
 
     {% elif sort == 'oem' %}
       {# ---- Accordion: OEM -> Series -> models ---- #}

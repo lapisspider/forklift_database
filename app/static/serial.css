@@ -1,0 +1,176 @@
+/* Serial-number decode result panel (app/templates/partials/serial_result.html) */
+
+/* ===== Lookup result modal =====
+   Exactly one .result-card per result (lookup_result.html); everything inside
+   it is plain sections, separated by spacing and hairlines, not more boxes. */
+.lookup-result > .oem-note {
+  margin: 0 0 0.75rem;
+}
+.lookup-result .result-card {
+  padding: 1.4rem 1.5rem;
+}
+.lookup-result .result-card > :not(:first-child) {
+  margin-top: 0.9rem;
+}
+.lookup-result .result-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+.lookup-extra {
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-soft);
+}
+.web-guess {
+  border-top-style: dashed;
+}
+
+/* ===== Serial decode ===== */
+.lookup-result .serial-body > :not(:first-child) {
+  margin-top: 1rem;
+}
+.serial-body p,
+.serial-body h4 {
+  margin: 0;
+  line-height: 1.5;
+}
+.serial-body ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+}
+.serial-body li + li {
+  margin-top: 0.2rem;
+}
+
+.serial-summary {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.serial-summary__lead {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink-light);
+}
+.serial-summary__note {
+  margin-top: 0.4rem !important;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.serial-status {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.serial-parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+}
+.serial-parts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--ink-light);
+}
+.serial-parts > div > strong {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.serial-section h4,
+.serial-era h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.serial-flag {
+  font-size: 0.9rem;
+}
+
+/* Doosan per-prefix rows: label/value pairs instead of a 7-column table */
+.doosan-row {
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+}
+.doosan-row + .doosan-row {
+  margin-top: 0.6rem;
+}
+.lookup-result .doosan-row__model {
+  font-weight: 700;
+  color: var(--ink-light);
+  margin-bottom: 0.5rem !important;
+}
+.doosan-row dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.5rem 1.2rem;
+  margin: 0;
+}
+.doosan-row dl > div {
+  min-width: 0;
+}
+.doosan-row dt {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.doosan-row dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+/* Collapsible reference tables */
+.serial-more {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 0.25rem;
+}
+.serial-more summary {
+  margin: 0.5rem 0;
+}
+.serial-era {
+  margin-top: 0.9rem;
+}
+.serial-body table {
+  margin-top: 0.3rem;
+  font-size: 0.88rem;
+}
+.serial-body th,
+.serial-body td {
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+.serial-body tbody tr:hover {
+  box-shadow: none;
+}
+.serial-body .table-scroll {
+  overflow-x: auto;
+}
+
+/* Alternate decode (mode "" only): a disclosure inside the same card */
+.alternate-decode {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 0.25rem;
+}
+.alternate-decode > summary {
+  margin: 0.5rem 0;
+}
+.alternate-decode .serial-body {
+  padding: 0.5rem 0 0.25rem;
+}

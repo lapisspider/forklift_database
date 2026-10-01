@@ -51,6 +51,12 @@
       {% if fk.fetched_at %}<tr><th>Fetched</th><td>{{ fk.fetched_at.strftime("%Y-%m-%d") }}</td></tr>{% endif %}
     </tbody>
   </table>
+  {% if twins %}
+  <p class="muted" style="margin-top:.6rem" title="Per Hyster↔Yale cross-reference; older generations may differ.">
+    Same truck as:
+    {% for t in twins %}<a href="/forklift/{{ t.id }}">{{ t.manufacturer }} {{ t.model }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+  </p>
+  {% endif %}
 </section>
 
 <section class="panel">

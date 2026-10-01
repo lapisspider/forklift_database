@@ -34,6 +34,8 @@ Columns:
   chassis TEXT               -- shared-chassis grouping/frame (may be NULL)
   truck_class TEXT           -- OSHA class: 'Class I'..'Class VII' (may be NULL)
   info_status TEXT           -- data review status: green | yellow | red
+  platform_group TEXT        -- Hyster/Yale twins share this value (same truck, different
+                              -- badge); kits do NOT transfer between twins. NULL if un-twinned.
   source_url TEXT
   pdf_url TEXT
   notes TEXT
@@ -69,7 +71,54 @@ Example — forklifts that a kit fits, by SKU '174-BC20S-00G05':
   SELECT DISTINCT f.* FROM forklifts f
   JOIN kit_forklift kf ON kf.forklift_id = f.id
   JOIN kits k ON k.id = kf.kit_id
-  WHERE REPLACE(LOWER(k.sku),' ','') LIKE REPLACE(LOWER('%174-BC20S-00G05%'),' ','');"""
+  WHERE REPLACE(LOWER(k.sku),' ','') LIKE REPLACE(LOWER('%174-BC20S-00G05%'),' ','');
+
+Table: serial_prefixes    -- Hyster/Yale OEM serial decoding reference (offline)
+Columns:
+  id INTEGER
+  prefix TEXT                -- chars 1-4 of an OEM serial (design generation + model family)
+  brand TEXT                 -- Hyster | Yale
+  models_raw TEXT            -- JSON list of model designators this prefix covers
+  ita_class TEXT
+  capacity_text TEXT
+  product_type TEXT
+  twin_prefix TEXT           -- the other brand's equivalent prefix, if known
+  source TEXT
+NOTE: serial_prefixes.prefix does NOT join to forklifts (no FK) -- it names a model
+family, not a specific catalog row. Don't attempt to JOIN it to the forklifts table.
+
+Table: serial_plant_codes  -- char 5 of an OEM serial -> factory location (code PK)
+Table: serial_year_codes   -- last char of an OEM serial -> up to 4 candidate years (code PK)
+
+Table: doosan_prefixes    -- Doosan/Bobcat serial decoding reference (offline)
+Columns:
+  id INTEGER
+  prefix TEXT                -- 2-char prefix + trailing dash, e.g. 'L7-', 'FH-', '21-'
+  power TEXT                 -- IC | Electric
+  model TEXT                 -- raw model-family text (may be a '/'-range, e.g. 'D35/40S')
+  engine TEXT
+  certification TEXT
+  fuel_trans TEXT
+  brake TEXT
+  voltage TEXT
+  system TEXT
+  configuration TEXT
+NOTE: a prefix can appear on more than one row (e.g. 'FH-' appears twice) -- both are real.
+
+Table: doosan_year_serials  -- one 'first serial of the model-year' batch marker per row
+Columns:
+  id INTEGER
+  model TEXT
+  year INTEGER
+  prefix TEXT
+  sequence INTEGER           -- parsed sequence number, for comparison
+  sequence_raw TEXT          -- as printed (e.g. '0389' vs '00389')
+  raw TEXT                   -- full marker as printed, e.g. '21-00932'
+  flag TEXT                  -- source anomaly note, if any
+NOTE: neither doosan_prefixes nor doosan_year_serials joins to forklifts (no FK) -- they name
+model families, not specific catalog rows. `sequence` is a BATCH marker, not a calendar/age
+proxy -- Doosan sequences are batch-allocated, so a higher sequence can predate a lower one;
+never use it to infer how old/new a unit is or to sort by "production order"."""
 
 _SYSTEM = f"""You translate a user's plain-English question into a single
 SQLite SELECT query over this schema:

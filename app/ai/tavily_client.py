@@ -44,6 +44,12 @@ def answer_search(query: str, max_results: int = 5) -> dict:
     )
 
 
+def search_pdf(query: str, include_domains: list[str] | None = None, max_results: int = 8) -> dict:
+    """Cheap (basic-depth) targeted search used to escalate a missing spec-sheet PDF."""
+    kwargs = {"include_domains": include_domains} if include_domains else {}
+    return _client().search(query=query, search_depth="basic", max_results=max_results, **kwargs)
+
+
 def extract_url(url: str) -> str:
     """Pull the readable text content of a single page/PDF via Tavily."""
     client = _client()
@@ -61,3 +67,8 @@ def best_pdf_url(search_response: dict) -> str | None:
         if url.lower().endswith(".pdf") or ".pdf" in url.lower():
             return url
     return None
+
+
+def pdf_urls(search_response: dict) -> list[dict]:
+    """Every search result whose URL looks like a PDF, in rank order."""
+    return [r for r in search_response.get("results", []) if ".pdf" in (r.get("url") or "").lower()]

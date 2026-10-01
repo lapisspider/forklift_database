@@ -1,0 +1,7701 @@
+[
+  {
+    "prefix": "A099",
+    "brand": "Hyster",
+    "models": [
+      "E4.0XN",
+      "E5.0XN",
+      "E5.0XNS",
+      "E5.5XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A099",
+    "brand": "Hyster",
+    "models": [
+      "E80XN",
+      "E100XN",
+      "E100XNS",
+      "E120XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A169",
+    "brand": "Hyster",
+    "models": [
+      "R30XMF3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A177",
+    "brand": "Hyster",
+    "models": [
+      "H2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A177",
+    "brand": "Hyster",
+    "models": [
+      "H40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A185",
+    "brand": "Hyster",
+    "models": [
+      "R30XMA3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A186",
+    "brand": "Hyster",
+    "models": [
+      "R30CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A187",
+    "brand": "Hyster",
+    "models": [
+      "S2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A187",
+    "brand": "Hyster",
+    "models": [
+      "S40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A203",
+    "brand": "Hyster",
+    "models": [
+      "A1.00-1.50XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A203",
+    "brand": "Hyster",
+    "models": [
+      "A20-30XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A214",
+    "brand": "Hyster",
+    "models": [
+      "H14.00-18.00XM-12",
+      "-12EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A214",
+    "brand": "Hyster",
+    "models": [
+      "H360-450H"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A215",
+    "brand": "Hyster",
+    "models": [
+      "W45XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A216",
+    "brand": "Hyster",
+    "models": [
+      "J2.00-3.20XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A216",
+    "brand": "Hyster",
+    "models": [
+      "J40-60XM2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A216",
+    "brand": "Hyster",
+    "models": [
+      "J40-65XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A217",
+    "brand": "Hyster",
+    "models": [
+      "N30FR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A218",
+    "brand": "Hyster",
+    "models": [
+      "W40XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A219",
+    "brand": "Hyster",
+    "models": [
+      "E30-40HSD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A222",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27IH",
+      "-30CH;",
+      "RS46-30IH",
+      "-33CH",
+      "-33IH",
+      "-36CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A227",
+    "brand": "Hyster",
+    "models": [
+      "HR45-25",
+      "-31",
+      "-36L",
+      "-40LS",
+      "-40S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A228",
+    "brand": "Hyster",
+    "models": [
+      "HR45-48EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A229",
+    "brand": "Hyster",
+    "models": [
+      "W65Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A230",
+    "brand": "Hyster",
+    "models": [
+      "B60Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A231",
+    "brand": "Hyster",
+    "models": [
+      "W60Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A233",
+    "brand": "Hyster",
+    "models": [
+      "B80Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A234",
+    "brand": "Hyster",
+    "models": [
+      "W80Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A236",
+    "brand": "Hyster",
+    "models": [
+      "H16.00XM-12",
+      "H16.00XMS-12",
+      "H18.00XM-12",
+      "H18.00XMS-12"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A236",
+    "brand": "Hyster",
+    "models": [
+      "H400HD",
+      "H400HDS",
+      "H450HD",
+      "H450HDS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A238",
+    "brand": "Hyster",
+    "models": [
+      "H16XM-9",
+      "H16XM-12",
+      "H18XM-7.5",
+      "H18XM-9"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A238",
+    "brand": "Hyster",
+    "models": [
+      "H360-36HD",
+      "H360-48HD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A244",
+    "brand": "Hyster",
+    "models": [
+      "BE80ZHD",
+      "BE100ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A250",
+    "brand": "Hyster",
+    "models": [
+      "J155XNSL",
+      "J170XN",
+      "J170XNL",
+      "J170XNSL",
+      "J175XM",
+      "J175XNL",
+      "J175XNL36",
+      "J190XN",
+      "J190XNL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A250",
+    "brand": "Hyster",
+    "models": [
+      "J7.0XNSL",
+      "XNSL9",
+      "J8.0XN",
+      "XN9",
+      "XNL6",
+      "XNL9",
+      "XNSL",
+      "J9.0XN",
+      "XNL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A251",
+    "brand": "Hyster",
+    "models": [
+      "P2.0",
+      "BR",
+      "P2.2",
+      "BR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A253",
+    "brand": "Hyster",
+    "models": [
+      "UT80-100P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A254",
+    "brand": "Hyster",
+    "models": [
+      "AP20Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A257",
+    "brand": "Hyster",
+    "models": [
+      "B80ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A259",
+    "brand": "Hyster",
+    "models": [
+      "S1.6",
+      "BR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A260",
+    "brand": "Hyster",
+    "models": [
+      "PC1.4"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A261",
+    "brand": "Hyster",
+    "models": [
+      "UT15-18P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A262",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A264",
+    "brand": "Hyster",
+    "models": [
+      "N30XMXDR",
+      "N45XMXR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A265",
+    "brand": "Hyster",
+    "models": [
+      "N35-40ZRS",
+      "N30ZDRS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A266",
+    "brand": "Hyster",
+    "models": [
+      "UT15-18P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A267",
+    "brand": "Hyster",
+    "models": [
+      "S50CT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A268",
+    "brand": "Hyster",
+    "models": [
+      "E2.2",
+      "E2.5",
+      "E3.0",
+      "E3.2",
+      "E3.5XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A268",
+    "brand": "Hyster",
+    "models": [
+      "E45XN",
+      "E50XN",
+      "E55XN",
+      "E60XN",
+      "E65XN",
+      "E70XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A269",
+    "brand": "Hyster",
+    "models": [
+      "E1.6XN-2.0XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A269",
+    "brand": "Hyster",
+    "models": [
+      "E30XN",
+      "E35XN",
+      "E40XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A273",
+    "brand": "Hyster",
+    "models": [
+      "UT20-32C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A274",
+    "brand": "Hyster",
+    "models": [
+      "H2.0CT",
+      "H2.5CT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A274",
+    "brand": "Hyster",
+    "models": [
+      "H50CT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A276",
+    "brand": "Hyster",
+    "models": [
+      "J2.2XN-J3.5XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A276",
+    "brand": "Hyster",
+    "models": [
+      "J45-70XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A279",
+    "brand": "Hyster",
+    "models": [
+      "UT20-32C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A280",
+    "brand": "Hyster",
+    "models": [
+      "AP2.0MS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A281",
+    "brand": "Hyster",
+    "models": [
+      "UT20-25P",
+      "UT30-35P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A282",
+    "brand": "Hyster",
+    "models": [
+      "C60ZHD",
+      "C80ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A285",
+    "brand": "Hyster",
+    "models": [
+      "UT20-25P",
+      "UT30-35P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A289",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A290",
+    "brand": "Hyster",
+    "models": [
+      "P2.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A297",
+    "brand": "Hyster",
+    "models": [
+      "H50C",
+      "T-BR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A299",
+    "brand": "Hyster",
+    "models": [
+      "H170FT",
+      "H175FT36",
+      "F190FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A299",
+    "brand": "Hyster",
+    "models": [
+      "H8.0-9.0FT",
+      "H8.0FT9"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A2D1",
+    "brand": "Hyster",
+    "models": [
+      "C95A-33"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A2D2",
+    "brand": "Hyster",
+    "models": [
+      "N95A-21"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A2D4",
+    "brand": "Hyster",
+    "models": [
+      "C1000V48",
+      "C1100V48"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A2D7",
+    "brand": "Hyster",
+    "models": [
+      "M55A-13"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A366",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A368",
+    "brand": "Hyster",
+    "models": [
+      "S1.2",
+      "AC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A369",
+    "brand": "Hyster",
+    "models": [
+      "S1.6",
+      "AC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A370",
+    "brand": "Hyster",
+    "models": [
+      "UT13-20PTE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A371",
+    "brand": "Hyster",
+    "models": [
+      "SC",
+      "SC1.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A373",
+    "brand": "Hyster",
+    "models": [
+      "C60ZHD",
+      "C80ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A374",
+    "brand": "Hyster",
+    "models": [
+      "UT15-25PFE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A376",
+    "brand": "Hyster",
+    "models": [
+      "R1.6",
+      "R2.0HD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A377",
+    "brand": "Hyster",
+    "models": [
+      "UT13-20PTE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A378",
+    "brand": "Hyster",
+    "models": [
+      "UT15WE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A379",
+    "brand": "Hyster",
+    "models": [
+      "UT15-25PFE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A380",
+    "brand": "Hyster",
+    "models": [
+      "H2.0XT",
+      "H2.5XT",
+      "H3.0XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A380",
+    "brand": "Hyster",
+    "models": [
+      "H40XT",
+      "H50XT",
+      "H60XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A386",
+    "brand": "Hyster",
+    "models": [
+      "H40XT",
+      "H50XT",
+      "H60XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A392",
+    "brand": "Hyster",
+    "models": [
+      "UT30-35PFE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A396",
+    "brand": "Hyster",
+    "models": [
+      "UT30-35PFE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B0",
+    "brand": "Hyster",
+    "models": [
+      "P2.0UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B0",
+    "brand": "Hyster",
+    "models": [
+      "P40UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B1",
+    "brand": "Hyster",
+    "models": [
+      "P2.0UTS",
+      "AMERICAS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B1",
+    "brand": "Hyster",
+    "models": [
+      "P2.0UTS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B3",
+    "brand": "Hyster",
+    "models": [
+      "S1.5UTS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B4",
+    "brand": "Hyster",
+    "models": [
+      "F1.8UT",
+      "F2.5UT",
+      "F3.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B4",
+    "brand": "Hyster",
+    "models": [
+      "F35UT",
+      "F50UT",
+      "F70UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B5",
+    "brand": "Hyster",
+    "models": [
+      "P2.0UTE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B6",
+    "brand": "Hyster",
+    "models": [
+      "SL1.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B6",
+    "brand": "Hyster",
+    "models": [
+      "SL30UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B7",
+    "brand": "Hyster",
+    "models": [
+      "SL1.5UTS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B8",
+    "brand": "Hyster",
+    "models": [
+      "F1.8UT",
+      "F4WD",
+      "F2.5UT",
+      "F4WD",
+      "F3.5UT",
+      "F4WD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B8",
+    "brand": "Hyster",
+    "models": [
+      "F35UT",
+      "F4WD",
+      "F50UT",
+      "F4WD",
+      "F70UT",
+      "F4WD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B9",
+    "brand": "Hyster",
+    "models": [
+      "F100UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3B9",
+    "brand": "Hyster",
+    "models": [
+      "F5.0UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C0",
+    "brand": "Hyster",
+    "models": [
+      "H9XM-EC7"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C1",
+    "brand": "Hyster",
+    "models": [
+      "H40UT",
+      "H50UT",
+      "H60UT",
+      "H70UT",
+      "H2.0UT",
+      "H2.5UT",
+      "H3.0UT",
+      "H3.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C2",
+    "brand": "Hyster",
+    "models": [
+      "S1.5UTE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C3",
+    "brand": "Hyster",
+    "models": [
+      "S1.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C4",
+    "brand": "Hyster",
+    "models": [
+      "J1.5UT",
+      "J1.8UT",
+      "J2.0UT",
+      "J2.5UT",
+      "J3.0UT",
+      "J3.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C5",
+    "brand": "Hyster",
+    "models": [
+      "J1.6UTT",
+      "J1.8UTT",
+      "J2.0UTT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C5",
+    "brand": "Hyster",
+    "models": [
+      "J30UTT",
+      "J35UTT",
+      "J40UTT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C6",
+    "brand": "Hyster",
+    "models": [
+      "H4.0UT",
+      "H4.5UT",
+      "H5.0UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C6",
+    "brand": "Hyster",
+    "models": [
+      "H80UT",
+      "H90UT",
+      "H100UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C7",
+    "brand": "Hyster",
+    "models": [
+      "T6.0UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C7",
+    "brand": "Hyster",
+    "models": [
+      "TA120UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C8",
+    "brand": "Hyster",
+    "models": [
+      "T3.0UTS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C9",
+    "brand": "Hyster",
+    "models": [
+      "T3.0UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3C9",
+    "brand": "Hyster",
+    "models": [
+      "TA60UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D0",
+    "brand": "Hyster",
+    "models": [
+      "H110UT",
+      "H135UT",
+      "H155UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D0",
+    "brand": "Hyster",
+    "models": [
+      "H5.0UT6",
+      "H6.0UT6",
+      "H7.0UT6"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D1",
+    "brand": "Hyster",
+    "models": [
+      "P1.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D1",
+    "brand": "Hyster",
+    "models": [
+      "P30UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D7",
+    "brand": "Hyster",
+    "models": [
+      "N1340V24",
+      "M1320V24"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D8",
+    "brand": "Hyster",
+    "models": [
+      "P1.6UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A3D9",
+    "brand": "Hyster",
+    "models": [
+      "P2.0S-P2.5S-P3.0S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A401",
+    "brand": "Hyster",
+    "models": [
+      "J1.50-1.75EX",
+      "J2.00-2.50",
+      "EX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A402",
+    "brand": "Hyster",
+    "models": [
+      "J1.50-1.75EX",
+      "J2.00-2.50",
+      "EX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A404",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A406",
+    "brand": "Hyster",
+    "models": [
+      "L06"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A406",
+    "brand": "Hyster",
+    "models": [
+      "R1.4",
+      "R1.6"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A408",
+    "brand": "Hyster",
+    "models": [
+      "UT40-50PS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A409",
+    "brand": "Hyster",
+    "models": [
+      "H3.0XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A411",
+    "brand": "Hyster",
+    "models": [
+      "UT40-50PS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A413",
+    "brand": "Hyster",
+    "models": [
+      "UT50-70P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A416",
+    "brand": "Hyster",
+    "models": [
+      "J2.00-3.20XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A416",
+    "brand": "Hyster",
+    "models": [
+      "J40-65Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A417",
+    "brand": "Hyster",
+    "models": [
+      "UT50-70P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A418",
+    "brand": "Hyster",
+    "models": [
+      "P1.6",
+      "P1.8",
+      "P2.0",
+      "P2.2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A419",
+    "brand": "Hyster",
+    "models": [
+      "W45ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A432",
+    "brand": "Hyster",
+    "models": [
+      "R1.0E",
+      "R1.2E",
+      "R1.4E"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A433",
+    "brand": "Hyster",
+    "models": [
+      "P2.0SD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A440",
+    "brand": "Hyster",
+    "models": [
+      "S1.0E"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A447",
+    "brand": "Hyster",
+    "models": [
+      "S1.0C",
+      "S1.2C",
+      "S1.5C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A450",
+    "brand": "Hyster",
+    "models": [
+      "RS1.2",
+      "RS1.5",
+      "RS1.0D"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A453",
+    "brand": "Hyster",
+    "models": [
+      "W20-40XTA"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A454",
+    "brand": "Hyster",
+    "models": [
+      "W20-40XTC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A455",
+    "brand": "Hyster",
+    "models": [
+      "W20-30XTR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A457",
+    "brand": "Hyster",
+    "models": [
+      "K1.0L"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A458",
+    "brand": "Hyster",
+    "models": [
+      "K0.6M",
+      "K1.0M"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A459",
+    "brand": "Hyster",
+    "models": [
+      "K1.0M"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A460",
+    "brand": "Hyster",
+    "models": [
+      "K1.0H"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A461",
+    "brand": "Hyster",
+    "models": [
+      "RM2.0",
+      "RM2.5"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A462",
+    "brand": "Hyster",
+    "models": [
+      "T1.0-1.2-1.5"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A463",
+    "brand": "Hyster",
+    "models": [
+      "C1.0",
+      "C1.3",
+      "V30XMU"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A464",
+    "brand": "Hyster",
+    "models": [
+      "C1.5B",
+      "V35XMU"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A465",
+    "brand": "Hyster",
+    "models": [
+      "C1.8X",
+      "V40XMU"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A467",
+    "brand": "Hyster",
+    "models": [
+      "V30XMU"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A468",
+    "brand": "Hyster",
+    "models": [
+      "V35XMU"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A469",
+    "brand": "Hyster",
+    "models": [
+      "V40XMU"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A472",
+    "brand": "Hyster",
+    "models": [
+      "P2.0HL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A476",
+    "brand": "Hyster",
+    "models": [
+      "T5Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A477",
+    "brand": "Hyster",
+    "models": [
+      "T7Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A478",
+    "brand": "Hyster",
+    "models": [
+      "C60Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A479",
+    "brand": "Hyster",
+    "models": [
+      "C80Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A489",
+    "brand": "Hyster",
+    "models": [
+      "T7.0HS3",
+      "T8.0HS4"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A495",
+    "brand": "Hyster",
+    "models": [
+      "W20-25ZA"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A498",
+    "brand": "Hyster",
+    "models": [
+      "C60",
+      "C80XT2A"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A499",
+    "brand": "Hyster",
+    "models": [
+      "C60-80XT2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5K0",
+    "brand": "Hyster",
+    "models": [
+      "UT20KWE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5K1",
+    "brand": "Hyster",
+    "models": [
+      "UT20RE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5K2",
+    "brand": "Hyster",
+    "models": [
+      "UT15WS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5K3",
+    "brand": "Hyster",
+    "models": [
+      "UT15RS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5K4",
+    "brand": "Hyster",
+    "models": [
+      "UT20WE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5K5",
+    "brand": "Hyster",
+    "models": [
+      "UT15WSS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A5L2",
+    "brand": "Hyster",
+    "models": [
+      "UT15WSL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A607",
+    "brand": "Hyster",
+    "models": [
+      "N30ZDR3R",
+      "N40ZR3R",
+      "N35ZDR3R",
+      "N45ZR3R"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A6W9",
+    "brand": "Hyster",
+    "models": [
+      "PC1.5"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A6W9",
+    "brand": "Hyster",
+    "models": [
+      "PCS30UT",
+      "PCS1.5UT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A917",
+    "brand": "Hyster",
+    "models": [
+      "H36.00XM",
+      "H40",
+      "H44",
+      "H48.00XM-12",
+      "H36.00XMS-12",
+      "H40",
+      "H44",
+      "H48.00XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A917",
+    "brand": "Hyster",
+    "models": [
+      "H800-900-1050HD",
+      "H800-900-970-1050HDS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A921",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A923",
+    "brand": "Hyster",
+    "models": [
+      "RO1.6",
+      "RO2.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A935",
+    "brand": "Hyster",
+    "models": [
+      "J1.6-2.0XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A935",
+    "brand": "Hyster",
+    "models": [
+      "J30-35-40XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A937",
+    "brand": "Hyster",
+    "models": [
+      "H1.8CT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A939",
+    "brand": "Hyster",
+    "models": [
+      "LO2.0M"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A956",
+    "brand": "Hyster",
+    "models": [
+      "UT15WE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A966",
+    "brand": "Hyster",
+    "models": [
+      "H2.50-3.00DX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A970",
+    "brand": "Hyster",
+    "models": [
+      "J4.0XN",
+      "J4.5XN",
+      "J5.0XN",
+      "J5.0XN6",
+      "J5.5XN6"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A970",
+    "brand": "Hyster",
+    "models": [
+      "J80XN",
+      "J90XN",
+      "J100XN",
+      "J100XLN",
+      "J110XN",
+      "J120XN"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A973",
+    "brand": "Hyster",
+    "models": [
+      "UT80-100P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A978",
+    "brand": "Hyster",
+    "models": [
+      "P2.0SE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B010",
+    "brand": "Hyster",
+    "models": [
+      "S1.25-1.75XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B010",
+    "brand": "Hyster",
+    "models": [
+      "S25-35XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B024",
+    "brand": "Hyster",
+    "models": [
+      "S135-S155XL2",
+      "S6.00-7.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B098",
+    "brand": "Hyster",
+    "models": [
+      "E3.00-5.50B"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B098",
+    "brand": "Hyster",
+    "models": [
+      "E60-120B"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B108",
+    "brand": "Hyster",
+    "models": [
+      "E30-60BS",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B108",
+    "brand": "Hyster",
+    "models": [
+      "E30-60BS",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B114",
+    "brand": "Hyster",
+    "models": [
+      "E20-30BS",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B114",
+    "brand": "Hyster",
+    "models": [
+      "E20-30BS",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B160",
+    "brand": "Hyster",
+    "models": [
+      "J25-35BS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B168",
+    "brand": "Hyster",
+    "models": [
+      "J2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B168",
+    "brand": "Hyster",
+    "models": [
+      "J40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B174",
+    "brand": "Hyster",
+    "models": [
+      "R30ES"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B177",
+    "brand": "Hyster",
+    "models": [
+      "H2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B177",
+    "brand": "Hyster",
+    "models": [
+      "H40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B187",
+    "brand": "Hyster",
+    "models": [
+      "S2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B187",
+    "brand": "Hyster",
+    "models": [
+      "S40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B199",
+    "brand": "Hyster",
+    "models": [
+      "B60-80XT;",
+      "C60-80XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B210",
+    "brand": "Hyster",
+    "models": [
+      "N30AH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B214",
+    "brand": "Hyster",
+    "models": [
+      "H16.00-22.00XM-12EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B214",
+    "brand": "Hyster",
+    "models": [
+      "H400-500HD-EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B215",
+    "brand": "Hyster",
+    "models": [
+      "W45XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B218",
+    "brand": "Hyster",
+    "models": [
+      "W40Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B219",
+    "brand": "Hyster",
+    "models": [
+      "E30-35-40HSD2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B222",
+    "brand": "Hyster",
+    "models": [
+      "HR45-27",
+      "HR45-31",
+      "HR45-36",
+      "HR45-40",
+      "HR45-41S",
+      "HR45-41L",
+      "HR45-41LS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B222",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS46-41LSCH;",
+      "RS45-24IH",
+      "RS46-38LSIH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B226",
+    "brand": "Hyster",
+    "models": [
+      "J2.50EX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B227",
+    "brand": "Hyster",
+    "models": [
+      "HR45-25",
+      "-27",
+      "-31",
+      "-36L",
+      "-40LS",
+      "-40S",
+      "-45LSX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B229",
+    "brand": "Hyster",
+    "models": [
+      "W60Z",
+      "W65Z",
+      "W80Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B230",
+    "brand": "Hyster",
+    "models": [
+      "B60ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B231",
+    "brand": "Hyster",
+    "models": [
+      "W60Z",
+      "W65Z",
+      "W80Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B233",
+    "brand": "Hyster",
+    "models": [
+      "B80ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B234",
+    "brand": "Hyster",
+    "models": [
+      "W60Z",
+      "W65Z",
+      "W80Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B236",
+    "brand": "Hyster",
+    "models": [
+      "H16XM-12",
+      "H18XM-12",
+      "H16XMS-12",
+      "H18XMS-12"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B236",
+    "brand": "Hyster",
+    "models": [
+      "H400HD",
+      "H450HD",
+      "H400HDS",
+      "H450HDS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B238",
+    "brand": "Hyster",
+    "models": [
+      "H16XM-9",
+      "H16XM-12",
+      "H18XM-7.5",
+      "H18XM-9"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B238",
+    "brand": "Hyster",
+    "models": [
+      "H360-36HD",
+      "H360-48HD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B257",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD",
+      "B80ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B262",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD",
+      "B80ZHD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B264",
+    "brand": "Hyster",
+    "models": [
+      "N30XMXDR3",
+      "N45XMXR3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B265",
+    "brand": "Hyster",
+    "models": [
+      "N35ZRS2",
+      "N40ZRS2",
+      "N30ZDRS2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B267",
+    "brand": "Hyster",
+    "models": [
+      "S50CT",
+      "S50CT2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B274",
+    "brand": "Hyster",
+    "models": [
+      "H2.0CT",
+      "H2.5CT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B274",
+    "brand": "Hyster",
+    "models": [
+      "H50CT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B285",
+    "brand": "Hyster",
+    "models": [
+      "UT20P",
+      "UT25P",
+      "UT30P",
+      "UT35P"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B289",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B299",
+    "brand": "Hyster",
+    "models": [
+      "H170FT",
+      "H175FT36",
+      "H190FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B299",
+    "brand": "Hyster",
+    "models": [
+      "H8.0FT",
+      "H8.0FT9",
+      "H9.0FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B2D1",
+    "brand": "Hyster",
+    "models": [
+      "C1200V48",
+      "C1201V48",
+      "C1202V48"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B2D2",
+    "brand": "Hyster",
+    "models": [
+      "N1800V36",
+      "N1821V36",
+      "N1800V48",
+      "N1824V48"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B2D7",
+    "brand": "Hyster",
+    "models": [
+      "M1300V24",
+      "M1301V24",
+      "M1302V24"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B416",
+    "brand": "Hyster",
+    "models": [
+      "J2.00XM",
+      "J2.50XM",
+      "J3.00XM",
+      "J3.20XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B416",
+    "brand": "Hyster",
+    "models": [
+      "J40-65Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B418",
+    "brand": "Hyster",
+    "models": [
+      "P1.6",
+      "P1.8",
+      "P2.0",
+      "P2.2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B419",
+    "brand": "Hyster",
+    "models": [
+      "W45ZHD2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B433",
+    "brand": "Hyster",
+    "models": [
+      "P2.0SD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B435",
+    "brand": "Hyster",
+    "models": [
+      "R1.4",
+      "R1.6",
+      "R1.8",
+      "R2.0",
+      "R1.5",
+      "PLUS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B437",
+    "brand": "Hyster",
+    "models": [
+      "P1.8"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B439",
+    "brand": "Hyster",
+    "models": [
+      "P2.0S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B440",
+    "brand": "Hyster",
+    "models": [
+      "S1.0E",
+      "S2.4HBE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B441",
+    "brand": "Hyster",
+    "models": [
+      "S1.0",
+      "S1.2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B442",
+    "brand": "Hyster",
+    "models": [
+      "S1.2S",
+      "S1.5S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B447",
+    "brand": "Hyster",
+    "models": [
+      "S1.0C",
+      "S1.2C",
+      "S1.5C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B448",
+    "brand": "Hyster",
+    "models": [
+      "RP2.0",
+      "RP3.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B449",
+    "brand": "Hyster",
+    "models": [
+      "RP2.0N"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B450",
+    "brand": "Hyster",
+    "models": [
+      "RS1.2-RS1.5"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B453",
+    "brand": "Hyster",
+    "models": [
+      "W30-40ZA"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B454",
+    "brand": "Hyster",
+    "models": [
+      "W25-40ZC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B455",
+    "brand": "Hyster",
+    "models": [
+      "W20-30ZR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B456",
+    "brand": "Hyster",
+    "models": [
+      "S1.4",
+      "S1.6"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B457",
+    "brand": "Hyster",
+    "models": [
+      "K1.0L"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B460",
+    "brand": "Hyster",
+    "models": [
+      "K1.0M",
+      "K1.0H",
+      "K1.0H",
+      "WP"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B463",
+    "brand": "Hyster",
+    "models": [
+      "C1.0-C1.3-C1.3",
+      "LWB",
+      "US",
+      "model"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B464",
+    "brand": "Hyster",
+    "models": [
+      "C1.3",
+      "C80",
+      "C1.5",
+      "SWB",
+      "C1.5",
+      "MWB",
+      "C1.5",
+      "LWB",
+      "US",
+      "model"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B470",
+    "brand": "Hyster",
+    "models": [
+      "N25XMDR2;",
+      "N30-40XMR2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B471",
+    "brand": "Hyster",
+    "models": [
+      "N50XMA2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B476",
+    "brand": "Hyster",
+    "models": [
+      "T5ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B477",
+    "brand": "Hyster",
+    "models": [
+      "T7ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B478",
+    "brand": "Hyster",
+    "models": [
+      "C60ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B479",
+    "brand": "Hyster",
+    "models": [
+      "C80ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B495",
+    "brand": "Hyster",
+    "models": [
+      "W25ZA2-W30ZA2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B917",
+    "brand": "Hyster",
+    "models": [
+      "H36XMS-12",
+      "H40XM",
+      "XMS-12",
+      "H44XM",
+      "XMS-12",
+      "H48XM",
+      "XMS-12"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B917",
+    "brand": "Hyster",
+    "models": [
+      "H800HDS",
+      "H900HD",
+      "HDS",
+      "H970HD",
+      "HDS",
+      "H1050HD",
+      "HDS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B966",
+    "brand": "Hyster",
+    "models": [
+      "H2.50-3.00DX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B977",
+    "brand": "Hyster",
+    "models": [
+      "H40-50-55-60-70FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "B978",
+    "brand": "Hyster",
+    "models": [
+      "P2.0SE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C001",
+    "brand": "Hyster",
+    "models": [
+      "H1.25-1.75XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C001",
+    "brand": "Hyster",
+    "models": [
+      "H25-35XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C002",
+    "brand": "Hyster",
+    "models": [
+      "S30-50C",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C002",
+    "brand": "Hyster",
+    "models": [
+      "S30-50C",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C004",
+    "brand": "Hyster",
+    "models": [
+      "S3.00-5.50E"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C004",
+    "brand": "Hyster",
+    "models": [
+      "S60-120E"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C005",
+    "brand": "Hyster",
+    "models": [
+      "H60-90C",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C005",
+    "brand": "Hyster",
+    "models": [
+      "H60-90C",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C007",
+    "brand": "Hyster",
+    "models": [
+      "H150-275H",
+      "P150-200B"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C007",
+    "brand": "Hyster",
+    "models": [
+      "H7.00-12.50H",
+      "P7.00-9.00B"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C008",
+    "brand": "Hyster",
+    "models": [
+      "H17.00-32.00C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C008",
+    "brand": "Hyster",
+    "models": [
+      "H360-700C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C010",
+    "brand": "Hyster",
+    "models": [
+      "S1.50-2.00XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C010",
+    "brand": "Hyster",
+    "models": [
+      "S25-40XM;",
+      "S40XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C019",
+    "brand": "Hyster",
+    "models": [
+      "H13.00-16.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C019",
+    "brand": "Hyster",
+    "models": [
+      "H300-360XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C024",
+    "brand": "Hyster",
+    "models": [
+      "S135-155XL;",
+      "S155XL2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C024",
+    "brand": "Hyster",
+    "models": [
+      "S6.00-7.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C098",
+    "brand": "Hyster",
+    "models": [
+      "E3.50-5.50XL",
+      "(Pre-SEM",
+      "up",
+      "to",
+      "S",
+      "N",
+      "C098V06229X)"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C098",
+    "brand": "Hyster",
+    "models": [
+      "E3.50-5.50XL",
+      "E4.50XLS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C098",
+    "brand": "Hyster",
+    "models": [
+      "E70-120XL",
+      "(Pre-SEM",
+      "up",
+      "to",
+      "S",
+      "N",
+      "C098V06229X)"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C098",
+    "brand": "Hyster",
+    "models": [
+      "E80-120XL3",
+      "E100XL3S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C108",
+    "brand": "Hyster",
+    "models": [
+      "E2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C108",
+    "brand": "Hyster",
+    "models": [
+      "E40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C114",
+    "brand": "Hyster",
+    "models": [
+      "E",
+      "J1.25-1.75XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C114",
+    "brand": "Hyster",
+    "models": [
+      "E25-35XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C117",
+    "brand": "Hyster",
+    "models": [
+      "H36.00-48.00C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C117",
+    "brand": "Hyster",
+    "models": [
+      "H800-1050C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C138",
+    "brand": "Hyster",
+    "models": [
+      "N40-50EA",
+      "ER"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C160",
+    "brand": "Hyster",
+    "models": [
+      "J30-40XMT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C174",
+    "brand": "Hyster",
+    "models": [
+      "R30XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C176",
+    "brand": "Hyster",
+    "models": [
+      "R40EH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C177",
+    "brand": "Hyster",
+    "models": [
+      "H2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C177",
+    "brand": "Hyster",
+    "models": [
+      "H40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C187",
+    "brand": "Hyster",
+    "models": [
+      "S2.00-3.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C187",
+    "brand": "Hyster",
+    "models": [
+      "S40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C203",
+    "brand": "Hyster",
+    "models": [
+      "A1.00-1.50XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C210",
+    "brand": "Hyster",
+    "models": [
+      "N30XMH",
+      "(Pre-SEM)"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C210",
+    "brand": "Hyster",
+    "models": [
+      "N30XMH2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C214",
+    "brand": "Hyster",
+    "models": [
+      "H16XM-12EC",
+      "H18XM-12EC",
+      "H22XM-12EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C214",
+    "brand": "Hyster",
+    "models": [
+      "H400HD-EC",
+      "H450HD-EC",
+      "H450HDS-EC",
+      "H500HD-EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C215",
+    "brand": "Hyster",
+    "models": [
+      "W45Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C219",
+    "brand": "Hyster",
+    "models": [
+      "E30HSD3",
+      "E35HSD3",
+      "E40HSD3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C222",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27",
+      "RS31CH",
+      "RS46-36",
+      "RS41L",
+      "S",
+      "LS-CH",
+      "RS46-38L",
+      "S",
+      "LS-IH",
+      "RS45-24",
+      "RS28IH",
+      "RS46-33IH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C222",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH",
+      "RS46-36CH",
+      "RS46-41L",
+      "RS46-41S",
+      "RS46-41LS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C225",
+    "brand": "Hyster",
+    "models": [
+      "J1.50-3.00GX",
+      "J2.00",
+      "J3.5GXS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C227",
+    "brand": "Hyster",
+    "models": [
+      "HR45-27",
+      "HR45-31",
+      "HR45-40S",
+      "HR45-36L",
+      "HR45-40LS",
+      "HR45LSX"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C230",
+    "brand": "Hyster",
+    "models": [
+      "B60ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C236",
+    "brand": "Hyster",
+    "models": [
+      "H18XM-9",
+      "H18XMS-9",
+      "H20XM-9",
+      "H20XMS-9"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C236",
+    "brand": "Hyster",
+    "models": [
+      "H400HD",
+      "H400HDS",
+      "H450HD",
+      "H450HDS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C238",
+    "brand": "Hyster",
+    "models": [
+      "H16XD9",
+      "H16XD12",
+      "H18XD7.5",
+      "H18XD9"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C238",
+    "brand": "Hyster",
+    "models": [
+      "H360XD36",
+      "H360XD48"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C257",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD2",
+      "B80ZHD2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C262",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD2",
+      "B80ZHD2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C264",
+    "brand": "Hyster",
+    "models": [
+      "N45ZR",
+      "N35ZDR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C265",
+    "brand": "Hyster",
+    "models": [
+      "N30ZDRS3",
+      "N35ZRS3",
+      "N40ZRS3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C289",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27CH",
+      "RS45-31CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C299",
+    "brand": "Hyster",
+    "models": [
+      "H170FT",
+      "H175FT36",
+      "H190FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C299",
+    "brand": "Hyster",
+    "models": [
+      "H8.0FT",
+      "H8.0FT9",
+      "H9.0FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C433",
+    "brand": "Hyster",
+    "models": [
+      "S2.0SD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C435",
+    "brand": "Hyster",
+    "models": [
+      "R1.4",
+      "R1.4H",
+      "R1.6",
+      "R1.6H",
+      "R1.6N",
+      "R2.0",
+      "R2.0H",
+      "R2.0W",
+      "R2.5"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C436",
+    "brand": "Hyster",
+    "models": [
+      "PSC1.2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C437",
+    "brand": "Hyster",
+    "models": [
+      "P1.3",
+      "P1.6",
+      "P1.8",
+      "P2.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C438",
+    "brand": "Hyster",
+    "models": [
+      "P2.2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C439",
+    "brand": "Hyster",
+    "models": [
+      "P2.0S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C440",
+    "brand": "Hyster",
+    "models": [
+      "S1.0E",
+      "S1.2E",
+      "S2.4HBE"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C441",
+    "brand": "Hyster",
+    "models": [
+      "S1.0",
+      "AC",
+      "S1.2",
+      "AC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C442",
+    "brand": "Hyster",
+    "models": [
+      "S1.2S",
+      "S1.5S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C443",
+    "brand": "Hyster",
+    "models": [
+      "P2.0X",
+      "P3.0X",
+      "(S",
+      "N",
+      "C443X01501Y",
+      "=>",
+      "C443X01663A)"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C443",
+    "brand": "Hyster",
+    "models": [
+      "P2.5",
+      "P3.0",
+      "(S",
+      "N",
+      "C443X01664A",
+      "=>)"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C444",
+    "brand": "Hyster",
+    "models": [
+      "LO2.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C445",
+    "brand": "Hyster",
+    "models": [
+      "LO2.0L"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C447",
+    "brand": "Hyster",
+    "models": [
+      "S1.0C",
+      "S1.2C",
+      "S1.5C"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C449",
+    "brand": "Hyster",
+    "models": [
+      "RP2.0N",
+      "RP2.5N"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C450",
+    "brand": "Hyster",
+    "models": [
+      "RS1.6"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C453",
+    "brand": "Hyster",
+    "models": [
+      "W20ZR",
+      "W30ZR",
+      "W40ZA"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C454",
+    "brand": "Hyster",
+    "models": [
+      "W25ZC",
+      "W30ZC",
+      "W40ZC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C455",
+    "brand": "Hyster",
+    "models": [
+      "W20ZR",
+      "W30ZR",
+      "W40ZA"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C456",
+    "brand": "Hyster",
+    "models": [
+      "S1.4",
+      "AC",
+      "S1.6",
+      "AC",
+      "S1.4",
+      "IL",
+      "S1.6",
+      "IL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C457",
+    "brand": "Hyster",
+    "models": [
+      "K1.0L",
+      "AC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C470",
+    "brand": "Hyster",
+    "models": [
+      "N25XMDR3;",
+      "N30-40XMR3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C471",
+    "brand": "Hyster",
+    "models": [
+      "N50XMA3"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C476",
+    "brand": "Hyster",
+    "models": [
+      "T5ZAC",
+      "T7ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C477",
+    "brand": "Hyster",
+    "models": [
+      "T5ZAC",
+      "T7ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C917",
+    "brand": "Hyster",
+    "models": [
+      "H36XMS-12",
+      "H40XMS-12",
+      "H44XMS-12",
+      "H48XMS-12",
+      "H40XM-12",
+      "H44XM-12",
+      "H48XM-12"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C917",
+    "brand": "Hyster",
+    "models": [
+      "H800HDS",
+      "H900HDS",
+      "H970HDS",
+      "H1050HDS",
+      "H900HD",
+      "H970HD",
+      "H1050HD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "C966",
+    "brand": "Hyster",
+    "models": [
+      "H2.5XT",
+      "H3.0XT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D001",
+    "brand": "Hyster",
+    "models": [
+      "H1.50-1.75XM",
+      "H2.00XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D001",
+    "brand": "Hyster",
+    "models": [
+      "H25-40XM",
+      "H40XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D002",
+    "brand": "Hyster",
+    "models": [
+      "S30-60ES",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D002",
+    "brand": "Hyster",
+    "models": [
+      "S30-60ES",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D003",
+    "brand": "Hyster",
+    "models": [
+      "H30-60H",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D003",
+    "brand": "Hyster",
+    "models": [
+      "H30-60H",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D004",
+    "brand": "Hyster",
+    "models": [
+      "S70-120XL",
+      "S120XLS",
+      "S3.50-5.50XL",
+      "S5.50XLS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D005",
+    "brand": "Hyster",
+    "models": [
+      "H60-110E",
+      "Americas"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D005",
+    "brand": "Hyster",
+    "models": [
+      "H60-110E",
+      "Europe"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D007",
+    "brand": "Hyster",
+    "models": [
+      "H165-280XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D007",
+    "brand": "Hyster",
+    "models": [
+      "H8.00-12.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D010",
+    "brand": "Hyster",
+    "models": [
+      "S25-35XM;",
+      "S40XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D019",
+    "brand": "Hyster",
+    "models": [
+      "H13.00-16.00XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D019",
+    "brand": "Hyster",
+    "models": [
+      "H300-360XL",
+      "H33-360XL-EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D024",
+    "brand": "Hyster",
+    "models": [
+      "S135FT",
+      "S155FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D024",
+    "brand": "Hyster",
+    "models": [
+      "S6.0FT",
+      "S7.0FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D098",
+    "brand": "Hyster",
+    "models": [
+      "E070-120Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D098",
+    "brand": "Hyster",
+    "models": [
+      "E3.50XL",
+      "E4.00XL",
+      "E4.50XL",
+      "XLS",
+      "E5.50XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D114",
+    "brand": "Hyster",
+    "models": [
+      "E1.50-1.75XM",
+      "E2.00XMS"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D114",
+    "brand": "Hyster",
+    "models": [
+      "E25-35XM2",
+      "E40XM2S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D114",
+    "brand": "Hyster",
+    "models": [
+      "E25-40XM",
+      "(Pre-SEM)"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D117",
+    "brand": "Hyster",
+    "models": [
+      "H36.00-48.00E",
+      "-16CH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D117",
+    "brand": "Hyster",
+    "models": [
+      "H800-H970E",
+      "H1050EH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D118",
+    "brand": "Hyster",
+    "models": [
+      "R30E",
+      "EA",
+      "EF",
+      "R35E"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D135",
+    "brand": "Hyster",
+    "models": [
+      "W",
+      "B40-60XL"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D138",
+    "brand": "Hyster",
+    "models": [
+      "N40-45FR",
+      "N50FA"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D160",
+    "brand": "Hyster",
+    "models": [
+      "J1.60-2.00XMT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D174",
+    "brand": "Hyster",
+    "models": [
+      "R30XMS2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D177",
+    "brand": "Hyster",
+    "models": [
+      "H2.00-3.20XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D177",
+    "brand": "Hyster",
+    "models": [
+      "H45-65XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D187",
+    "brand": "Hyster",
+    "models": [
+      "S2.00-3.20XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D187",
+    "brand": "Hyster",
+    "models": [
+      "S40-65XM"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D203",
+    "brand": "Hyster",
+    "models": [
+      "A1.3XNT",
+      "A1.5XNT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D203",
+    "brand": "Hyster",
+    "models": [
+      "A25XNT",
+      "A30NXT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D210",
+    "brand": "Hyster",
+    "models": [
+      "V30ZMD"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D214",
+    "brand": "Hyster",
+    "models": [
+      "H18XM-12EC",
+      "H22XM-12EC",
+      "H23XM-12EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D214",
+    "brand": "Hyster",
+    "models": [
+      "H450HD-EC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D215",
+    "brand": "Hyster",
+    "models": [
+      "W50Z"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D222",
+    "brand": "Hyster",
+    "models": [
+      "RS45-27",
+      "RS31CH",
+      "RS46-36",
+      "RS41L",
+      "S",
+      "LS-CH",
+      "RS46-38L",
+      "S",
+      "LS-IH",
+      "RS45-24",
+      "RS28IH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D222",
+    "brand": "Hyster",
+    "models": [
+      "RS46-33IH",
+      "CH",
+      "RS46-29CH",
+      "RS46-24IH",
+      "RS46-28IH"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D230",
+    "brand": "Hyster",
+    "models": [
+      "B60ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D236",
+    "brand": "Hyster",
+    "models": [
+      "H18XD9",
+      "H18XDS9",
+      "H20XD9",
+      "H20XDS9"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D236",
+    "brand": "Hyster",
+    "models": [
+      "H400XD36",
+      "H400XDS36",
+      "H450XD36",
+      "H450XDS36"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D264",
+    "brand": "Hyster",
+    "models": [
+      "N45ZR2",
+      "N35ZDR2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D299",
+    "brand": "Hyster",
+    "models": [
+      "H170FT",
+      "H175FT36",
+      "H190FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D299",
+    "brand": "Hyster",
+    "models": [
+      "H8.0FT",
+      "H8.0FT9",
+      "H9.0FT"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D435",
+    "brand": "Hyster",
+    "models": [
+      "R1.4",
+      "R1.6",
+      "R1.6HD",
+      "R1.6N",
+      "R2.0",
+      "R2.0HD",
+      "R2.5"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D438",
+    "brand": "Hyster",
+    "models": [
+      "P2.0L-P2.2"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D439",
+    "brand": "Hyster",
+    "models": [
+      "P2.0S",
+      "FBW",
+      "P2.0S",
+      "ADVANCE",
+      "+"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D442",
+    "brand": "Hyster",
+    "models": [
+      "S1.2S",
+      "S1.4S",
+      "S1.6S",
+      "S2.0S"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D444",
+    "brand": "Hyster",
+    "models": [
+      "LO2.0",
+      "LO2.0L"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D456",
+    "brand": "Hyster",
+    "models": [
+      "S1.0",
+      "S1.2",
+      "S1.4",
+      "S1.6",
+      "S2.0"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D470",
+    "brand": "Hyster",
+    "models": [
+      "N35ZR",
+      "N40ZR",
+      "N30ZDR"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "D476",
+    "brand": "Hyster",
+    "models": [
+      "T5ZAC"
+    ],
+    "ita_class": null,
+    "capacity_text": null,
+    "product_type": null,
+    "twin_prefix": null,
+    "source": "hyster_prefixes_tab"
+  },
+  {
+    "prefix": "A269",
+    "brand": "Hyster",
+    "models": [
+      "E30-40XN"
+    ],
+    "ita_class": "1",
+    "capacity_text": "2500-4000 lbs",
+    "product_type": "4 wheel electric rider",
+    "twin_prefix": "A969",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A969",
+    "brand": "Yale",
+    "models": [
+      "ERC030-040VA"
+    ],
+    "ita_class": "1",
+    "capacity_text": "2500-4000 lbs",
+    "product_type": "4 wheel electric rider",
+    "twin_prefix": "A269",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A268",
+    "brand": "Hyster",
+    "models": [
+      "E45-70XN"
+    ],
+    "ita_class": "1",
+    "capacity_text": "4500-7000 lbs",
+    "product_type": "4 wheel electric rider",
+    "twin_prefix": "A968",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A968",
+    "brand": "Yale",
+    "models": [
+      "ERC045-070VG"
+    ],
+    "ita_class": "1",
+    "capacity_text": "4500-7000 lbs",
+    "product_type": "4 wheel electric rider",
+    "twin_prefix": "A268",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A099",
+    "brand": "Hyster",
+    "models": [
+      "E80-120XN",
+      "E100XNS"
+    ],
+    "ita_class": "1",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4 wheel electric rider",
+    "twin_prefix": "A938",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A938",
+    "brand": "Yale",
+    "models": [
+      "ERC080-120VH",
+      "ERC100VHS"
+    ],
+    "ita_class": "1",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4 wheel electric rider",
+    "twin_prefix": "A099",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D203",
+    "brand": "Hyster",
+    "models": [
+      "A25-30XNT"
+    ],
+    "ita_class": "1",
+    "capacity_text": "2500-3000 lbs",
+    "product_type": "3 wheel electric rider",
+    "twin_prefix": "B888",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B888",
+    "brand": "Yale",
+    "models": [
+      "ERP025-030VC"
+    ],
+    "ita_class": "1",
+    "capacity_text": "2500-3000 lbs",
+    "product_type": "3 wheel electric rider",
+    "twin_prefix": "D203",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A935",
+    "brand": "Hyster",
+    "models": [
+      "J30-40XN"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "3 wheel electric rider",
+    "twin_prefix": "A955",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A955",
+    "brand": "Yale",
+    "models": [
+      "ERP030-40VF"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "3 wheel electric rider",
+    "twin_prefix": "A935",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K160",
+    "brand": "Hyster",
+    "models": [
+      "J30-40XNT"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "3 wheel electric rider",
+    "twin_prefix": "G807",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G807",
+    "brand": "Yale",
+    "models": [
+      "ERP030-40VT"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "3 wheel electric rider",
+    "twin_prefix": "K160",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A276",
+    "brand": "Hyster",
+    "models": [
+      "J45-70XN"
+    ],
+    "ita_class": "1",
+    "capacity_text": "4500-7000 lbs",
+    "product_type": "4-Wheel electric rider pneumatic tires",
+    "twin_prefix": "A976",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A976",
+    "brand": "Yale",
+    "models": [
+      "ERP045-070VI"
+    ],
+    "ita_class": "1",
+    "capacity_text": "4500-7000 lbs",
+    "product_type": "4-Wheel electric rider pneumatic tires",
+    "twin_prefix": "A276",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A970",
+    "brand": "Hyster",
+    "models": [
+      "J80-100XN"
+    ],
+    "ita_class": "1",
+    "capacity_text": "8000-10000 lbs",
+    "product_type": "4-Wheel electric rider pneumatic tires",
+    "twin_prefix": "A985",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A985",
+    "brand": "Yale",
+    "models": [
+      "ERP080-100VM"
+    ],
+    "ita_class": "1",
+    "capacity_text": "8000-10000 lbs",
+    "product_type": "4-Wheel electric rider pneumatic tires",
+    "twin_prefix": "A970",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B219",
+    "brand": "Hyster",
+    "models": [
+      "E30-40HSD2"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Stand up end control",
+    "twin_prefix": "B883",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B883",
+    "brand": "Yale",
+    "models": [
+      "ESC030-040AC"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Stand up end control",
+    "twin_prefix": "B219",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C219",
+    "brand": "Hyster",
+    "models": [
+      "E30-40HSD2"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Stand up end control",
+    "twin_prefix": "C883",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C883",
+    "brand": "Yale",
+    "models": [
+      "ESC030-040AC"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Stand up end control",
+    "twin_prefix": "C219",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A169",
+    "brand": "Hyster",
+    "models": [
+      "R30XMF3"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Furniture Orderpicker",
+    "twin_prefix": "A497",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A497",
+    "brand": "Yale",
+    "models": [
+      "FS030BF"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Furniture Orderpicker",
+    "twin_prefix": "A169",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E010",
+    "brand": "Hyster",
+    "models": [
+      "S30-35FT",
+      "S40FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "C809",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C809",
+    "brand": "Yale",
+    "models": [
+      "GC030-035VX",
+      "GC040SVX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "E010",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F010",
+    "brand": "Hyster",
+    "models": [
+      "S30-35FT",
+      "S40FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "D809",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D809",
+    "brand": "Yale",
+    "models": [
+      "GC030-035VX",
+      "GC040SVX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "F010",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G010",
+    "brand": "Hyster",
+    "models": [
+      "S30-35FT",
+      "S40FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "E809",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E809",
+    "brand": "Yale",
+    "models": [
+      "GC030-035VX",
+      "GC040SVX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "G010",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G187",
+    "brand": "Hyster",
+    "models": [
+      "S40-70FT",
+      "S55FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "B910",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B910",
+    "brand": "Yale",
+    "models": [
+      "GC040-070VX",
+      "GC0555VX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "G187",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H187",
+    "brand": "Hyster",
+    "models": [
+      "S40-70FT",
+      "S55FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "C910",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C910",
+    "brand": "Yale",
+    "models": [
+      "GC040-070VX",
+      "GC0555VX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "H187",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A267",
+    "brand": "Hyster",
+    "models": [
+      "S50CT"
+    ],
+    "ita_class": "4",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "A967",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A967",
+    "brand": "Yale",
+    "models": [
+      "GC050LX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "A267",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B267",
+    "brand": "Hyster",
+    "models": [
+      "S50CT"
+    ],
+    "ita_class": "4",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "B967",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B967",
+    "brand": "Yale",
+    "models": [
+      "GC050LX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "B267",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H004",
+    "brand": "Hyster",
+    "models": [
+      "S80-120FT",
+      "S80-100FTBCS",
+      "S120FTPRS",
+      "S120FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "F818",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F818",
+    "brand": "Yale",
+    "models": [
+      "GC080-120VX",
+      "GC080-100VXBCS",
+      "GC120VXPRS",
+      "GC120SVX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "H004",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "J004",
+    "brand": "Hyster",
+    "models": [
+      "S80-120FT",
+      "S80-100FTBCS",
+      "S120FTPRS",
+      "S120FTS"
+    ],
+    "ita_class": "4",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "G818",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G818",
+    "brand": "Yale",
+    "models": [
+      "GC080-120VX",
+      "GC080-100VXBCS",
+      "GC120VXPRS",
+      "GC120SVX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "J004",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G024",
+    "brand": "Hyster",
+    "models": [
+      "S135-155FT"
+    ],
+    "ita_class": "4",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "F879",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F879",
+    "brand": "Yale",
+    "models": [
+      "GC135-155VX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "G024",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H024",
+    "brand": "Hyster",
+    "models": [
+      "S135-155FT"
+    ],
+    "ita_class": "4",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "G879",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G879",
+    "brand": "Yale",
+    "models": [
+      "GC135-155VX"
+    ],
+    "ita_class": "4",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "H024",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K007",
+    "brand": "Hyster",
+    "models": [
+      "H190-280HD2",
+      "H230HDS2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "F876",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F876",
+    "brand": "Yale",
+    "models": [
+      "GDP190-280DC",
+      "GP230DCS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "K007",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "L007",
+    "brand": "Hyster",
+    "models": [
+      "H190-280HD2",
+      "H230HDS2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "G876",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G876",
+    "brand": "Yale",
+    "models": [
+      "GDP190-280DC",
+      "GP230DCS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "L007",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "N007",
+    "brand": "Hyster",
+    "models": [
+      "H190-280HD2",
+      "H230HDS2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "H876",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H876",
+    "brand": "Yale",
+    "models": [
+      "GDP190-280DC",
+      "GP230DCS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "N007",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "P007",
+    "brand": "Hyster",
+    "models": [
+      "H190-280HD2",
+      "H230HDS2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "J876",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "J876",
+    "brand": "Yale",
+    "models": [
+      "GDP190-280DC",
+      "GP230DCS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "P007",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "R007",
+    "brand": "Hyster",
+    "models": [
+      "H190-280HD2",
+      "H230HDS2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "K876",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K876",
+    "brand": "Yale",
+    "models": [
+      "GDP190-280DC",
+      "GP230DCS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "19000-28000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "R007",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "J019",
+    "brand": "Hyster",
+    "models": [
+      "H300-360HD2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "F877",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F877",
+    "brand": "Yale",
+    "models": [
+      "GDP300-360EC"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "J019",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K019",
+    "brand": "Hyster",
+    "models": [
+      "H300-360HD2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "G877",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G877",
+    "brand": "Yale",
+    "models": [
+      "GDP300-360EC"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "K019",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "L019",
+    "brand": "Hyster",
+    "models": [
+      "H300-360HD2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "H877",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H877",
+    "brand": "Yale",
+    "models": [
+      "GDP300-360EC"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "L019",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "N019",
+    "brand": "Hyster",
+    "models": [
+      "H300-360HD2"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "K877",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K877",
+    "brand": "Yale",
+    "models": [
+      "GDP300-360EC"
+    ],
+    "ita_class": "5",
+    "capacity_text": "30000-36000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "N019",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F001",
+    "brand": "Hyster",
+    "models": [
+      "H30-35FT",
+      "H40FTS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "C810",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C810",
+    "brand": "Yale",
+    "models": [
+      "GP030-035VX",
+      "GP040SVX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "F001",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G001",
+    "brand": "Hyster",
+    "models": [
+      "H30-35FT",
+      "H40FTS"
+    ],
+    "ita_class": "5",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "D810",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D810",
+    "brand": "Yale",
+    "models": [
+      "GP030-035VX",
+      "GP040SVX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "G001",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "N177",
+    "brand": "Hyster",
+    "models": [
+      "H40-70FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "C875",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C875",
+    "brand": "Yale",
+    "models": [
+      "GP040-070VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "N177",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "P177",
+    "brand": "Hyster",
+    "models": [
+      "H40-70FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "D875",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D875",
+    "brand": "Yale",
+    "models": [
+      "GP040-070VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "P177",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "R177",
+    "brand": "Hyster",
+    "models": [
+      "H40-70FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "E875",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E875",
+    "brand": "Yale",
+    "models": [
+      "GP040-070VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "4000-7000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "R177",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A274",
+    "brand": "Hyster",
+    "models": [
+      "H50CT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "A974",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A974",
+    "brand": "Yale",
+    "models": [
+      "GP050LX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "A274",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B274",
+    "brand": "Hyster",
+    "models": [
+      "H50CT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "B974",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B974",
+    "brand": "Yale",
+    "models": [
+      "GP050LX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "5000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "B274",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K006",
+    "brand": "Hyster",
+    "models": [
+      "H135-155FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "E878",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E878",
+    "brand": "Yale",
+    "models": [
+      "GP135-155VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "K006",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "L006",
+    "brand": "Hyster",
+    "models": [
+      "H135-155FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "F878",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "F878",
+    "brand": "Yale",
+    "models": [
+      "GP135-155VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "L006",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "N006",
+    "brand": "Hyster",
+    "models": [
+      "H135-155FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "G878",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "G878",
+    "brand": "Yale",
+    "models": [
+      "GP135-155VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "N006",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "P006",
+    "brand": "Hyster",
+    "models": [
+      "H135-155FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "H878",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H878",
+    "brand": "Yale",
+    "models": [
+      "GP135-155VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "13500-15500 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "P006",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B299",
+    "brand": "Hyster",
+    "models": [
+      "H170-190FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "17000-19000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "B909",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B909",
+    "brand": "Yale",
+    "models": [
+      "GP170-190VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "17000-19000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "B299",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C299",
+    "brand": "Hyster",
+    "models": [
+      "H170-190FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "17000-19000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "C909",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C909",
+    "brand": "Yale",
+    "models": [
+      "GP170-190VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "17000-19000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "C299",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D299",
+    "brand": "Hyster",
+    "models": [
+      "H170-190FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "17000-19000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "D909",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D909",
+    "brand": "Yale",
+    "models": [
+      "GP170-190VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "17000-19000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "D299",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "S005",
+    "brand": "Hyster",
+    "models": [
+      "H80-120FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "J813",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "J813",
+    "brand": "Yale",
+    "models": [
+      "GP80-120VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "S005",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "U005",
+    "brand": "Hyster",
+    "models": [
+      "H80-120FT"
+    ],
+    "ita_class": "5",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "K813",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "K813",
+    "brand": "Yale",
+    "models": [
+      "GP80-120VX"
+    ],
+    "ita_class": "5",
+    "capacity_text": "8000-12000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "U005",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B454",
+    "brand": "Hyster",
+    "models": [
+      "W25-40ZC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2500-4000 lbs",
+    "product_type": "Walkie counter balanced Stacker",
+    "twin_prefix": "C819",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C819",
+    "brand": "Yale",
+    "models": [
+      "MCW025-040-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2500-4000 lbs",
+    "product_type": "Walkie counter balanced Stacker",
+    "twin_prefix": "B454",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C454",
+    "brand": "Hyster",
+    "models": [
+      "W25-40ZC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2500-4000 lbs",
+    "product_type": "Walkie counter balanced Stacker",
+    "twin_prefix": "D819",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D819",
+    "brand": "Yale",
+    "models": [
+      "MCW025-040-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2500-4000 lbs",
+    "product_type": "Walkie counter balanced Stacker",
+    "twin_prefix": "C454",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E444",
+    "brand": "Hyster",
+    "models": [
+      "LO2.5A",
+      "LO5.0TA"
+    ],
+    "ita_class": "3",
+    "capacity_text": "5500 lbs",
+    "product_type": "Low Level Order Picker, Tow Tractor",
+    "twin_prefix": "E857",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E857",
+    "brand": "Yale",
+    "models": [
+      "MO25",
+      "A",
+      "MO50TA"
+    ],
+    "ita_class": "3",
+    "capacity_text": "5500 lbs",
+    "product_type": "Low Level Order Picker, Tow Tractor",
+    "twin_prefix": "E444",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B218",
+    "brand": "Hyster",
+    "models": [
+      "W40Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4000 lbs",
+    "product_type": "Walkie pallet jack",
+    "twin_prefix": "B827",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B827",
+    "brand": "Yale",
+    "models": [
+      "MPB040-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4000 lbs",
+    "product_type": "Walkie pallet jack",
+    "twin_prefix": "B218",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A419",
+    "brand": "Hyster",
+    "models": [
+      "W45ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4500 lbs",
+    "product_type": "Walkie pallet jack",
+    "twin_prefix": "A245",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A245",
+    "brand": "Yale",
+    "models": [
+      "MPB045VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4500 lbs",
+    "product_type": "Walkie pallet jack",
+    "twin_prefix": "A419",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B419",
+    "brand": "Hyster",
+    "models": [
+      "W45ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4500 lbs",
+    "product_type": "Walkie pallet jack",
+    "twin_prefix": "B245",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B245",
+    "brand": "Yale",
+    "models": [
+      "MPB045VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4500 lbs",
+    "product_type": "Walkie pallet jack",
+    "twin_prefix": "B419",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B262",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "B292",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B292",
+    "brand": "Yale",
+    "models": [
+      "MPE060-VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "B262",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C262",
+    "brand": "Hyster",
+    "models": [
+      "B60ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "C292",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C292",
+    "brand": "Yale",
+    "models": [
+      "MPE060-VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "C262",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A373",
+    "brand": "Hyster",
+    "models": [
+      "C60ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Center Rider LowLift Pallet jack",
+    "twin_prefix": "A372",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A372",
+    "brand": "Yale",
+    "models": [
+      "MPE060-VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Center Rider LowLift Pallet jack",
+    "twin_prefix": "A373",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B257",
+    "brand": "Hyster",
+    "models": [
+      "B80ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "B287",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B287",
+    "brand": "Yale",
+    "models": [
+      "MPE080-VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "B257",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C257",
+    "brand": "Hyster",
+    "models": [
+      "B80ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "C287",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C287",
+    "brand": "Yale",
+    "models": [
+      "MPE080-VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "C257",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A282",
+    "brand": "Hyster",
+    "models": [
+      "C80ZHD"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Center Rider LowLift Pallet jack",
+    "twin_prefix": "A283",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A283",
+    "brand": "Yale",
+    "models": [
+      "MPE080-VG"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Center Rider LowLift Pallet jack",
+    "twin_prefix": "A282",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C230",
+    "brand": "Hyster",
+    "models": [
+      "B60ZAC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "C896",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C896",
+    "brand": "Yale",
+    "models": [
+      "MPEW060-F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "C230",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D230",
+    "brand": "Hyster",
+    "models": [
+      "B60ZAC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "D896",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D896",
+    "brand": "Yale",
+    "models": [
+      "MPEW060-F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "D230",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E230",
+    "brand": "Hyster",
+    "models": [
+      "B60ZAC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "E896",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E896",
+    "brand": "Yale",
+    "models": [
+      "MPEW060-F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie/Rider LowLift Pallet jack",
+    "twin_prefix": "E230",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D215",
+    "brand": "Hyster",
+    "models": [
+      "W50Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "5000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "C802",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C802",
+    "brand": "Yale",
+    "models": [
+      "MPW050-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "5000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "D215",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A231",
+    "brand": "Hyster",
+    "models": [
+      "W60Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "A897",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A897",
+    "brand": "Yale",
+    "models": [
+      "MPW060-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "A231",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B231",
+    "brand": "Hyster",
+    "models": [
+      "W60Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "B897",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B897",
+    "brand": "Yale",
+    "models": [
+      "MPW060-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "B231",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A229",
+    "brand": "Hyster",
+    "models": [
+      "W65Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6500 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "A894",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A894",
+    "brand": "Yale",
+    "models": [
+      "MPW065-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6500 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "A229",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B229",
+    "brand": "Hyster",
+    "models": [
+      "W65Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6500 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "B894",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B894",
+    "brand": "Yale",
+    "models": [
+      "MPW065-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "6500 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "B229",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A234",
+    "brand": "Hyster",
+    "models": [
+      "W80Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "A891",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A891",
+    "brand": "Yale",
+    "models": [
+      "MPW080-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "A234",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B234",
+    "brand": "Hyster",
+    "models": [
+      "W80Z"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "B891",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B891",
+    "brand": "Yale",
+    "models": [
+      "MPW080-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "8000 lbs",
+    "product_type": "Walkie LowLift Pallet",
+    "twin_prefix": "B234",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B455",
+    "brand": "Hyster",
+    "models": [
+      "W20-30ZR"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2000-5000 lbs",
+    "product_type": "Walkie Reach Stacker",
+    "twin_prefix": "C821",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C821",
+    "brand": "Yale",
+    "models": [
+      "MRW020-030-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2000-5000 lbs",
+    "product_type": "Walkie Reach Stacker",
+    "twin_prefix": "B455",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C455",
+    "brand": "Hyster",
+    "models": [
+      "W20-30ZR"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2000-5000 lbs",
+    "product_type": "Walkie Reach Stacker",
+    "twin_prefix": "D821",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D821",
+    "brand": "Yale",
+    "models": [
+      "MRW020-030-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2000-5000 lbs",
+    "product_type": "Walkie Reach Stacker",
+    "twin_prefix": "C455",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B495",
+    "brand": "Hyster",
+    "models": [
+      "W25-30ZA2"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2500-3000 lbs",
+    "product_type": "Walkie Straddle Stacker",
+    "twin_prefix": "B895",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B895",
+    "brand": "Yale",
+    "models": [
+      "MSW025-030F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "2500-3000 lbs",
+    "product_type": "Walkie Straddle Stacker",
+    "twin_prefix": "B495",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B453",
+    "brand": "Hyster",
+    "models": [
+      "W40ZA"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4000 lbs",
+    "product_type": "Walkie Straddle Stacker",
+    "twin_prefix": "C820",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C820",
+    "brand": "Yale",
+    "models": [
+      "MSW040-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4000 lbs",
+    "product_type": "Walkie Straddle Stacker",
+    "twin_prefix": "B453",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C453",
+    "brand": "Hyster",
+    "models": [
+      "W40ZA"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4000 lbs",
+    "product_type": "Walkie Straddle Stacker",
+    "twin_prefix": "D820",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D820",
+    "brand": "Yale",
+    "models": [
+      "MSW040-E"
+    ],
+    "ita_class": "3",
+    "capacity_text": "4000 lbs",
+    "product_type": "Walkie Straddle Stacker",
+    "twin_prefix": "C453",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C476",
+    "brand": "Hyster",
+    "models": [
+      "T5ZAC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "10000 lb rolling load",
+    "product_type": "Tow Tractor",
+    "twin_prefix": "C902",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C902",
+    "brand": "Yale",
+    "models": [
+      "MTR005-F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "10000 lb rolling load",
+    "product_type": "Tow Tractor",
+    "twin_prefix": "C476",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D476",
+    "brand": "Hyster",
+    "models": [
+      "T5ZAC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "10000 lb rolling load",
+    "product_type": "Tow Tractor",
+    "twin_prefix": "D902",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D902",
+    "brand": "Yale",
+    "models": [
+      "MTR005-F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "10000 lb rolling load",
+    "product_type": "Tow Tractor",
+    "twin_prefix": "D476",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C477",
+    "brand": "Hyster",
+    "models": [
+      "T7Z",
+      "T7ZC"
+    ],
+    "ita_class": "3",
+    "capacity_text": "15000 lb rolling load",
+    "product_type": "Tow Tractor",
+    "twin_prefix": "C903",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C903",
+    "brand": "Yale",
+    "models": [
+      "MTR007-F"
+    ],
+    "ita_class": "3",
+    "capacity_text": "15000 lb rolling load",
+    "product_type": "Tow Tractor",
+    "twin_prefix": "C477",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B265",
+    "brand": "Hyster",
+    "models": [
+      "N35-40ZRS2",
+      "N30ZDRS2"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Reach truck for retail operations",
+    "twin_prefix": "B295",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B295",
+    "brand": "Yale",
+    "models": [
+      "NR035-040DB",
+      "NDR030DB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Reach truck for retail operations",
+    "twin_prefix": "B265",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C265",
+    "brand": "Hyster",
+    "models": [
+      "N35-40ZRS2",
+      "N30ZDRS2"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Reach truck for retail operations",
+    "twin_prefix": "C295",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "C295",
+    "brand": "Yale",
+    "models": [
+      "NR035-040DB",
+      "NDR030DB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Reach truck for retail operations",
+    "twin_prefix": "C265",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E470",
+    "brand": "Hyster",
+    "models": [
+      "N35-40ZR2",
+      "N30ZDR2"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Reach truck for small narrow aisle operations",
+    "twin_prefix": "E815",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E815",
+    "brand": "Yale",
+    "models": [
+      "NR035-040EB",
+      "NDR030EB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "Reach truck for small narrow aisle operations",
+    "twin_prefix": "E470",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D264",
+    "brand": "Hyster",
+    "models": [
+      "N35ZDR2",
+      "N45ZR2"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3500-4500 lbs",
+    "product_type": "Grocery reach truck",
+    "twin_prefix": "D861",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D861",
+    "brand": "Yale",
+    "models": [
+      "NR045EB",
+      "NDR035EB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3500-4500 lbs",
+    "product_type": "Grocery reach truck",
+    "twin_prefix": "D264",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E264",
+    "brand": "Hyster",
+    "models": [
+      "N35ZDR2",
+      "N45ZR2"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3500-4500 lbs",
+    "product_type": "Grocery reach truck",
+    "twin_prefix": "E861",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E861",
+    "brand": "Yale",
+    "models": [
+      "NR045EB",
+      "NDR035EB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3500-4500 lbs",
+    "product_type": "Grocery reach truck",
+    "twin_prefix": "E264",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B463",
+    "brand": "Hyster",
+    "models": [
+      "V30ZMU"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "VNA Man-up Turret truck",
+    "twin_prefix": "B868",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B868",
+    "brand": "Yale",
+    "models": [
+      "NTA030SB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "VNA Man-up Turret truck",
+    "twin_prefix": "B463",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B464",
+    "brand": "Hyster",
+    "models": [
+      "V35ZMU"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3500 lbs",
+    "product_type": "VNA Man-up Turret truck",
+    "twin_prefix": "B869",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "B869",
+    "brand": "Yale",
+    "models": [
+      "NTA035SB"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3500 lbs",
+    "product_type": "VNA Man-up Turret truck",
+    "twin_prefix": "B464",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E174",
+    "brand": "Hyster",
+    "models": [
+      "R30XMS3"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Standard Orderpicker",
+    "twin_prefix": "D801",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "D801",
+    "brand": "Yale",
+    "models": [
+      "OS030EF"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Standard Orderpicker",
+    "twin_prefix": "E174",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "H118",
+    "brand": "Hyster",
+    "models": [
+      "R30XM3"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Premium Orderpicker",
+    "twin_prefix": "E826",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "E826",
+    "brand": "Yale",
+    "models": [
+      "OS303BF"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Premium Orderpicker",
+    "twin_prefix": "H118",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A185",
+    "brand": "Hyster",
+    "models": [
+      "R30XMA3"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Straddle Orderpicker",
+    "twin_prefix": "A474",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A474",
+    "brand": "Yale",
+    "models": [
+      "SS030BF"
+    ],
+    "ita_class": "2",
+    "capacity_text": "3000 lbs",
+    "product_type": "Straddle Orderpicker",
+    "twin_prefix": "A185",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A370",
+    "brand": "Hyster",
+    "models": [
+      "UT15PTE",
+      "UT18PTE",
+      "UT20PTE"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "3-Wheel sit down forklift",
+    "twin_prefix": "A377",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A377",
+    "brand": "Yale",
+    "models": [
+      "UT15PTE",
+      "UT18PTE",
+      "UT20PTE"
+    ],
+    "ita_class": "1",
+    "capacity_text": "3000-4000 lbs",
+    "product_type": "3-Wheel sit down forklift",
+    "twin_prefix": "A370",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A273",
+    "brand": "Hyster",
+    "models": [
+      "UT25C",
+      "UT30C"
+    ],
+    "ita_class": "4",
+    "capacity_text": "5000-6000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "A279",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A279",
+    "brand": "Yale",
+    "models": [
+      "UT25C",
+      "UT30C"
+    ],
+    "ita_class": "4",
+    "capacity_text": "5000-6000 lbs",
+    "product_type": "4-wheel cushion tire forklift",
+    "twin_prefix": "A273",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A281",
+    "brand": "Hyster",
+    "models": [
+      "UT25P",
+      "UT30P"
+    ],
+    "ita_class": "5",
+    "capacity_text": "5000-6000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "A285",
+    "source": "cross_reference"
+  },
+  {
+    "prefix": "A285",
+    "brand": "Yale",
+    "models": [
+      "UT25P",
+      "UT30P"
+    ],
+    "ita_class": "5",
+    "capacity_text": "5000-6000 lbs",
+    "product_type": "4-Wheel pneumatic tire forklift",
+    "twin_prefix": "A281",
+    "source": "cross_reference"
+  }
+]
