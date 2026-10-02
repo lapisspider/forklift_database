@@ -32,19 +32,33 @@ ALIASES: dict[str, list[str]] = {
 }
 
 # Official sites used only to RESTRICT a spec-sheet search; no URL is ever built from these.
+# Every manufacturer in the catalog should appear here: a spec-sheet search is
+# restricted to these domains first, so an OEM with no entry falls back to the
+# open web and picks up dealer- and aggregator-hosted PDFs (which is how an
+# H70D sheet was once returned for an H50D). Each domain below was link-checked.
 OEM_DOMAINS: dict[str, list[str]] = {
+    "Big Joe/EP Equipment": ["bigjoeforklifts.com", "ep-equipment.com"],
     "Bobcat/Doosan": ["bobcat.com"],
+    "BYD": ["bydforklift.com"],
     "CAT/Mitsubishi": ["catlifttruck.com"],
     "Clark": ["clarkmhc.com"],
+    "Club Car": ["clubcar.com"],
     "Crown": ["crown.com"],
+    "Drexel": ["drexelindustries.com", "landoll.com"],
+    "Heli": ["en.heli.com.cn", "helichina.net"],
     "Hyster": ["hyster.com"],
+    "Hyundai": ["hyundai-ce.com"],
     "Jungheinrich": ["jungheinrich.com"],
     "Komatsu": ["komatsuforklift.com"],
     "Linde": ["linde-mh.com"],
     "Nissan/Unicarrier/Logisnext": ["unicarriers.com"],
     "Raymond": ["raymondcorp.com"],
+    "Stewart & Stevenson": ["stewartandstevenson.com"],
+    "Taylor Dunn": ["taylor-dunn.com"],
+    "Textron": ["textron.com"],
     "Toyota": ["toyotaforklift.com"],
     "Yale": ["yale.com"],
+    "Yamaha": ["yamaha-motor.com"],
 }
 
 _PAIRS = sorted(

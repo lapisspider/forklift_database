@@ -141,6 +141,11 @@ def _alnum(text: str) -> str:
     return re.sub(r"[^a-z0-9]", "", (text or "").lower())
 
 
+def _on_oem_domain(url: str, domains: list[str] | None) -> bool:
+    host = (urlparse(url or "").hostname or "").lower()
+    return any(host == d or host.endswith("." + d) for d in domains or [])
+
+
 def _empty(value) -> bool:
     return value is None or (isinstance(value, str) and not value.strip())
 
@@ -173,10 +178,16 @@ class _PdfFinder:
         self.name, self.model, self.domains = name, model, domains
         self.searched: list[str] = []
         self.tried: dict[str, int | None] = {}
-        self.model_pdf: tuple[str, int] | None = None
-        self.family_pdf: tuple[str, int] | None = None
+        # (url, http_status, on_oem_domain) -- a third-party hit is kept as a
+        # fallback but never stops the search, so the OEM's own sheet can still win.
+        self.model_pdf: tuple[str, int, bool] | None = None
+        self.family_pdf: tuple[str, int, bool] | None = None
         self.first_page: str | None = None
         self._model_rounds_done = False
+
+    @property
+    def have_oem_model_pdf(self) -> bool:
+        return bool(self.model_pdf and self.model_pdf[2])
 
     def consider(self, search: dict, series: str | None) -> None:
         for r in search.get("results", []):
@@ -190,16 +201,23 @@ class _PdfFinder:
             level = _pdf_level(f"{url} {r.get('title') or ''} {body}", self.model, series)
             if level:
                 cands.append((level, url))
-        cands.sort(key=lambda c: (-c[0], bool(_NON_ENGLISH_RE.search(c[1]))))
+        # The OEM's own domain outranks everything at the same level: a dealer or
+        # aggregator PDF is often the wrong model in the right family.
+        cands.sort(key=lambda c: (-c[0], not _on_oem_domain(c[1], self.domains),
+                                  bool(_NON_ENGLISH_RE.search(c[1]))))
         for level, url in cands[:_MAX_VERIFY_PER_SEARCH]:
             status = verify_pdf_url(url)
             self.tried[url] = status
             if status is None:
                 continue
+            oem = _on_oem_domain(url, self.domains)
             if level == 2:
-                self.model_pdf = (url, status)
-                return
-            self.family_pdf = self.family_pdf or (url, status)
+                if oem:
+                    self.model_pdf = (url, status, True)
+                    return  # best possible: the OEM's own sheet, naming this model
+                self.model_pdf = self.model_pdf or (url, status, False)
+            elif self.family_pdf is None or (oem and not self.family_pdf[2]):
+                self.family_pdf = (url, status, oem)
 
     def search(self, query: str, series: str | None, domains: list[str] | None = None) -> None:
         self.searched.append(query)
@@ -212,33 +230,38 @@ class _PdfFinder:
         if self._model_rounds_done:
             return
         self._model_rounds_done = True
-        rounds = [(f"{self.name} spec sheet filetype:pdf", None),
-                  (f"{self.name} technical guide", None),
-                  (f"{self.name} brochure pdf", None)]
+        # The domain-restricted round goes FIRST: the OEM's own spec sheet is the
+        # answer, and the open-web rounds only run if it isn't found there.
+        rounds: list[tuple[str, list[str] | None]] = []
         if self.domains:
             rounds.append((f"{self.name} specifications pdf", self.domains))
+            rounds.append((f"{self.name} spec sheet brochure", self.domains))
+        rounds += [(f"{self.name} spec sheet filetype:pdf", None),
+                   (f"{self.name} technical guide", None),
+                   (f"{self.name} brochure pdf", None)]
         for query, domains in rounds:
-            if self.model_pdf:
+            if self.have_oem_model_pdf:
                 return
             self.search(query, series, domains)
 
     def family_rounds(self, oem_text: str, series: str) -> None:
         """Spec sheets usually cover a range, so retry on the series name."""
         base = f"{oem_text} {series}".strip()
-        rounds = [(f"{base} spec sheet filetype:pdf", None)]
+        rounds: list[tuple[str, list[str] | None]] = []
         if self.domains:
             rounds.append((f"{base} specifications pdf", self.domains))
+        rounds.append((f"{base} spec sheet filetype:pdf", None))
         for query, domains in rounds:
-            if self.model_pdf:
+            if self.have_oem_model_pdf:
                 return
             self.search(query, series, domains)
 
-    def best(self) -> tuple[str, int, bool] | None:
-        """(url, http_status, covers_exact_model)"""
+    def best(self) -> tuple[str, int, bool, bool] | None:
+        """(url, http_status, covers_exact_model, on_oem_domain)"""
         if self.model_pdf:
-            return (*self.model_pdf, True)
+            return (self.model_pdf[0], self.model_pdf[1], True, self.model_pdf[2])
         if self.family_pdf:
-            return (*self.family_pdf, False)
+            return (self.family_pdf[0], self.family_pdf[1], False, self.family_pdf[2])
         return None
 
 
@@ -282,11 +305,15 @@ def find_spec_sheet(raw: str) -> SpecSheetResult:
     def finish(result: SpecSheetResult) -> SpecSheetResult:
         best = finder.best()
         if best:
-            result.pdf_url, result.pdf_status = best[0], best[1]
-            result.pdf_note = (
-                f"PDF naming this model found and link-checked (HTTP {best[1]})." if best[2] else
-                f"Link-checked PDF found (HTTP {best[1]}), but it covers the product family "
-                f"rather than naming this exact model.")
+            url, status, exact, on_oem = best
+            result.pdf_url, result.pdf_status = url, status
+            scope = ("naming this model" if exact else
+                     "covering the product family rather than naming this exact model")
+            host = (urlparse(url).hostname or "").removeprefix("www.")
+            origin = ("from the manufacturer's own site" if on_oem else
+                      f"a third-party copy on {host} -- the manufacturer's own sheet was not "
+                      f"found, so confirm it is the right model")
+            result.pdf_note = f"Link-checked PDF {scope} (HTTP {status}), {origin}."
         else:
             searched = "".join(f'; "{q}"' for q in finder.searched)
             result.pdf_note = (f'No spec-sheet PDF was found. Searched: "{name} forklift '
@@ -366,9 +393,16 @@ def find_spec_sheet(raw: str) -> SpecSheetResult:
             setattr(specs, f, v)
             sources[f] = "web_search"
 
-    if not finder.model_pdf:
+    fixed, cap_note = extractor.reconcile_capacity(mfr, specs.model, specs.capacity_kg)
+    if cap_note:
+        specs.capacity_kg = fixed
+        sources["capacity_kg"] = "model_code"
+        specs.notes = f"{specs.notes} {cap_note}".strip() if specs.notes else cap_note
+
+    if not finder.have_oem_model_pdf:
         finder.model_rounds(specs.series)
-    if not finder.model_pdf and not _empty(specs.series) and _alnum(specs.series) != _alnum(model_text):
+    if (not finder.have_oem_model_pdf and not _empty(specs.series)
+            and _alnum(specs.series) != _alnum(model_text)):
         finder.family_rounds(typed_oem or mfr, specs.series)
 
     return finish(SpecSheetResult(found=True, specs=specs, source_url=source_url, pages_tried=tried,

@@ -1,11 +1,29 @@
 """Pydantic schemas shared between the AI layer and the API."""
-from pydantic import BaseModel, Field
+import re
+
+from pydantic import BaseModel, Field, field_validator
+
+_SERIES_WORD_RE = re.compile(r"\s*[-\s]?\bseries\b\.?", re.IGNORECASE)
+
+
+def clean_series(value: str | None) -> str | None:
+    """Strip the word "Series" from a series name.
+
+    House convention: a series is stored bare -- "8", not "8-Series"; "FC 5700",
+    not "FC 5700 series". Applied here rather than only in the extractor prompt so
+    every producer (spec extraction, find_series, serial identification) is covered
+    even when the model ignores the instruction.
+    """
+    if not value:
+        return None
+    cleaned = _SERIES_WORD_RE.sub("", value).strip(" -–—	")
+    return cleaned or None
 
 
 class ForkliftSpecs(BaseModel):
     """Structured specs extracted from a spec sheet. All fields optional."""
     manufacturer: str | None = Field(None, description="OEM / brand")
-    series: str | None = Field(None, description="Manufacturer's model-family/range designation this model belongs to, verbatim (e.g. 'E80-120XN', 'FC 5700 series', '8-Series'). Always fill unless truly indeterminable.")
+    series: str | None = Field(None, description="Manufacturer's model-family/range designation this model belongs to (e.g. 'E80-120XN', 'FC 5700', 'Fortis'). NEVER include the word 'Series': Toyota's 8-Series is '8'. Always fill unless truly indeterminable.")
     model: str | None = None
     year_start: int | None = Field(None, description="First production year of this model. If not stated, give a best-effort educated estimate.")
     year_end: int | None = Field(None, description="Last production year of this model; null if still in production. If unclear, give a best-effort estimate.")
@@ -14,6 +32,11 @@ class ForkliftSpecs(BaseModel):
     chassis: str | None = Field(None, description="Shared-chassis grouping/frame this model uses, if stated (e.g. 'Large-Capacity Frame')")
     truck_class: str | None = Field(None, description="OSHA powered-industrial-truck class as 'Class I'..'Class VII'")
     notes: str | None = None
+
+    @field_validator("series")
+    @classmethod
+    def _strip_series_word(cls, v: str | None) -> str | None:
+        return clean_series(v)
 
 
 class SerialMatch(BaseModel):

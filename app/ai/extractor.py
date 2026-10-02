@@ -2,16 +2,21 @@
 from __future__ import annotations
 
 import json
+import re
 
 from anthropic import Anthropic
 
 from ..config import settings
-from ..schemas import ForkliftSpecs, SerialWebGuess
+from ..schemas import ForkliftSpecs, SerialWebGuess, clean_series
 from . import tavily_client
 
 _SYSTEM = """You extract forklift specifications from raw web/PDF text.
 Return ONLY the fields you are confident about; leave anything uncertain as null.
-Rated load capacity must be in kilograms (kg) — convert from pounds if needed.
+Rated load capacity must be in kilograms (kg). If the source prints a kg figure,
+USE IT VERBATIM — do NOT recompute it from the pounds figure. An OEM's lb and kg
+ratings are two separately published numbers, not conversions of each other, so
+converting 6000 lb gives 2722 kg where the OEM actually publishes 3000 kg. Convert
+from pounds ONLY when no kg figure appears anywhere in the source.
 fuel_type must be EXACTLY one of these canonical values (match the casing):
   "Electric", "Diesel", "LPG", "Gasoline",
   "Gasoline/LPG"  (gasoline/LP dual-fuel — runs on either gasoline or LP gas),
@@ -42,11 +47,13 @@ NEVER Class II. Tire type (cushion vs pneumatic) only distinguishes Class IV fro
 
 ALWAYS determine the `series`: the manufacturer's OFFICIAL published
 series/family NAME that THIS specific model belongs to, as named in the spec
-document or marketing (e.g. Hyster "Fortis", "XT", the "ESC AD" stacker series;
-Toyota "8-Series"; Crown "FC 5700 series"). This is the manufacturer's own name
-for the product line -- NOT a raw model-number range. Prefer the exact series
-name printed in the source. Only leave series null if the source does not name
-one.
+document or marketing (e.g. Hyster "Fortis", "XT", the "ESC AD" stacker range).
+This is the manufacturer's own name for the product line -- NOT a raw
+model-number range. Prefer the exact series name printed in the source. Only
+leave series null if the source does not name one.
+NEVER include the word "Series" (or "series") in the value, and never a
+generation suffix built from it: Toyota's 8-Series is "8", Hyundai's 9 Series is
+"9", Crown's "FC 5700 series" is "FC 5700". Give the bare name only.
 
 Also determine the model's PRODUCTION YEARS: year_start = first production year,
 year_end = last production year (null if still in production). Prefer years stated in
@@ -206,8 +213,9 @@ def find_series(manufacturer: str, model: str) -> str | None:
                 "series": {
                     "type": ["string", "null"],
                     "description": "The manufacturer's OFFICIAL published series/family "
-                                   "name this model belongs to (e.g. Hyster 'Fortis', "
-                                   "Toyota '8-Series'). NOT a raw model-number range. "
+                                   "name this model belongs to (e.g. Hyster 'Fortis'). "
+                                   "NOT a raw model-number range, and NEVER containing "
+                                   "the word 'Series' -- Toyota's 8-Series is '8'. "
                                    "null if the sources don't name one.",
                 },
             },
@@ -230,8 +238,7 @@ def find_series(manufacturer: str, model: str) -> str | None:
         )
         for block in resp.content:
             if block.type == "tool_use" and block.name == "record_series":
-                series = (block.input.get("series") or "").strip()
-                return series or None
+                return clean_series(block.input.get("series"))
     except Exception:  # noqa: BLE001
         return None
     return None
@@ -261,7 +268,7 @@ def find_core_specs(manufacturer: str, model: str, missing: list[str]) -> dict:
 
     props = {
         "capacity_kg": {"type": ["number", "null"],
-                        "description": "Rated load capacity in kilograms (convert from lb)."},
+                        "description": "Rated load capacity in kilograms, as the source prints it. Convert from lb only if no kg figure is published."},
         "fuel_type": {"type": ["string", "null"],
                       "description": "Exactly one of: Electric, Diesel, LPG, Gasoline, "
                                      "Gasoline/LPG, Diesel/LPG."},
@@ -294,6 +301,48 @@ def find_core_specs(manufacturer: str, model: str, missing: list[str]) -> dict:
     except Exception:  # noqa: BLE001
         return {}
     return {}
+
+
+# OEMs whose model code states capacity in metric units (100 kg), so the code
+# itself is an independent check on the extracted figure. Deliberately excludes
+# Toyota, Hyster, Yale, Clark, Crown and the other NA brands, whose codes state
+# POUNDS (a Hyster H50FT is 5000 lb / 2268 kg, not 5000 kg).
+_METRIC_CODE_OEMS = {
+    "Linde", "Komatsu", "Hyundai", "Doosan", "Daewoo", "Heli", "Hangcha", "BYD",
+    "EP", "Jungheinrich", "Still", "Mitsubishi", "Nissan", "TCM", "Lonking", "Liugong",
+}
+_FIRST_DIGITS_RE = re.compile("[0-9]{2,3}")
+
+
+def reconcile_capacity(manufacturer: str | None, model: str | None,
+                       capacity_kg: float | None) -> tuple[float | None, str | None]:
+    """Repair a capacity that was computed from the pounds rating.
+
+    An lb rating converted to kg lands just under the figure the OEM publishes --
+    6000 lb becomes 2722 where Hyundai publishes 3000 for the same 30D-9. For the
+    OEMs whose model code states capacity in 100 kg, the code settles it.
+
+    The 12% band is the real guard: it fires only where the code and the extracted
+    value already agree, so a rounding artifact is corrected while a code whose
+    digits are not a capacity at all is left alone (Jungheinrich EFG 320 is a
+    2000 kg truck, so the "320" is 32000 kg away and never applied).
+
+    Returns (capacity, note) -- note is None when nothing was changed.
+    """
+    if capacity_kg is None or (manufacturer or "") not in _METRIC_CODE_OEMS:
+        return capacity_kg, None
+    m = _FIRST_DIGITS_RE.search(model or "")
+    if not m:
+        return capacity_kg, None
+    coded = int(m.group(0)) * 100
+    if not 1000 <= coded <= 46000:
+        return capacity_kg, None
+    if coded == capacity_kg or abs(coded - capacity_kg) / coded > 0.12:
+        return capacity_kg, None
+    return float(coded), (
+        f"Capacity corrected from {capacity_kg:g} kg to {coded} kg: the extracted figure was "
+        f"converted from the pounds rating, and {manufacturer} states capacity in the model code."
+    )
 
 
 def estimate_production_years(manufacturer: str, model: str, series: str | None,
