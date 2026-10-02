@@ -297,10 +297,16 @@ def test_serial_edges(db) -> None:
             continue
 
         if expect == "refuse":
-            R.check(f"{label} -> refused for free, no credit spent",
-                    outcome.free and outcome.result is not None and not outcome.result.found,
+            refused = (outcome.free and outcome.result is not None
+                       and not outcome.result.found)
+            R.check(f"{label} -> refused for free, no credit spent", refused,
                     f"a structurally impossible serial should be rejected with a format "
                     f"message, but it {outcome.describe()}")
+            if refused:
+                msg = (outcome.result.message or "").lower()
+                R.check(f"{label} explains the format",
+                        "11 characters" in msg and "year letter" in msg,
+                        f"message does not state the format: {outcome.result.message!r}")
             continue
 
         # expect == "decode"
@@ -382,9 +388,13 @@ def test_routing(db) -> None:
         outcome = run_lookup(db, query, mode="")
         R.check(f"{query!r} is handled as a model", outcome.crash is None, outcome.describe())
 
-    # _looks_like_model picks the strategy in auto mode.
-    for text, expected in [("8FGCU25", True), ("FC 5200", True), ("A269V01501P", False),
-                           ("L7-00116", False), ("", False), ("30D-9", True)]:
+    # _looks_like_model picks the strategy in auto mode. The FC pair is the
+    # interesting one: FC- is a real Doosan prefix AND Crown sells FC 45xx/52xx,
+    # so only the separator tells the two apart once normalize() has run.
+    for text, expected in [("8FGCU25", True), ("FC 5200", True), ("FC5200", True),
+                           ("FC-5200", False), ("A269V01501P", False), ("L7-00116", False),
+                           ("l7-00116", False), ("", False), ("30D-9", True),
+                           ("G004V01515D", False), ("B463D01234N", False)]:
         got = L._looks_like_model(db, text)
         R.check(f"_looks_like_model({text!r}) is {expected}", got == expected, f"got {got}")
 

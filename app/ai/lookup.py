@@ -47,8 +47,43 @@ from .oem_alias import split_oem
 from .serial_summary import summarize
 
 WEB_CONFIDENCE_FLOOR = 0.60
+# A decode at or above this confidence means a decoder recognised the whole
+# serial shape (prefix on file or not), which settles "serial, not model".
+SERIAL_SHAPE_FLOOR = 0.80
+# Kinds where the web cannot improve on the offline answer. A pre-1995 Yale
+# number is a bare 5-6 digit string, so searching for it returns noise, while
+# the era explainer is already the best obtainable answer -- spending a credit
+# on it buys nothing.
+_NO_WEB_KINDS = {"yale_pre1995"}
 _DECODER_LABELS = {"hyster_yale": "Hyster/Yale", "doosan": "Doosan"}
+# Result-header phrase per decode kind, and whether to prefix it with the
+# decoder label. The kind name is not presentable on its own: "yale_pre1995"
+# read out as "Decoded as a Hyster/Yale yale pre1995."
+_KIND_PHRASES: dict[str, tuple[str, bool]] = {
+    "serial": ("serial", True),
+    "prefix": ("prefix", True),
+    "unknown_prefix": ("prefix, not on file", True),
+    "yale_pre1995": ("pre-1995 Yale serial", False),
+    "doosan_serial": ("serial", True),
+    "doosan_prefix": ("prefix", True),
+    "doosan_unknown_prefix": ("prefix, not on file", True),
+}
 _LEAD_LETTERS_RE = re.compile(r"^[A-Za-z]{1,4}")
+_LONG_SERIAL_MIN = 9  # the 11-character Hyster/Yale family
+_DASHED_SERIAL_RE = re.compile(r"^[A-Za-z0-9]{2}-[0-9]{4,5}$")  # Doosan's L7-00116 form
+
+
+def _serial_shape_is_distinctive(raw: str, norm: str) -> bool:
+    """Is a serial-shape match specific enough to outrank the model heuristic?
+
+    Not every shape match is worth much. normalize() strips the separators, and
+    that is exactly what makes Crown's "FC 5200" indistinguishable from a Doosan
+    "FC-5200" -- both normalise to FC5200, FC- really is a Doosan prefix, and
+    Crown really does sell FC 45xx/52xx trucks. Only two shapes settle it: the
+    11-character Hyster/Yale serial, and Doosan's documented
+    prefix-dash-sequence form with the dash still present.
+    """
+    return len(norm) >= _LONG_SERIAL_MIN or bool(_DASHED_SERIAL_RE.match(raw.strip()))
 
 
 def find_exact(db: Session, query: str, manufacturer: str | None = None) -> Forklift | None:
@@ -102,14 +137,21 @@ def _decoder_for(name: str):
 
 def _looks_like_model(db: Session, text: str) -> bool:
     """Which web strategy to use (auto-detect mode only): does this read as
-    an OEM MODEL number rather than a serial? A leading digit (Toyota-style
-    '8FGCU25') or a 1-4 letter lead that matches an EXISTING catalog model
-    prefix (e.g. Crown's 'FC ####') reads as a model -- checked against the
-    real catalog rather than guessed, since e.g. a bare 2-letter prefix is
-    structurally identical between a real model code and a made-up serial.
-    Anything else is treated as serial-shaped."""
+    an OEM MODEL number rather than a serial?
+
+    A decoder recognising a DISTINCTIVE serial shape settles it, and is checked
+    first because the catalog-prefix test below cannot: 22 of the 26 letters
+    begin some model among 1000+ rows, so "does a model start with this letter?"
+    answers yes for nearly every serial too. Failing that, a leading digit
+    (Toyota-style '8FGCU25') or a 1-4 letter lead matching an existing catalog
+    model prefix (Crown's 'FC ####') reads as a model. Anything else is treated
+    as serial-shaped."""
     t = (text or "").strip()
     if not t:
+        return False
+    norm = normalize(t)
+    if (_serial_shape_is_distinctive(t, norm)
+            and any(c.confidence >= SERIAL_SHAPE_FLOOR for c in detect(db, norm))):
         return False
     if t[0].isdigit():
         return True
@@ -139,15 +181,14 @@ def _serial_lookup_result(db: Session, candidates, norm: str) -> LookupResult:
         alternates.append(SerialAlternate(decoder=c.decoder, serial=_with_summary(alt_decoder.decode(db, norm))))
 
     label = _DECODER_LABELS.get(best.decoder, best.decoder.replace("_", " ").title())
-    kind_suffix = serial.kind
-    if kind_suffix.startswith(best.decoder + "_"):
-        kind_suffix = kind_suffix[len(best.decoder) + 1:]
+    phrase, with_label = _KIND_PHRASES.get(
+        serial.kind, (serial.kind.replace("_", " "), True))
     return LookupResult(
         found=True,
         kind="serial",
         serial=serial,
         alternates=alternates,
-        message=f"Decoded as a {label} {kind_suffix.replace('_', ' ')}.",
+        message=(f"Decoded as a {label} {phrase}." if with_label else f"Decoded as a {phrase}."),
     )
 
 
@@ -323,6 +364,8 @@ def _lookup_serial(db: Session, query: str, web: bool) -> LookupResult:
     if candidates:
         weak = _serial_lookup_result(db, candidates, normalize(rest))
         weak.oem_note = oem_note
+        if candidates[0].kind in _NO_WEB_KINDS:
+            return weak
         web_result = _web_gate(query, web, candidates[0].confidence,
                                 lambda: _serial_web_result(query, oem))
         weak.web_guess = web_result.web_guess
@@ -332,6 +375,19 @@ def _lookup_serial(db: Session, query: str, web: bool) -> LookupResult:
             weak.specs = web_result.specs
             weak.message = weak.message + " " + web_result.message
         return weak
+
+    # Nothing decoded. Before paying for a web search, let the OEM's own decoders
+    # say whether this is simply a malformed version of their format -- a typo
+    # deserves a format message, not an unverified guess off the web.
+    for d in DECODERS:
+        if oem not in d.manufacturers:
+            continue
+        explain = getattr(d, "reject_reason", None)
+        if explain is None:
+            continue
+        message = explain(db, normalize(rest))
+        if message:
+            return LookupResult(found=False, message=message)
 
     web_result = _web_gate(query, web, 0.0, lambda: _serial_web_result(query, oem))
     web_result.oem_note = oem_note

@@ -38,9 +38,14 @@ def _models(families: list[str]) -> str | None:
 def _hyster_yale(s: SerialDecodeResult) -> tuple[str | None, str | None]:
     brand = s.brand or "Hyster/Yale"
     if s.kind == "yale_pre1995":
-        if not s.candidate_years:
-            return None, None
-        return f"Yale serial in a pre-1995 format — the year code gives {_or_join(s.candidate_years)}.", None
+        if s.candidate_years:
+            return (f"Yale serial in a pre-1995 format — the year code gives "
+                    f"{_or_join(s.candidate_years)}."), None
+        # No year resolves, but the format itself is still worth stating plainly
+        # rather than leaving the summary blank.
+        return ("Yale serial in a pre-1995 format — no single year resolves from it.",
+                "Yale used five numbering systems before Q3 1995 and this number fits more "
+                "than one of them. The breakdown below lists each era.")
     if s.kind == "unrecognized" or not s.prefix:
         return None, None
 
@@ -48,6 +53,15 @@ def _hyster_yale(s: SerialDecodeResult) -> tuple[str | None, str | None]:
     if s.kind in ("prefix", "unknown_prefix") and not name:
         if s.family_guess:
             return (f"{brand} prefix {s.prefix} — not on file; model family unconfirmed.", None)
+        # _models() declines to name one truck when the prefix carries several
+        # family rows (regional and sub-model variants). Say how many instead of
+        # returning no summary at all.
+        rows = [f.strip() for f in (s.families or []) if f and f.strip()]
+        if rows:
+            return (f"{brand} prefix {s.prefix} — {len(rows)} listed model "
+                    f"{'family' if len(rows) == 1 else 'families'}.",
+                    "A bare prefix carries no plant or year; those come from the full "
+                    "11-character serial.")
         return None, None
     subject = f"{brand} {name}" if name else f"{brand} prefix {s.prefix}"
     if s.kind in ("prefix", "unknown_prefix"):
