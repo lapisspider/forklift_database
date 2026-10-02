@@ -971,9 +971,9 @@ table.specs tbody tr:hover {
 /* In the record-header pill the stars sit on one line beside the words. */
 .meta-pill .stars {
   width: auto;
-  height: 14px;
+  height: 16px;
   flex-wrap: nowrap;
-  margin-right: 0.15rem;
+  margin-right: 0.2rem;
 }
 
 .meta-pill .stars--gold .star:first-child {
@@ -1662,16 +1662,16 @@ form > label {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1px;
-  width: 30px;
-  height: 20px;
+  gap: 2px;
+  width: 38px;
+  height: 28px;
   vertical-align: middle;
   line-height: 0;
 }
 
 .star {
-  width: 9px;
-  height: 9px;
+  width: 13px;
+  height: 13px;
   display: block;
   flex: 0 0 auto;
   /* The facets carry their own shading, so the drop shadow only has to lift
@@ -1684,21 +1684,21 @@ form > label {
    instead of merely sending the other two to the next line. */
 .stars--gold {
   display: inline-grid;
-  grid-template-columns: repeat(2, 8.5px);
+  grid-template-columns: repeat(2, 12px);
   justify-content: center;
   align-content: center;
-  gap: 0 1px;
+  gap: 0 2px;
 }
 
 .stars--gold .star {
-  width: 8.5px;
-  height: 8.5px;
+  width: 12px;
+  height: 12px;
 }
 
 .stars--gold .star:first-child {
   grid-column: 1 / -1;
   justify-self: center;
-  margin-bottom: -1px;
+  margin-bottom: -2px;
 }
 
 .stars--none {
