@@ -968,8 +968,17 @@ table.specs tbody tr:hover {
   color: var(--muted);
 }
 
-.meta-pill .tier-meter {
-  margin-right: 0.1rem;
+/* In the record-header pill the stars sit on one line beside the words. */
+.meta-pill .stars {
+  width: auto;
+  height: 14px;
+  flex-wrap: nowrap;
+  margin-right: 0.15rem;
+}
+
+.meta-pill .stars--gold .star:first-child {
+  flex-basis: auto;
+  margin: 0;
 }
 
 /* ===== KIT TABLE =====
@@ -1645,30 +1654,61 @@ form > label {
   background: var(--bg-card);
 }
 
-/* Tier: bronze lights one segment, silver two, gold all three, so rank reads
-   as a quantity down a column instead of as a shade of warm metal. */
-.tier-meter {
+/* Tier as earned stars: one for bronze, two for silver, three for gold laid
+   out as a pyramid. The count is a fixed box so every row aligns on the same
+   baseline whether it carries one star or three. */
+.stars {
   display: inline-flex;
-  align-items: flex-end;
-  gap: 2px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 30px;
+  height: 20px;
   vertical-align: middle;
-  height: 13px;
+  line-height: 0;
 }
 
-.tier-meter i {
+.star {
+  width: 9px;
+  height: 9px;
   display: block;
-  width: 3px;
-  border-radius: 1px;
-  background: rgba(255, 255, 255, 0.14);
+  flex: 0 0 auto;
+  /* The facets carry their own shading, so the drop shadow only has to lift
+     the star off the panel, not model the form. */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
 }
 
-.tier-meter i:nth-child(1) { height: 7px; }
-.tier-meter i:nth-child(2) { height: 10px; }
-.tier-meter i:nth-child(3) { height: 13px; }
+/* Gold: one star centred over two. Grid rather than a flex line-break --
+   flex-basis would set the top star's SIZE, stretching it across the row
+   instead of merely sending the other two to the next line. */
+.stars--gold {
+  display: inline-grid;
+  grid-template-columns: repeat(2, 8.5px);
+  justify-content: center;
+  align-content: center;
+  gap: 0 1px;
+}
 
-.tier-meter--bronze i.on { background: #c08457; }
-.tier-meter--silver i.on { background: #ccd0d8; }
-.tier-meter--gold i.on { background: #e8c349; }
+.stars--gold .star {
+  width: 8.5px;
+  height: 8.5px;
+}
+
+.stars--gold .star:first-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-bottom: -1px;
+}
+
+.stars--none {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.stars--none .star {
+  filter: none;
+}
+
 
 /* Review-status picker. It used to be three filled red CTAs, so a button
    labelled "Green" was itself red, and the picker outshouted the specs it

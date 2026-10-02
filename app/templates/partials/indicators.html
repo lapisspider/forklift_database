@@ -5,23 +5,23 @@
    a colour-blind reader and a greyscale print, and so the two columns can
    never be mistaken for each other: status is round, tier is a bar meter. #}
 
-{# Tier as a three-segment meter: bronze lights one bar, silver two, gold all
-   three. Rank reads as a quantity at a glance down a list of rows, which a
-   single star in a coloured disc never did -- gold and bronze discs are both
-   just warm circles until you look closely. #}
+{# Tier as earned stars, in the faceted metal of the tier: bronze one, silver
+   two, gold three stacked into a pyramid. Rank reads as a quantity and as a
+   silhouette, so gold and bronze no longer differ only by hue -- which is what
+   made three warm discs indistinguishable at a glance down a column. #}
 {% macro tier_badge(tier, label=False) -%}
   {%- set tip = {'gold': 'Gold — admin reviewed, install signed off',
                  'silver': 'Silver — admin reviewed',
                  'bronze': 'Bronze — editor reviewed'} -%}
-  {%- set lit = {'gold': 3, 'silver': 2, 'bronze': 1} -%}
+  {%- set count = {'gold': 3, 'silver': 2, 'bronze': 1} -%}
   {%- if tier -%}
-  <span class="tier-meter tier-meter--{{ tier }}" title="{{ tip[tier] }}" role="img" aria-label="{{ tip[tier] }}">
-    {%- for i in [1, 2, 3] %}<i{% if i <= lit[tier] %} class="on"{% endif %}></i>{% endfor -%}
+  <span class="stars stars--{{ tier }}" title="{{ tip[tier] }}" role="img" aria-label="{{ tip[tier] }}">
+    {%- for i in range(count[tier]) %}<svg class="star" viewBox="0 0 100 100" aria-hidden="true"><use href="#star-{{ tier }}"/></svg>{% endfor -%}
   </span>
   {%- if label %} <span class="muted">{{ tier|capitalize }}</span>{% endif -%}
   {%- else -%}
-  <span class="tier-meter tier-meter--none" title="No kit linked" role="img" aria-label="No kit linked">
-    {%- for i in [1, 2, 3] %}<i></i>{% endfor -%}
+  <span class="stars stars--none" title="No kit linked" role="img" aria-label="No kit linked">
+    <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><use href="#star-empty"/></svg>
   </span>
   {%- endif -%}
 {%- endmacro %}

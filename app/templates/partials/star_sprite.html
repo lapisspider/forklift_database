@@ -1,0 +1,42 @@
+{# Faceted tier star, defined once per page and referenced with <use>.
+
+   Each of the five points is split from the centre into two triangles, a lit
+   facet and a shadow facet, which is what gives the bevelled, struck-metal
+   look rather than a flat glyph. Light falls from the upper left. Defining it
+   as a sprite matters: the database lists over a thousand rows, and inlining
+   ten path elements per star per row would be megabytes of markup. #}
+<svg width="0" height="0" aria-hidden="true" focusable="false" class="star-sprite">
+  <defs>
+    {% for metal, lit1, lit2, dark1, dark2 in [
+         ('gold',   '#ffe9a0', '#e8c349', '#c79a24', '#8f6d14'),
+         ('silver', '#ffffff', '#ccd0d8', '#9aa0ab', '#6d7380'),
+         ('bronze', '#f0c49a', '#c08457', '#9a6338', '#6d4425'),
+       ] %}
+    <linearGradient id="star-{{ metal }}-lit" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="{{ lit1 }}"/>
+      <stop offset="1" stop-color="{{ lit2 }}"/>
+    </linearGradient>
+    <linearGradient id="star-{{ metal }}-dark" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="{{ dark1 }}"/>
+      <stop offset="1" stop-color="{{ dark2 }}"/>
+    </linearGradient>
+    {% endfor %}
+
+    {% set shadow_facets = 'M50.00,50.00 L39.00,34.86 L50.00,1.00 Z M50.00,50.00 L61.00,34.86 L96.60,34.86 Z M50.00,50.00 L67.80,55.78 L78.80,89.64 Z M50.00,50.00 L50.00,68.72 L21.20,89.64 Z M50.00,50.00 L32.20,55.78 L3.40,34.86 Z' %}
+    {% set lit_facets = 'M50.00,50.00 L50.00,1.00 L61.00,34.86 Z M50.00,50.00 L96.60,34.86 L67.80,55.78 Z M50.00,50.00 L78.80,89.64 L50.00,68.72 Z M50.00,50.00 L21.20,89.64 L32.20,55.78 Z M50.00,50.00 L3.40,34.86 L39.00,34.86 Z' %}
+    {% set outline = 'M50.00,1.00 L61.00,34.86 L96.60,34.86 L67.80,55.78 L78.80,89.64 L50.00,68.72 L21.20,89.64 L32.20,55.78 L3.40,34.86 L39.00,34.86 Z' %}
+
+    {% for metal in ['gold', 'silver', 'bronze'] %}
+    <symbol id="star-{{ metal }}" viewBox="0 0 100 100">
+      <path d="{{ lit_facets }}" fill="url(#star-{{ metal }}-lit)"/>
+      <path d="{{ shadow_facets }}" fill="url(#star-{{ metal }}-dark)"/>
+    </symbol>
+    {% endfor %}
+
+    {# Unearned: the same silhouette, drawn as an empty outline. #}
+    <symbol id="star-empty" viewBox="0 0 100 100">
+      <path d="{{ outline }}" fill="none" stroke="currentColor" stroke-width="7"
+            stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
