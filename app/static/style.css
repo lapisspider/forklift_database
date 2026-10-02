@@ -944,8 +944,8 @@ table.specs tbody tr:hover {
   gap: 0.5rem;
 }
 
-/* A quiet pill with a small solid dot, replacing the 24px gradient disc with
-   a glyph in it. The colour says which state; the words say what it means. */
+/* A quiet pill carrying the same mark the table rows use, so one shape means
+   one thing everywhere. The mark says which state; the words say what it is. */
 .meta-pill {
   display: inline-flex;
   align-items: center;
@@ -960,18 +960,7 @@ table.specs tbody tr:hover {
   white-space: nowrap;
 }
 
-.meta-pill__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex: 0 0 auto;
-}
-
-.meta-pill--green .meta-pill__dot { background: #2ea043; }
-.meta-pill--yellow .meta-pill__dot { background: #e3a70f; }
-.meta-pill--red .meta-pill__dot { background: var(--red); }
-
-.meta-pill--green { border-color: rgba(46, 160, 67, 0.45); }
+.meta-pill--red .meta-pill--green { border-color: rgba(46, 160, 67, 0.45); }
 .meta-pill--yellow { border-color: rgba(227, 167, 15, 0.45); }
 .meta-pill--red { border-color: rgba(225, 6, 0, 0.5); }
 
@@ -979,9 +968,8 @@ table.specs tbody tr:hover {
   color: var(--muted);
 }
 
-.meta-pill .tier {
-  font-size: 0.85rem;
-  box-shadow: none;
+.meta-pill .tier-meter {
+  margin-right: 0.1rem;
 }
 
 /* ===== KIT TABLE =====
@@ -1366,6 +1354,14 @@ form > label {
   border-left-color: var(--red);
 }
 
+/* An accordion bar is a <button>, so it was inheriting the primary CTA's red
+   glow and lift on hover -- which is what haloed every OEM and series row. */
+.accordion-toggle,
+.accordion-toggle:hover {
+  box-shadow: none;
+  transform: none;
+}
+
 .accordion-toggle .caret {
   transition: transform 0.2s ease;
   display: inline-block;
@@ -1557,79 +1553,122 @@ form > label {
   opacity: 1;
 }
 
-/* ===== TIER & STATUS ===== */
-.tier {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
+/* ===== MODEL TABLE =====
+   Dense enough to scan a series at a glance: identifiers first, figures in the
+   middle, the two review marks together at the end. */
+.model-table th,
+.model-table td {
+  padding: 0.55rem 0.9rem;
+}
+
+.model-table .model-cell a {
+  font-weight: 600;
+  color: var(--ink-light);
+  text-decoration: none;
+}
+
+.model-table tbody tr:hover .model-cell a {
+  color: var(--red-hover);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 3px;
+}
+
+/* Identifiers line up for comparison when they share a figure width. */
+.model-table .ssc-no,
+.model-table .num {
+  font-variant-numeric: tabular-nums;
+}
+
+.model-table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.model-table .years {
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+/* The marks are small, so their columns stay narrow and centred rather than
+   leaving a wide empty gutter beside a 11px dot. */
+.model-table .mark-col {
+  width: 1%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ===== REVIEW MARKS =====
+   Two indicators sit in the same row, so they are deliberately different
+   shapes: status is round, tier is a bar meter. Each encodes its value by
+   shape as well as colour, so it survives a greyscale print and a colour-blind
+   reader -- and so the two columns can no longer be mistaken for one another,
+   which two warm 24px discs at opposite ends of a row certainly could. */
+
+/* Status: filled = reviewed, hollow = not yet looked at, barred = known wrong.
+   Replaces a gradient disc carrying a bare "?", which was the heaviest thing
+   in the row and said nothing on its own. */
+.mark {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   box-sizing: border-box;
+  position: relative;
   vertical-align: middle;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  color: var(--accent-white);
-  font-size: 12px;
-  line-height: 24px;
-  text-align: center;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  flex: 0 0 auto;
 }
 
-.tier-gold {
-  background: linear-gradient(135deg, #ffd700 0%, #cc9900 100%);
+.mark--green {
+  background: #2ea043;
 }
 
-.tier-silver {
-  background: linear-gradient(135deg, #e4e4ea 0%, #b0b0c0 100%);
-  color: #3a3a42;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-}
-
-.tier-bronze {
-  background: linear-gradient(135deg, #d4a574 0%, #8b6639 100%);
-  color: #ffecc0;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-}
-
-.tier-none {
+.mark--yellow {
   background: transparent;
-  border-style: dashed;
-  box-shadow: none;
+  border: 2px solid #e3a70f;
 }
 
-.status-dot {
+.mark--red {
+  background: var(--red);
+}
+
+/* The bar reads as "stop", and keeps red legible against green without
+   relying on hue. */
+.mark--red::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 4.5px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--bg-card);
+}
+
+/* Tier: bronze lights one segment, silver two, gold all three, so rank reads
+   as a quantity down a column instead of as a shade of warm metal. */
+.tier-meter {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  align-items: flex-end;
+  gap: 2px;
   vertical-align: middle;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--accent-white) !important;
-  font-weight: 800;
-  font-size: 14px;
-  line-height: 24px;
-  text-align: center;
-  font-family: system-ui, "Segoe UI", Arial, sans-serif;
-  box-sizing: border-box;
-  padding: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  height: 13px;
 }
 
-.status-green {
-  background: linear-gradient(135deg, #2ea043 0%, #1d6b2d 100%);
+.tier-meter i {
+  display: block;
+  width: 3px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.14);
 }
 
-.status-yellow {
-  background: linear-gradient(135deg, #e3a70f 0%, #b8860b 100%);
-}
+.tier-meter i:nth-child(1) { height: 7px; }
+.tier-meter i:nth-child(2) { height: 10px; }
+.tier-meter i:nth-child(3) { height: 13px; }
 
-.status-red {
-  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-}
+.tier-meter--bronze i.on { background: #c08457; }
+.tier-meter--silver i.on { background: #ccd0d8; }
+.tier-meter--gold i.on { background: #e8c349; }
 
 /* Review-status picker. It used to be three filled red CTAs, so a button
    labelled "Green" was itself red, and the picker outshouted the specs it
@@ -1684,30 +1723,8 @@ form > label {
 .status-select .status-opt--yellow:disabled { border-color: #e3a70f; }
 .status-select .status-opt--red:disabled { border-color: var(--red); }
 
-/* The dot is the colour cue, so it can be small here. */
-.status-select .status-dot {
-  width: 18px;
-  height: 18px;
-  font-size: 11px;
-  line-height: 18px;
-  box-shadow: none;
-}
-
-.status-cluster {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.status-cluster .chip-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-weight: 500;
+.status-select .mark {
+  margin-right: 0.1rem;
 }
 
 /* One row per tier instead of a middle-dot run-on: three parallel facts read

@@ -1,35 +1,61 @@
 {# Reusable review indicators. Import:
-   {% from "partials/indicators.html" import tier_badge, status_dot %} #}
+   {% from "partials/indicators.html" import tier_badge, status_dot %}
+
+   Both marks encode their meaning by SHAPE as well as colour, so they survive
+   a colour-blind reader and a greyscale print, and so the two columns can
+   never be mistaken for each other: status is round, tier is a bar meter. #}
+
+{# Tier as a three-segment meter: bronze lights one bar, silver two, gold all
+   three. Rank reads as a quantity at a glance down a list of rows, which a
+   single star in a coloured disc never did -- gold and bronze discs are both
+   just warm circles until you look closely. #}
 {% macro tier_badge(tier, label=False) -%}
-  {%- set tip = {'gold': 'Gold — admin reviewed + install confirmed', 'silver': 'Silver — admin reviewed', 'bronze': 'Bronze — editor reviewed'} -%}
-  {%- if tier -%}<span class="tier tier-{{ tier }}" title="{{ tip[tier] }}" role="img" aria-label="{{ tip[tier] }}">★</span>{%- if label %} <span class="muted">{{ tier|capitalize }}</span>{% endif -%}
-  {%- else -%}<span class="tier tier-none" title="No tier / unlinked" role="img" aria-label="No tier / unlinked"></span>{%- endif -%}
+  {%- set tip = {'gold': 'Gold — admin reviewed, install signed off',
+                 'silver': 'Silver — admin reviewed',
+                 'bronze': 'Bronze — editor reviewed'} -%}
+  {%- set lit = {'gold': 3, 'silver': 2, 'bronze': 1} -%}
+  {%- if tier -%}
+  <span class="tier-meter tier-meter--{{ tier }}" title="{{ tip[tier] }}" role="img" aria-label="{{ tip[tier] }}">
+    {%- for i in [1, 2, 3] %}<i{% if i <= lit[tier] %} class="on"{% endif %}></i>{% endfor -%}
+  </span>
+  {%- if label %} <span class="muted">{{ tier|capitalize }}</span>{% endif -%}
+  {%- else -%}
+  <span class="tier-meter tier-meter--none" title="No kit linked" role="img" aria-label="No kit linked">
+    {%- for i in [1, 2, 3] %}<i></i>{% endfor -%}
+  </span>
+  {%- endif -%}
 {%- endmacro %}
 
-{# Record-header pills. The dot states the state by colour, the words state it
-   in English: a reader should not have to know that "yellow" means "an admin
-   has not checked this yet". #}
+{# Status as one small round mark: filled = reviewed, hollow = not yet looked
+   at, barred = known wrong. Replaces a 24px gradient disc carrying a "?", which
+   was the heaviest thing in the row and said nothing on its own. #}
+{% macro status_dot(status, label=False) -%}
+  {%- set s = status or 'yellow' -%}
+  {%- set tip = {'green': 'Reviewed and confirmed accurate',
+                 'red': 'Known to be incorrect, needs review',
+                 'yellow': 'Not yet checked by an admin'} -%}
+  {%- set words = {'green': 'Reviewed', 'red': 'Needs correction', 'yellow': 'Pending review'} -%}
+  <span class="mark mark--{{ s }}" title="{{ tip[s] }}" role="img" aria-label="{{ tip[s] }}"></span>
+  {%- if label %} <span class="muted">{{ words[s] }}</span>{% endif -%}
+{%- endmacro %}
+
+{# Record-header pills. The mark states the state by colour and shape, the words
+   state it in English: a reader should not have to know that "yellow" means
+   "an admin has not checked this yet". #}
 {% macro status_pill(status) -%}
   {%- set s = status or 'yellow' -%}
   {%- set words = {'green': 'Reviewed', 'yellow': 'Pending review', 'red': 'Needs correction'} -%}
   {%- set tip = {'green': 'Reviewed and confirmed accurate', 'red': 'Known to be incorrect', 'yellow': 'Not yet checked by an admin'} -%}
   <span class="meta-pill meta-pill--{{ s }}" title="{{ tip[s] }}">
-    <span class="meta-pill__dot" aria-hidden="true"></span>{{ words[s] }}</span>
+    <span class="mark mark--{{ s }}" aria-hidden="true"></span>{{ words[s] }}</span>
 {%- endmacro %}
 
 {% macro tier_pill(tier) -%}
   {%- set tip = {'gold': 'Admin reviewed, install signed off', 'silver': 'Admin reviewed', 'bronze': 'Editor reviewed'} -%}
   {%- if tier -%}
   <span class="meta-pill meta-pill--tier" title="{{ tip[tier] }}">
-    <span class="tier tier-{{ tier }}" aria-hidden="true">★</span>Best kit tier: {{ tier|capitalize }}</span>
+    {{ tier_badge(tier) }}Best kit tier: {{ tier|capitalize }}</span>
   {%- else -%}
   <span class="meta-pill meta-pill--none" title="No kit linked to this forklift yet">No kit linked</span>
   {%- endif -%}
-{%- endmacro %}
-
-{% macro status_dot(status, label=False) -%}
-  {%- set s = status or 'yellow' -%}
-  {%- set sym = {'green': '✓', 'red': '✕', 'yellow': '?'} -%}
-  {%- set tip = {'green': 'Green — reviewed & accurate', 'red': 'Red — incorrect, needs review', 'yellow': 'Yellow — pending admin review'} -%}
-  <span class="status-dot status-{{ s }}" title="{{ tip[s] }}" role="img" aria-label="{{ tip[s] }}">{{ sym[s] }}</span>{%- if label %} <span class="muted">{{ s|capitalize }}</span>{% endif -%}
 {%- endmacro %}

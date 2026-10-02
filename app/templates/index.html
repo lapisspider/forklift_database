@@ -123,22 +123,27 @@
                 </button>
                 <div id="{{ series_id }}" class="accordion-body" hidden>
                   <div class="table-scroll">
-                    <table>
+                    {# The model leads, because it is what the reader came for
+                       and what the group is about; the two review marks sit
+                       together at the end as the pair of workflow flags they
+                       are, rather than bracketing the specs. The model is the
+                       link, so the separate "View" column is gone. #}
+                    <table class="model-table">
                       <thead><tr>
-                        <th>Status</th><th>Model</th><th>SSC #</th><th>Years</th>
-                        <th>Capacity (kg)</th><th>Fuel</th><th>Tier</th><th></th>
+                        <th>Model</th><th>SSC #</th><th class="num">Capacity</th>
+                        <th>Fuel</th><th>Years</th>
+                        <th class="mark-col">Status</th><th class="mark-col">Tier</th>
                       </tr></thead>
                       <tbody>
                         {% for f in models %}
                         <tr>
-                          <td>{{ status_dot(f.info_status) }}</td>
-                          <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
-                          <td>{{ f.internal_serial or "—" }}</td>
-                          <td>{{ f.year_display }}</td>
-                          <td>{{ f.capacity_kg|round|int if f.capacity_kg else "—" }}</td>
+                          <td class="model-cell"><a href="/forklift/{{ f.id }}">{{ f.model }}</a></td>
+                          <td class="ssc-no">{{ f.internal_serial or "—" }}</td>
+                          <td class="num">{{ "{:,}".format(f.capacity_kg|round|int) ~ " kg" if f.capacity_kg else "—" }}</td>
                           <td>{{ f.fuel_type or "—" }}</td>
-                          <td>{{ tier_badge(f.best_tier) }}</td>
-                          <td><a href="/forklift/{{ f.id }}">View</a></td>
+                          <td class="years">{{ f.year_display }}</td>
+                          <td class="mark-col">{{ status_dot(f.info_status) }}</td>
+                          <td class="mark-col">{{ tier_badge(f.best_tier) }}</td>
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -154,24 +159,25 @@
     {% else %}
       {# ---- Flat table for az / za / serial ---- #}
       <div class="table-scroll">
-      <table>
+      <table class="model-table">
         <thead><tr>
-          <th>Status</th><th>OEM</th><th>Series</th><th>Model</th><th>SSC #</th>
-          <th>Capacity (kg)</th><th>Fuel</th><th>Class</th><th>Tier</th><th></th>
+          <th>Model</th><th>OEM</th><th>Series</th><th>SSC #</th>
+          <th class="num">Capacity</th><th>Fuel</th><th>Class</th><th>Years</th>
+          <th class="mark-col">Status</th><th class="mark-col">Tier</th>
         </tr></thead>
         <tbody>
           {% for f in forklifts %}
           <tr>
-            <td>{{ status_dot(f.info_status) }}</td>
+            <td class="model-cell"><a href="/forklift/{{ f.id }}">{{ f.model }}</a></td>
             <td>{{ f.manufacturer }}</td>
             <td>{{ f.series or "—" }}</td>
-            <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
-            <td>{{ f.internal_serial or "—" }}</td>
-            <td>{{ f.capacity_kg|round|int if f.capacity_kg else "—" }}</td>
+            <td class="ssc-no">{{ f.internal_serial or "—" }}</td>
+            <td class="num">{{ "{:,}".format(f.capacity_kg|round|int) ~ " kg" if f.capacity_kg else "—" }}</td>
             <td>{{ f.fuel_type or "—" }}</td>
             <td>{{ f.truck_class or "—" }}</td>
-            <td>{{ tier_badge(f.best_tier) }}</td>
-            <td><a href="/forklift/{{ f.id }}">View</a></td>
+            <td class="years">{{ f.year_display }}</td>
+            <td class="mark-col">{{ status_dot(f.info_status) }}</td>
+            <td class="mark-col">{{ tier_badge(f.best_tier) }}</td>
           </tr>
           {% endfor %}
         </tbody>
