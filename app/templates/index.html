@@ -129,10 +129,10 @@
                           <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
                           <td>{{ f.internal_serial or "—" }}</td>
                           <td>{{ f.year_display }}</td>
-                          <td>{{ f.capacity_kg or "—" }}</td>
+                          <td>{{ f.capacity_kg|round|int if f.capacity_kg else "—" }}</td>
                           <td>{{ f.fuel_type or "—" }}</td>
                           <td>{{ tier_badge(f.best_tier) }}</td>
-                          <td><a href="/forklift/{{ f.id }}">View →</a></td>
+                          <td><a href="/forklift/{{ f.id }}">View</a></td>
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -161,11 +161,11 @@
             <td>{{ f.series or "—" }}</td>
             <td class="model-cell" title="{{ f.model }}">{{ f.model }}</td>
             <td>{{ f.internal_serial or "—" }}</td>
-            <td>{{ f.capacity_kg or "—" }}</td>
+            <td>{{ f.capacity_kg|round|int if f.capacity_kg else "—" }}</td>
             <td>{{ f.fuel_type or "—" }}</td>
             <td>{{ f.truck_class or "—" }}</td>
             <td>{{ tier_badge(f.best_tier) }}</td>
-            <td><a href="/forklift/{{ f.id }}">View →</a></td>
+            <td><a href="/forklift/{{ f.id }}">View</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -182,31 +182,37 @@
 
     {% if kits %}
     <div class="table-scroll">
-      <table>
+      <table class="kit-table">
         <thead>
           <tr>
-            <th>SKU</th><th>Name</th><th>Price</th><th>Fits forklifts</th><th></th>
+            <th>Kit</th><th>Price</th><th>Fits forklifts</th><th><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
         <tbody>
           {% for k in kits %}
           <tr>
-            <td>{{ k.sku }}</td>
-            <td>{{ k.name or "—" }}</td>
+            {# SKU and name are one identity, not two columns -- the name was
+               empty on most rows and the pair cost width the fit list needed. #}
+            <td class="kit-id">
+              <span class="kit-sku">{{ k.sku }}</span>
+              {% if k.name %}<span class="kit-name">{{ k.name }}</span>{% endif %}
+            </td>
             <td>{{ "$%.2f"|format(k.price) if k.price is not none else "—" }}</td>
-            <td>
+            <td class="fit-cell">
               {% if k.forklift_links %}
-                {% for link in k.forklift_links %}
-                  <span style="white-space:nowrap">{{ tier_badge(link.tier) }} <a href="/forklift/{{ link.forklift.id }}">{{ link.forklift.manufacturer }} {{ link.forklift.model }}</a></span>{% if not loop.last %}, {% endif %}
-                {% endfor %}
-              {% else %}<span class="muted">— none —</span>{% endif %}
+                <ul class="fit-list">
+                  {% for link in k.forklift_links %}
+                    <li>{{ tier_badge(link.tier) }} <a href="/forklift/{{ link.forklift.id }}">{{ link.forklift.manufacturer }} {{ link.forklift.model }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% else %}<span class="muted">Not linked yet</span>{% endif %}
             </td>
             <td>
               {% if can_edit %}
-              <div class="row">
+              <div class="row row-actions">
                 <a class="button" href="/kit/{{ k.id }}/edit">Edit</a>
                 <form method="post" action="/kit/{{ k.id }}/delete"
-                      onsubmit="return confirm('Delete this kit?');">
+                      onsubmit="return confirm('Delete kit {{ k.sku }}? This cannot be undone.');">
                   <button class="danger" type="submit">Delete</button>
                 </form>
               </div>

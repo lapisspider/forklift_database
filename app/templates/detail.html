@@ -26,31 +26,56 @@
   </div>
 
   {% if is_admin %}
-  <div class="review-controls">
-    <span class="muted">Set info status:</span>
+  <div class="status-select">
+    <span class="status-select__label">Review status</span>
     {% for s in ['green','yellow','red'] %}
     <form method="post" action="/forklift/{{ fk.id }}/status">
       <input type="hidden" name="status" value="{{ s }}">
-      <button type="submit" {% if fk.info_status == s %}disabled{% endif %}>{{ status_dot(s) }} {{ s|capitalize }}</button>
+      <button type="submit" class="status-opt status-opt--{{ s }}"
+              {% if fk.info_status == s %}disabled aria-current="true"{% endif %}>
+        {{ status_dot(s) }} {{ s|capitalize }}
+      </button>
     </form>
     {% endfor %}
   </div>
   {% endif %}
 
-  <table class="specs">
-    <tbody>
-      <tr><th>OEM</th><td>{{ fk.manufacturer }}</td></tr>
-      <tr><th>Series</th><td>{{ fk.series or "—" }}</td></tr>
-      <tr><th>Production years</th><td>{{ fk.year_display }}</td></tr>
-      <tr><th>SSC serial #</th><td>{{ fk.internal_serial or "—" }}</td></tr>
-      <tr><th>Capacity</th><td>{{ (fk.capacity_kg ~ ' kg') if fk.capacity_kg else "—" }}</td></tr>
-      <tr><th>Fuel type</th><td>{{ fk.fuel_type or "—" }}</td></tr>
-      <tr><th>Class</th><td>{{ fk.truck_class or "—" }}</td></tr>
-      <tr><th>Chassis</th><td>{{ fk.chassis or "—" }}</td></tr>
-      {% if fk.notes %}<tr><th>Notes</th><td>{{ fk.notes }}</td></tr>{% endif %}
-      {% if fk.fetched_at %}<tr><th>Fetched</th><td>{{ fk.fetched_at.strftime("%Y-%m-%d") }}</td></tr>{% endif %}
-    </tbody>
-  </table>
+  {# Three kinds of fact, shown as three groups rather than ten identical rows:
+     what the truck is, what it does, and how we track it. #}
+  <div class="spec-groups">
+    <div class="spec-group">
+      <h4>Identity</h4>
+      <dl>
+        <div><dt>OEM</dt><dd>{{ fk.manufacturer }}</dd></div>
+        <div><dt>Series</dt><dd>{{ fk.series or "—" }}</dd></div>
+        <div><dt>Production years</dt><dd>{{ fk.year_display }}</dd></div>
+      </dl>
+    </div>
+    <div class="spec-group">
+      <h4>Specification</h4>
+      <dl>
+        <div><dt>Capacity</dt><dd>{{ (fk.capacity_kg|round|int ~ ' kg') if fk.capacity_kg else "—" }}</dd></div>
+        <div><dt>Fuel type</dt><dd>{{ fk.fuel_type or "—" }}</dd></div>
+        <div><dt>Class</dt><dd>{{ fk.truck_class or "—" }}</dd></div>
+        <div><dt>Chassis</dt><dd>{{ fk.chassis or "—" }}</dd></div>
+      </dl>
+    </div>
+    <div class="spec-group">
+      <h4>Record</h4>
+      <dl>
+        <div><dt>SSC serial #</dt><dd>{{ fk.internal_serial or "—" }}</dd></div>
+        {# %-d is glibc-only and raises on Windows; %d is portable. #}
+        {% if fk.fetched_at %}<div><dt>Added</dt><dd>{{ fk.fetched_at.strftime("%d %b %Y") }}</dd></div>{% endif %}
+      </dl>
+    </div>
+  </div>
+
+  {% if fk.notes %}
+  <div class="spec-notes">
+    <h4>Notes</h4>
+    <p>{{ fk.notes }}</p>
+  </div>
+  {% endif %}
   {% if twins %}
   <p class="muted" style="margin-top:.6rem" title="Per Hyster↔Yale cross-reference; older generations may differ.">
     Same truck as:
@@ -72,7 +97,7 @@
         <span class="badge ok">Permanent copy saved</span>
       {% elif can_edit and (fk.pdf_url or fk.source_url) %}
         <form method="post" action="/forklift/{{ fk.id }}/archive-pdf">
-          <button type="submit">Save a permanent copy</button>
+          <button type="submit" class="subtle">Save a permanent copy</button>
         </form>
       {% endif %}
     </div>
@@ -84,17 +109,21 @@
 <section class="panel">
   <h3>Kits that fit this forklift ({{ fk.kit_links|length }})</h3>
   {% if fk.kit_links %}
-  <table>
-    <thead><tr><th>Tier</th><th>SKU</th><th>Name</th><th>Price</th><th></th></tr></thead>
+  {# Same identity-in-one-cell treatment as the kit database: the name and
+     price are blank on most kits, so two columns of em dashes bought nothing. #}
+  <table class="kit-table">
+    <thead><tr><th>Tier</th><th>Kit</th><th>Price</th><th><span class="sr-only">Actions</span></th></tr></thead>
     <tbody>
       {% for link in fk.kit_links %}
       <tr>
-        <td>{{ tier_badge(link.tier) }} <span class="muted">{{ link.tier|capitalize }}</span>
-          {% if link.tier == 'gold' and link.technician_name %}<br><span class="muted" style="font-size:.75rem">✓ {{ link.technician_name }}{% if link.install_date %}, {{ link.install_date }}{% endif %}</span>{% endif %}</td>
-        <td>{{ link.kit.sku }}</td>
-        <td>{{ link.kit.name or "—" }}</td>
+        <td class="tier-cell">{{ tier_badge(link.tier) }} <span class="muted">{{ link.tier|capitalize }}</span>
+          {% if link.tier == 'gold' and link.technician_name %}<span class="tier-signoff">{{ link.technician_name }}{% if link.install_date %}, {{ link.install_date }}{% endif %}</span>{% endif %}</td>
+        <td class="kit-id">
+          <span class="kit-sku">{{ link.kit.sku }}</span>
+          {% if link.kit.name %}<span class="kit-name">{{ link.kit.name }}</span>{% endif %}
+        </td>
         <td>{{ "$%.2f"|format(link.kit.price) if link.kit.price is not none else "—" }}</td>
-        <td>{% if can_edit %}<a href="/kit/{{ link.kit.id }}/edit">Edit kit →</a>{% endif %}</td>
+        <td class="row-actions">{% if can_edit %}<a class="button" href="/kit/{{ link.kit.id }}/edit">Edit kit</a>{% endif %}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -104,8 +133,10 @@
   {% endif %}
 </section>
 
-<p class="tier-legend">Tier: {{ tier_badge('gold') }} Gold (admin + install sign-off) ·
-  {{ tier_badge('silver') }} Silver (admin reviewed) ·
-  {{ tier_badge('bronze') }} Bronze (editor reviewed).</p>
+<ul class="tier-legend">
+  <li>{{ tier_badge('gold') }} <strong>Gold</strong> admin reviewed, install signed off</li>
+  <li>{{ tier_badge('silver') }} <strong>Silver</strong> admin reviewed</li>
+  <li>{{ tier_badge('bronze') }} <strong>Bronze</strong> editor reviewed</li>
+</ul>
 
 {% endblock %}

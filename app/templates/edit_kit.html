@@ -16,7 +16,7 @@
     </div>
     {% set selected_ids = kit.forklifts | map(attribute='id') | list %}
     {% include "partials/forklift_multiselect.html" %}
-    <label>Notes <textarea name="notes" rows="2">{{ kit.notes or '' }}</textarea></label>
+    <label>Notes <textarea name="notes" rows="5">{{ kit.notes or '' }}</textarea></label>
     <div class="row form-actions">
       <button type="submit">Save changes</button>
       <a class="button" href="/#kits">Cancel</a>
@@ -27,11 +27,13 @@
 {% if kit.forklift_links %}
 <section class="panel">
   <h3>Connection tiers ({{ kit.forklift_links|length }})</h3>
-  <p class="muted">Each kit↔forklift connection has a validation tier:
-    {{ tier_badge('bronze') }} Bronze (editor reviewed, initial) ·
-    {{ tier_badge('silver') }} Silver (admin reviewed) ·
-    {{ tier_badge('gold') }} Gold (admin + install sign-off: technician + date).
-    {% if not is_admin %}<br>Only an admin can change tiers.{% endif %}</p>
+  <p class="muted">Every kit-to-forklift connection carries a validation tier.
+    {% if not is_admin %}Only an admin can change them.{% endif %}</p>
+  <ul class="tier-legend">
+    <li>{{ tier_badge('bronze') }} <strong>Bronze</strong> editor reviewed</li>
+    <li>{{ tier_badge('silver') }} <strong>Silver</strong> admin reviewed</li>
+    <li>{{ tier_badge('gold') }} <strong>Gold</strong> admin reviewed, install signed off</li>
+  </ul>
   <div class="table-scroll">
     <table>
       <thead><tr><th>Forklift</th><th>Tier</th>{% if is_admin %}<th>Set tier</th>{% endif %}</tr></thead>
@@ -52,7 +54,7 @@
               </select>
               <input name="technician_name" placeholder="Technician (for gold)" value="{{ link.technician_name or '' }}" style="max-width:150px">
               <input name="install_date" type="date" value="{{ link.install_date or '' }}" title="Install date (for gold)">
-              <button type="submit">Set</button>
+              <button type="submit" class="subtle">Set</button>
             </form>
           </td>
           {% endif %}

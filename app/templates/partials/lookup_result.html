@@ -47,12 +47,12 @@
     {{ guess_block() }}
     {% if r.already_in_db and r.existing_id %}
       <p class="ok">{{ r.message }}</p>
-      <a class="button" href="/forklift/{{ r.existing_id }}">Open existing record →</a>
+      <a class="button" href="/forklift/{{ r.existing_id }}">Open existing record</a>
     {% elif r.specs %}
       {% include "partials/lookup_specs.html" %}
     {% else %}
       <p class="{{ 'ok' if r.found else 'warn' }}">{{ r.message }}</p>
-      {% if r.source_url %}<a href="{{ r.source_url }}" target="_blank">Open the source page →</a>{% endif %}
+      {% if r.source_url %}<a href="{{ r.source_url }}" target="_blank">Open the source page</a>{% endif %}
       {% if r.pdf_url %}<p class="muted">Spec sheet: <a href="{{ r.pdf_url }}" target="_blank">{{ r.pdf_url }}</a></p>{% endif %}
       {% if r.pdf_note %}<p class="muted">{{ r.pdf_note }}</p>{% endif %}
     {% endif %}
