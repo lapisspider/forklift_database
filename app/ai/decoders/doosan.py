@@ -29,7 +29,7 @@ SERIAL_RE = re.compile(rf"^(?P<prefix>{_PREFIX_SHAPE})(?P<seq>[0-9]{{4,5}})$")
 PREFIX_RE = re.compile(rf"^{_PREFIX_SHAPE}$")
 
 CHASSIS_NOTE = (
-    "The leading letter is a chassis family, not the fuel -- e.g. D15S-5LP on "
+    "The leading letter is a chassis family, not the fuel — e.g. D15S-5LP on "
     "NK- is an LP build on the diesel chassis."
 )
 
@@ -134,7 +134,7 @@ def estimate_year(db: Session, prefix: str, seq: int) -> dict:
     if len(markers) == 1:
         m = markers[0]
         return {
-            "note": f"Only one batch marker on file ({m.year}) -- can't bracket a year from a single point.",
+            "note": f"Only one batch marker on file ({m.year}) — can't bracket a year from a single point.",
             "flags": [m.flag] if m.flag else [],
             "basis": "single_marker", "years": [m.year],
         }
@@ -143,7 +143,7 @@ def estimate_year(db: Session, prefix: str, seq: int) -> dict:
     if seq < earliest.sequence:
         return {
             "note": (
-                f"At or before {earliest.year} -- earlier than the earliest batch marker on file "
+                f"At or before {earliest.year} — earlier than the earliest batch marker on file "
                 f"for this prefix ({earliest.raw}, {earliest.year})."
             ),
             "flags": [earliest.flag] if earliest.flag else [],
@@ -160,18 +160,18 @@ def estimate_year(db: Session, prefix: str, seq: int) -> dict:
         span = str(yrs[0]) if yrs[0] == yrs[-1] else f"{yrs[0]}–{yrs[-1]}"
         note = (
             f"This prefix's batch markers aren't monotonic (sequence doesn't track cleanly with "
-            f"year) -- best estimate is a range: {span}. Closest listed marker: {chosen.raw} "
+            f"year) — best estimate is a range: {span}. Closest listed marker: {chosen.raw} "
             f"({chosen.year}). Doosan sequences are batch-allocated, not calendar counters, so a "
-            "higher number can predate a lower one. Treat this as a hint, not a build date -- "
+            "higher number can predate a lower one. Treat this as a hint, not a build date — "
             "verify on the data plate."
         )
         return {"note": note, "flags": [m.flag for m in candidates if m.flag],
                 "basis": "range", "years": yrs}
 
     note = (
-        f"Approximate year: {chosen.year} -- closest listed batch start ({chosen.raw}, {chosen.year}). "
+        f"Approximate year: {chosen.year} — closest listed batch start ({chosen.raw}, {chosen.year}). "
         "Doosan sequences are batch-allocated, not calendar counters, so a higher number can predate "
-        "a lower one. Treat this as a hint, not a build date -- verify on the data plate."
+        "a lower one. Treat this as a hint, not a build date — verify on the data plate."
     )
     return {"note": note, "flags": [chosen.flag] if chosen.flag else [],
             "basis": "approximate", "years": [chosen.year]}

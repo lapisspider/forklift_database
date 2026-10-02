@@ -62,6 +62,84 @@
   letter-spacing: 0.02em;
 }
 
+/* ===== Serial segmentation strip =====
+   The decoded serial, kept whole and read left to right exactly as it is
+   stamped on the data plate, with each run of characters labelled beneath it.
+   Columns are sized by character count (--chars) and the characters are set
+   in a monospace face, so the row above the labels reads as the real string
+   rather than as four separate values -- the alignment IS the explanation,
+   which is why the mono face is here and nowhere else on the page. */
+/* The serial stays one unbroken string, set the way the data plate stamps it.
+   The segment rules sit under the characters rather than between them, so the
+   number still reads straight through while showing where each field ends.
+   This is the one loud element on the card; everything below it stays quiet. */
+.serial-stamp {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  font-size: clamp(1.15rem, 0.9rem + 1.1vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ink-light);
+  line-height: 1.9;
+}
+
+/* inline-block, not inline: an inline box paints its bottom border outside
+   the line box, so the rules were drawn under the following content and
+   clipped. This also keeps a field from ever breaking across two lines. */
+.serial-stamp .seg {
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid;
+}
+
+/* Rule weight tracks how much of the number the field accounts for: the
+   four-character prefix and five-digit sequence carry it, the two single
+   letters qualify it. */
+.serial-stamp .seg--major {
+  border-bottom-color: var(--red);
+}
+
+.serial-stamp .seg--minor {
+  border-bottom-color: var(--line);
+}
+
+/* Gap between fields, without putting a space inside the number itself. */
+.serial-stamp .seg + .seg {
+  margin-left: 0.5em;
+}
+
+.serial-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.7rem 1.4rem;
+  margin: 0;
+}
+
+.serial-legend > div {
+  min-width: 0;
+}
+
+.serial-legend dt {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-light);
+}
+
+.serial-legend dt code {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  letter-spacing: 0.06em;
+  color: var(--red);
+  margin-right: 0.35rem;
+}
+
+.serial-legend dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
 .serial-parts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -79,21 +157,21 @@
   color: var(--ink-light);
 }
 .serial-parts > div > strong {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--muted);
 }
 
+/* Sentence case, not tracked-out caps: these are data labels, not signage.
+   The brand's caps belong on the red action buttons, where they read as
+   industrial signposting; on a label they just make the data harder to scan. */
 .serial-section h4,
 .serial-era h4 {
   margin: 0 0 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink-light);
 }
 .serial-flag {
   font-size: 0.9rem;
@@ -124,10 +202,8 @@
   min-width: 0;
 }
 .doosan-row dt {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  font-weight: 600;
   color: var(--muted);
 }
 .doosan-row dd {

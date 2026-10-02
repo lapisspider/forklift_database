@@ -754,6 +754,8 @@ details summary:hover {
   margin-bottom: 1.5rem;
 }
 
+/* Sentence case: a tab is a navigation label, not signage. The brand's caps
+   stay on the red action buttons, where they carry the industrial voice. */
 .tab {
   background: transparent;
   color: var(--muted);
@@ -761,11 +763,13 @@ details summary:hover {
   border-bottom: 3px solid transparent;
   border-radius: 0;
   padding: 0.8rem 1.2rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-size: 0.9rem;
+  letter-spacing: 0;
+  /* Explicit: a .tab IS a <button>, and the global button rule uppercases.
+     Dropping the declaration here would just let that rule through. */
+  text-transform: none;
+  font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
@@ -966,7 +970,9 @@ form > label {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
-  z-index: 100;
+  /* Above the sticky site header (z-index 1000), which was covering the
+     dialog's title and its close button. */
+  z-index: 1100;
   display: flex;
   align-items: flex-start;
   justify-content: center;

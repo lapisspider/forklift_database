@@ -11,7 +11,7 @@
   {% if s.kind == 'yale_pre1995' %}
     <p class="ok serial-status">Pre-1995 Yale serial format (not the 11-character Hyster/Yale scheme).</p>
     {% if s.candidate_years %}
-      <p><strong>Candidate year(s):</strong> {{ s.candidate_years|join(', ') }}</p>
+      <p><strong>Possible build years:</strong> {{ s.candidate_years|join(', ') }}</p>
     {% endif %}
     {% for note in s.notes %}<p class="muted">{{ note }}</p>{% endfor %}
     <details class="serial-more">
@@ -53,7 +53,7 @@
 
     {% if s.doosan_rows %}
       <div class="serial-section">
-        <h4>Per prefix row</h4>
+        <h4>What the prefix record says</h4>
         {% for row in s.doosan_rows %}
           <div class="doosan-row">
             <p class="doosan-row__model">{{ row.model }}</p>
@@ -67,12 +67,12 @@
       </div>
     {% elif s.families and not s.orphan %}
       <div class="serial-section">
-        <h4>Model family/families</h4>
+        <h4>Models this prefix covers</h4>
         <ul>{% for fam in s.families %}<li>{{ fam }}</li>{% endfor %}</ul>
       </div>
     {% elif s.orphan and s.families %}
       <div class="serial-section">
-        <h4>Model family (from year table only)</h4>
+        <h4>Models, from the year table only</h4>
         <p>{{ s.families|join(', ') }}</p>
       </div>
     {% endif %}
@@ -83,7 +83,7 @@
 
     {% if s.year_note %}
       <div class="serial-section">
-        <h4>Year</h4>
+        <h4>Year estimate</h4>
         <p>{{ s.year_note }}</p>
       </div>
     {% endif %}
@@ -116,20 +116,46 @@
       {% endif %}
     </p>
 
-    <div class="serial-parts">
-      <div><strong>Prefix</strong><span>{{ s.prefix }}</span></div>
-      <div><strong>Generation</strong><span>{{ s.generation }}</span></div>
-      <div><strong>Family digits</strong><span>{{ s.family_digits }}</span></div>
-      {% if s.plant %}<div><strong>Plant ({{ s.plant }})</strong><span>{{ s.plant_location or 'unknown' }}</span></div>{% endif %}
-      {% if s.sequence %}<div><strong>Sequence</strong><span>{{ s.sequence }}</span></div>{% endif %}
-      {% if s.year_code %}<div><strong>Year code</strong><span>{{ s.year_code }}</span></div>{% endif %}
-    </div>
+    {% if s.plant and s.sequence and s.year_code %}
+      {# The serial read back as the data plate stamps it: the string stays
+         whole and each run of characters is labelled underneath, so the
+         format is legible rather than scattered across six equal tiles. #}
+      <p class="serial-stamp" aria-hidden="true"><span
+        class="seg seg--major">{{ s.prefix }}</span><span
+        class="seg seg--minor">{{ s.plant }}</span><span
+        class="seg seg--major">{{ s.sequence }}</span><span
+        class="seg seg--minor">{{ s.year_code }}</span></p>
 
-    {% if s.candidate_years %}
-      <div class="serial-section">
-        <h4>Candidate year(s)</h4>
-        <p>{{ s.candidate_years|join(', ') }}</p>
+      <dl class="serial-legend">
+        <div>
+          <dt><code>{{ s.prefix }}</code> Prefix</dt>
+          <dd>Generation {{ s.generation }}, family {{ s.family_digits }}</dd>
+        </div>
+        <div>
+          <dt><code>{{ s.plant }}</code> Plant</dt>
+          <dd>{{ s.plant_location or 'Not on file' }}</dd>
+        </div>
+        <div>
+          <dt><code>{{ s.sequence }}</code> Sequence</dt>
+          <dd>Unit no. {{ '{:,}'.format(s.sequence|int) }} from that plant</dd>
+        </div>
+        <div>
+          <dt><code>{{ s.year_code }}</code> Year</dt>
+          <dd>{% if s.candidate_years %}{{ s.candidate_years|join(' or ') }}{% else %}Not determined{% endif %}</dd>
+        </div>
+      </dl>
+    {% else %}
+      <div class="serial-parts">
+        <div><strong>Prefix</strong><span>{{ s.prefix }}</span></div>
+        <div><strong>Generation</strong><span>{{ s.generation }}</span></div>
+        <div><strong>Family digits</strong><span>{{ s.family_digits }}</span></div>
       </div>
+      {% if s.candidate_years %}
+        <div class="serial-section">
+          <h4>Possible build years</h4>
+          <p>{{ s.candidate_years|join(', ') }}</p>
+        </div>
+      {% endif %}
     {% endif %}
     {% if s.correction_note %}
       <p class="warn serial-flag">{{ s.correction_note }}</p>
@@ -137,7 +163,7 @@
 
     {% if s.families %}
       <div class="serial-section">
-        <h4>Model family/families</h4>
+        <h4>Models this prefix covers</h4>
         <ul>{% for fam in s.families %}<li>{{ fam }}</li>{% endfor %}</ul>
       </div>
     {% endif %}
@@ -154,9 +180,10 @@
     {% endif %}
 
     {% if s.twin_prefix %}
-      <p><strong>Twin-brand prefix:</strong> {{ s.twin_prefix }}
-        {% if s.twin_families %} — {{ s.twin_families|join('; ') }}{% endif %}
-      </p>
+      {# twin_families entries already lead with the prefix ("A969: ERC030-040VA"),
+         so printing twin_prefix alongside them repeated it. #}
+      <p><strong>Same truck, sister brand:</strong>
+        {{ s.twin_families|join('; ') if s.twin_families else s.twin_prefix }}</p>
     {% endif %}
 
     {% for note in s.notes %}<p class="muted">{{ note }}</p>{% endfor %}

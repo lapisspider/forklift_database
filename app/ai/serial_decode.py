@@ -35,7 +35,7 @@ YALE_OLD_RE = re.compile(r"^(?:[0-9]{6}|(?:H|J|A[B-K])[0-9]{3,6})$")
 CORRECTION_NOTE = (
     "Published Hyster charts run a year late for 2017 onward (the source lists "
     "Q=2017 and shifts every later year by one, but Q is never used). This app "
-    "uses the corrected sequence (R=2017 ... A=2026) -- verify against the data plate."
+    "uses the corrected sequence (R=2017 ... A=2026) — verify against the data plate."
 )
 
 RANGE_RE = re.compile(r"^([A-Z]+)(\d+)-(\d+)([A-Z0-9]*)$")
@@ -151,7 +151,7 @@ def _decode_prefix(db: Session, prefix: str) -> SerialDecodeResult:
         result = _build_from_rows(db, prefix, rows)
         if len(rows) > 1:
             result.notes.append(
-                f"{len(rows)} source rows matched prefix {prefix} (regional/sub-model variants) -- all are shown."
+                f"{len(rows)} source rows matched prefix {prefix} (regional/sub-model variants) — all are shown."
             )
         return result
 
@@ -164,7 +164,7 @@ def _decode_prefix(db: Session, prefix: str) -> SerialDecodeResult:
         gens = sorted({c.prefix[0] for c in candidates})
         result.notes.append(
             f"Prefix {prefix} isn't in the source tables. Digits {digits} match known "
-            f"family/families under generation letter(s) {', '.join(gens)} -- probably a "
+            f"family/families under generation letter(s) {', '.join(gens)} — probably a "
             f"{prefix[0]}-generation version of one of these. Unconfirmed."
         )
         return result
@@ -245,7 +245,7 @@ def _decode_pre1995(db: Session, s: str) -> SerialDecodeResult:
                 notes.append(f"Alpha year-prefix {key} (1958-1968 era).")
 
     notes.append(
-        "Yale used five different numbering systems before Q3 1995 -- this is a reference "
+        "Yale used five different numbering systems before Q3 1995 — this is a reference "
         "explainer only, no attempt is made to match it against the forklift catalog."
     )
     return SerialDecodeResult(
