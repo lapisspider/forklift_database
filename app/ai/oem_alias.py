@@ -51,7 +51,7 @@ OEM_DOMAINS: dict[str, list[str]] = {
     "Jungheinrich": ["jungheinrich.com"],
     "Komatsu": ["komatsuforklift.com"],
     "Linde": ["linde-mh.com"],
-    "Nissan/Unicarrier/Logisnext": ["unicarriers.com"],
+    "Nissan/Unicarrier/Logisnext": ["unicarriers.com", "logisnextamericas.com"],
     "Raymond": ["raymondcorp.com"],
     "Stewart & Stevenson": ["stewartandstevenson.com"],
     "Taylor Dunn": ["taylor-dunn.com"],
