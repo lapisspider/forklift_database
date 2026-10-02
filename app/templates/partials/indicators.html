@@ -6,6 +6,27 @@
   {%- else -%}<span class="tier tier-none" title="No tier / unlinked" role="img" aria-label="No tier / unlinked"></span>{%- endif -%}
 {%- endmacro %}
 
+{# Record-header pills. The dot states the state by colour, the words state it
+   in English: a reader should not have to know that "yellow" means "an admin
+   has not checked this yet". #}
+{% macro status_pill(status) -%}
+  {%- set s = status or 'yellow' -%}
+  {%- set words = {'green': 'Reviewed', 'yellow': 'Pending review', 'red': 'Needs correction'} -%}
+  {%- set tip = {'green': 'Reviewed and confirmed accurate', 'red': 'Known to be incorrect', 'yellow': 'Not yet checked by an admin'} -%}
+  <span class="meta-pill meta-pill--{{ s }}" title="{{ tip[s] }}">
+    <span class="meta-pill__dot" aria-hidden="true"></span>{{ words[s] }}</span>
+{%- endmacro %}
+
+{% macro tier_pill(tier) -%}
+  {%- set tip = {'gold': 'Admin reviewed, install signed off', 'silver': 'Admin reviewed', 'bronze': 'Editor reviewed'} -%}
+  {%- if tier -%}
+  <span class="meta-pill meta-pill--tier" title="{{ tip[tier] }}">
+    <span class="tier tier-{{ tier }}" aria-hidden="true">★</span>Best kit tier: {{ tier|capitalize }}</span>
+  {%- else -%}
+  <span class="meta-pill meta-pill--none" title="No kit linked to this forklift yet">No kit linked</span>
+  {%- endif -%}
+{%- endmacro %}
+
 {% macro status_dot(status, label=False) -%}
   {%- set s = status or 'yellow' -%}
   {%- set sym = {'green': '✓', 'red': '✕', 'yellow': '?'} -%}

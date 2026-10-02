@@ -1,56 +1,97 @@
 {% extends "base.html" %}
+{% block title %}About{% endblock %}
 {% block content %}
 
+{# One long panel of headings and bullet lists became several sections, each
+   opening with its own title and rule. The product list is the substance of
+   the page, so it gets a grid of its own rather than a run of bullets. #}
+<section class="page-intro">
+  <h1>About the SSC Forklift Database</h1>
+  <p class="page-intro__lead">
+    Equipment specifications, serial decoding, and kit compatibility for the
+    trucks Safety Systems &amp; Controls builds for.
+  </p>
+</section>
+
 <section class="panel">
-  <h1>About SSC Forklift Database</h1>
-  <p class="muted">Comprehensive equipment specifications, AI-powered lookups, and kit compatibility tracking for material handling operations.</p>
-
-  <h2>Safety Systems &amp; Controls (SSC)</h2>
-  <p>
-    SSC designs safety products for mobile equipment — systems that help prevent accidents, curb equipment misuse, and limit injury and damage in demanding industrial settings. The company sells primarily through OEMs and equipment dealers, while also supporting the operators who use the systems day to day.
+  <h2>Safety Systems &amp; Controls</h2>
+  <p class="prose">
+    SSC designs safety products for mobile equipment — systems that help prevent
+    accidents, curb equipment misuse, and limit injury and damage in demanding
+    industrial settings. The company sells primarily through OEMs and equipment
+    dealers, while also supporting the operators who use the systems day to day.
   </p>
-
-  <h2>Our Products</h2>
-  <ul>
-    <li><strong>PACE-ONE™ G2 Speed Limiter</strong> — Forklift speed limiting with ECU integration</li>
-    <li><strong>PACE-ONE™ ZSC Zone Speed Control</strong> — Speed limits that change by zone</li>
-    <li><strong>RF Transmitters Nomad™</strong> — Transmitters that define the speed-control zones</li>
-    <li><strong>DOT-LOK™ G2 Shift Inhibitor</strong> — Blocks shifting outside safe conditions</li>
-    <li><strong>Ignition Interlock</strong> — Seatbelt interlock; the truck won't start unbuckled</li>
-    <li><strong>Speedzone G2</strong> — Mechanical governor conversion</li>
-    <li><strong>Critical Systems Control™</strong> — Transmission temperature monitoring</li>
-    <li><strong>μCal™</strong> — Calibration and software updates for SSC controllers</li>
-    <li><strong>PED-LOK™</strong> — Bus loading brake control</li>
-    <li><strong>Trans-Stop™ Transmission Interlock</strong> — Electromechanical transmission safety</li>
-    <li><strong>Mast Height Speed Control</strong> — Overhead mast warning and speed reduction</li>
-    <li><strong>Active Speed Control</strong> — Adaptive speed control</li>
-  </ul>
-
-  <h2>Forklift Database</h2>
-  <p>
-    This database provides complete specifications for forklifts across major manufacturers including:
+  <p class="prose">
+    <a href="https://loadingzonesafety.com/" target="_blank" rel="noopener">loadingzonesafety.com</a>
   </p>
-  <ul>
-    <li>Toyota · Crown · Nissan/Unicarrier</li>
-    <li>Hyster · Yale · Linde</li>
-    <li>Bobcat/Doosan · CAT/Mitsubishi</li>
-    <li>Clark · Hyundai · Komatsu</li>
-    <li>BYD · Heli · Jungheinrich</li>
-    <li>And more...</li>
-  </ul>
+</section>
 
-  <p>
-    Each model includes capacity, fuel type, OSHA class, production years, and compatibility tracking for SSC safety kits.
+<section class="panel">
+  <h2>Products</h2>
+  <ul class="product-grid">
+    {% for name, desc in [
+      ('PACE-ONE™ G2 Speed Limiter', 'Forklift speed limiting with ECU integration'),
+      ('PACE-ONE™ ZSC Zone Speed Control', 'Speed limits that change by zone'),
+      ('RF Transmitters Nomad™', 'Transmitters that define the speed-control zones'),
+      ('DOT-LOK™ G2 Shift Inhibitor', 'Blocks shifting outside safe conditions'),
+      ('Ignition Interlock', "Seatbelt interlock; the truck won't start unbuckled"),
+      ('Speedzone G2', 'Mechanical governor conversion'),
+      ('Critical Systems Control™', 'Transmission temperature monitoring'),
+      ('μCal™', 'Calibration and software updates for SSC controllers'),
+      ('PED-LOK™', 'Bus loading brake control'),
+      ('Trans-Stop™ Transmission Interlock', 'Electromechanical transmission safety'),
+      ('Mast Height Speed Control', 'Overhead mast warning and speed reduction'),
+      ('Active Speed Control', 'Adaptive speed control'),
+    ] %}
+    <li>
+      <span class="product-grid__name">{{ name }}</span>
+      <span class="product-grid__desc">{{ desc }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="panel">
+  <h2>What the database holds</h2>
+  <p class="prose">
+    Every model carries its capacity, fuel type, OSHA class, production years and
+    chassis, alongside the SSC kits confirmed to fit it. Serial numbers decode
+    offline where a manufacturer's scheme is on file.
   </p>
-
-  <h2>Features</h2>
-  <ul>
-    <li><strong>AI-Powered Lookup</strong> — Automatically find specifications by model code or web search</li>
-    <li><strong>Kit Compatibility Tracking</strong> — Know which SSC products fit each forklift</li>
-    <li><strong>Full Equipment Coverage</strong> — Counterbalance, reach trucks, warehouse gear, and heavy equipment</li>
-    <li><strong>OSHA Classification</strong> — Class I–VII powered-industrial-truck categories</li>
-    <li><strong>Production Year Tracking</strong> — Identify model generations and specifications</li>
+  <h3>Manufacturers covered</h3>
+  <ul class="oem-grid">
+    {% for name in ['Toyota', 'Crown', 'Nissan/Unicarrier', 'Hyster', 'Yale', 'Linde',
+                    'Bobcat/Doosan', 'CAT/Mitsubishi', 'Clark', 'Hyundai', 'Komatsu',
+                    'BYD', 'Heli', 'Jungheinrich', 'Big Joe/EP', 'Raymond', 'Club Car',
+                    'Drexel', 'Taylor Dunn', 'Yamaha'] %}
+    <li>{{ name }}</li>
+    {% endfor %}
   </ul>
+</section>
+
+<section class="panel">
+  <h2>How it is used</h2>
+  <dl class="feature-list">
+    <div>
+      <dt>Lookup by model or serial</dt>
+      <dd>Checks the catalog first; if nothing matches, it searches the web and
+        proposes a record for review. Serial numbers decode offline, free.</dd>
+    </div>
+    <div>
+      <dt>Kit compatibility</dt>
+      <dd>Each kit-to-forklift connection carries a validation tier, so you can
+        tell a signed-off installation from an editor's first pass.</dd>
+    </div>
+    <div>
+      <dt>Full equipment coverage</dt>
+      <dd>Counterbalance trucks, reach trucks, warehouse gear, tow tractors and
+        heavy lift.</dd>
+    </div>
+    <div>
+      <dt>OSHA classification</dt>
+      <dd>Class I to VII, assigned from the truck's power, tyre and configuration.</dd>
+    </div>
+  </dl>
 </section>
 
 {% endblock %}

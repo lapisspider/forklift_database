@@ -80,20 +80,26 @@
 
   <!-- ============ Forklifts tab ============ -->
   <div id="tab-forklifts" class="tab-panel active">
-    <div class="row space-between">
-      <h2>Forklift database</h2>
-      <form method="get" action="/" class="row">
-        <input type="text" name="q" value="{{ q }}" placeholder="Filter by OEM / series / model / serial…">
-        <select name="sort" onchange="this.form.submit()">
+    {# Title, scale and controls sit in one header band above a single rule,
+       rather than the title carrying a rule of its own that stops where the
+       words stop. #}
+    <header class="section-head">
+      <div class="section-head__id">
+        <h2>Forklift database</h2>
+        <p class="section-head__count">{{ forklifts|length }} model{{ 's' if forklifts|length != 1 }}{% if q %} matching &ldquo;{{ q }}&rdquo;{% endif %}</p>
+      </div>
+      <form method="get" action="/" class="row section-head__controls">
+        <input type="text" name="q" value="{{ q }}" placeholder="Filter by OEM, series, model or serial" aria-label="Filter the database">
+        <select name="sort" onchange="this.form.submit()" aria-label="Sort order">
           <option value="oem" {% if sort == 'oem' %}selected{% endif %}>Sort: OEM (grouped)</option>
           <option value="az" {% if sort == 'az' %}selected{% endif %}>Sort: Model A→Z</option>
           <option value="za" {% if sort == 'za' %}selected{% endif %}>Sort: Model Z→A</option>
           <option value="serial" {% if sort == 'serial' %}selected{% endif %}>Sort: SSC serial</option>
           <option value="year" {% if sort == 'year' %}selected{% endif %}>Sort: Year</option>
         </select>
-        <button type="submit">Filter</button>
+        <button type="submit" class="subtle">Filter</button>
       </form>
-    </div>
+    </header>
 
     {% if not forklifts %}
       <p class="muted">No forklifts yet. Use "Lookup by forklift OEM and model/serial number" above to add one.</p>
@@ -176,9 +182,12 @@
 
   <!-- ============ Kits tab ============ -->
   <div id="tab-kits" class="tab-panel">
-    <h2>Kit database</h2>
-    <p class="muted">Products the company sells. Each kit is identified by its SKU and
-       can fit many forklift models.</p>
+    <header class="section-head">
+      <div class="section-head__id">
+        <h2>Kit database</h2>
+        <p class="section-head__count">{{ kits|length }} kit{{ 's' if kits|length != 1 }}, each fitting one or more forklift models</p>
+      </div>
+    </header>
 
     {% if kits %}
     <div class="table-scroll">

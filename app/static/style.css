@@ -15,6 +15,11 @@
   --red-soft: rgba(225, 6, 0, 0.1);
   --red-hover: #ff1800;
   --accent-white: #ffffff;
+  /* SSC sets its headings in Crimson Text and its body copy in Hind. Matching
+     that pairing is what makes this read as part of their estate; it also
+     gives the page the two clearly distinct families a type scale wants,
+     instead of one sans doing every job. */
+  --font-display: "Crimson Text", Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; }
@@ -157,12 +162,13 @@ body {
 }
 
 .hero-content h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 1.6rem + 2.2vw, 3.6rem);
+  font-weight: 600;
   color: var(--accent-white);
   margin: 0 0 1rem 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: 0;
+  line-height: 1.12;
 }
 
 .hero-content p {
@@ -403,31 +409,50 @@ body {
   box-shadow: 0 12px 40px rgba(225, 6, 0, 0.15);
 }
 
+/* ===== SECTION HEADERS =====
+   A title now opens its section rather than floating above the content: it
+   sits on a rule that runs the full width of the panel, with a short red
+   segment riding that rule at the left. The old treatment was a stubby 40px
+   bar under the words, which marked the heading but never separated it from
+   what followed. SSC's own site sets headings in Crimson Text with no
+   underline at all, so the rule here is doing structural work, not decoration. */
 .panel > h2:first-child,
-.panel h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.3rem;
-  letter-spacing: 0.02em;
+.panel h2,
+.panel > h3:first-child {
+  position: relative;
+  margin: 0 0 1.3rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
   color: var(--accent-white);
-  font-weight: 700;
 }
 
-.panel h2::after {
+.panel > h3:first-child {
+  font-size: 1.3rem;
+}
+
+.panel > h2::after,
+.panel > h3:first-child::after {
   content: "";
-  display: block;
-  width: 40px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%);
-  margin-top: 0.8rem;
-  border-radius: 2px;
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 56px;
+  height: 2px;
+  background: var(--red);
 }
 
 h3 {
-  margin: 1.2rem 0 0.6rem;
-  font-size: 1.05rem;
+  margin: 1.4rem 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
   color: var(--accent-white);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0;
 }
 
 .muted {
@@ -704,6 +729,259 @@ table.specs th {
 table.specs tbody tr:hover {
   box-shadow: none;
   background: var(--bg-card-alt);
+}
+
+/* ===== SECTION HEADER BAND =====
+   Title, scale and controls on one line above one rule. Used where a heading
+   has to share its row with something (the database filter), which a heading
+   carrying its own border cannot do -- as a flex item the rule would stop
+   where the words stop. */
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.5rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.section-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 56px;
+  height: 2px;
+  background: var(--red);
+}
+
+.section-head__id {
+  min-width: 0;
+}
+
+.section-head h2 {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.section-head h2::after {
+  display: none;
+}
+
+.section-head__count {
+  margin: 0.3rem 0 0;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.section-head__controls {
+  flex: 0 1 auto;
+  gap: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .section-head__controls {
+    width: 100%;
+  }
+}
+
+/* ===== ABOUT PAGE ===== */
+.page-intro {
+  margin: 2rem 0 2.2rem;
+  max-width: 62ch;
+}
+
+.page-intro h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 1.6rem + 1.8vw, 3rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--accent-white);
+  margin: 0 0 0.8rem;
+}
+
+.page-intro__lead {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.prose {
+  max-width: 68ch;
+  line-height: 1.7;
+}
+
+/* The products are the page's substance: a two-line entry each, laid out so
+   the names form a scannable column instead of a bulleted paragraph. */
+.product-grid,
+.oem-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+  gap: 1.1rem 2rem;
+}
+
+.product-grid li {
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--line);
+}
+
+.product-grid li:hover {
+  border-left-color: var(--red);
+}
+
+.product-grid__name {
+  display: block;
+  font-weight: 600;
+  color: var(--ink-light);
+}
+
+.product-grid__desc {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Twenty manufacturer names were six bullets joined by middle dots. */
+.oem-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.oem-grid li {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-card-alt);
+  font-size: 0.86rem;
+  color: var(--ink);
+}
+
+.feature-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.3rem 2rem;
+}
+
+.feature-list dt {
+  font-weight: 600;
+  color: var(--ink-light);
+  margin-bottom: 0.25rem;
+}
+
+.feature-list dd {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ===== RECORD HEADER (forklift detail) =====
+   The rule belongs to the header, not to the title, so it runs under the
+   actions too and the whole block reads as one opening section. */
+.record-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.record-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 56px;
+  height: 2px;
+  background: var(--red);
+}
+
+.record-head__id {
+  min-width: 0;
+}
+
+/* The title's own rule is suppressed; the header carries it. */
+.record-head h2 {
+  margin: 0 0 0.6rem;
+  padding-bottom: 0;
+  border-bottom: none;
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+}
+
+.record-head h2::after {
+  display: none;
+}
+
+.record-head__actions {
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+.record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* A quiet pill with a small solid dot, replacing the 24px gradient disc with
+   a glyph in it. The colour says which state; the words say what it means. */
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-card-alt);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.meta-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.meta-pill--green .meta-pill__dot { background: #2ea043; }
+.meta-pill--yellow .meta-pill__dot { background: #e3a70f; }
+.meta-pill--red .meta-pill__dot { background: var(--red); }
+
+.meta-pill--green { border-color: rgba(46, 160, 67, 0.45); }
+.meta-pill--yellow { border-color: rgba(227, 167, 15, 0.45); }
+.meta-pill--red { border-color: rgba(225, 6, 0, 0.5); }
+
+.meta-pill--none {
+  color: var(--muted);
+}
+
+.meta-pill .tier {
+  font-size: 0.85rem;
+  box-shadow: none;
 }
 
 /* ===== KIT TABLE =====
@@ -1052,14 +1330,18 @@ form > label {
   padding: 0.1rem 0;
 }
 
+/* An accordion bar is a <button>, so the global uppercase was rewriting the
+   manufacturer's own name -- "CAT/Mitsubishi" came out "CAT/MITSUBISHI".
+   These are data, so they show exactly as stored. */
 .oem-bar {
   background: linear-gradient(90deg, #000 0%, #111 100%);
   color: var(--accent-white);
   padding: 0.9rem 1.2rem;
   font-size: 1.05rem;
   border-left: 4px solid var(--red);
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
   border-radius: 6px;
 }
 
@@ -1075,7 +1357,8 @@ form > label {
   font-weight: 600;
   border-left: 3px solid var(--line);
   border-radius: 6px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .series-bar:hover {

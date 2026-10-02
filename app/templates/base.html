@@ -6,7 +6,11 @@
   <title>{% block title %}SSC Forklift Database{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap">
+  {# Hind for the interface, Crimson Text for headings: the same pairing SSC
+     uses on loadingzonesafety.com, so this reads as part of their estate
+     rather than as a separate tool. #}
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap">
   <link rel="stylesheet" href="/static/style.css?v={{ asset_v }}">
   <link rel="stylesheet" href="/static/serial.css?v={{ asset_v }}">
   <script src="/static/htmx.min.js" defer></script>

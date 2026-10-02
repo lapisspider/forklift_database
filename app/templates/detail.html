@@ -1,29 +1,31 @@
 {% extends "base.html" %}
-{% from "partials/indicators.html" import tier_badge, status_dot %}
+{% from "partials/indicators.html" import tier_badge, status_dot, status_pill, tier_pill %}
 {% block title %}{{ fk.manufacturer }} {{ fk.model }}{% endblock %}
 {% block content %}
 
 <a href="/" class="muted">← Back to database</a>
 
 <section class="panel">
-  {# Top-left review cluster — same position for admin / editor / viewer #}
-  <div class="status-cluster">
-    <span class="chip-label">{{ status_dot(fk.info_status) }} Info: {{ (fk.info_status or 'yellow')|capitalize }}</span>
-    <span class="chip-label">{{ tier_badge(fk.best_tier) }} Best tier: {{ (fk.best_tier or 'none')|capitalize }}</span>
-  </div>
-
-  <div class="row space-between">
-    <h2>{{ fk.manufacturer }} {{ fk.model }}</h2>
+  {# The record's name leads; its review state reads underneath as a caption on
+     the title, not as two chips floating above it. #}
+  <header class="record-head">
+    <div class="record-head__id">
+      <h2>{{ fk.manufacturer }} {{ fk.model }}</h2>
+      <div class="record-meta">
+        {{ status_pill(fk.info_status) }}
+        {{ tier_pill(fk.best_tier) }}
+      </div>
+    </div>
     {% if can_edit %}
-    <div class="row">
+    <div class="row record-head__actions">
       <a class="button" href="/forklift/{{ fk.id }}/edit">Edit</a>
       <form method="post" action="/forklift/{{ fk.id }}/delete"
-            onsubmit="return confirm('Delete this forklift?');">
+            onsubmit="return confirm('Delete {{ fk.manufacturer }} {{ fk.model }}? This cannot be undone.');">
         <button class="danger" type="submit">Delete</button>
       </form>
     </div>
     {% endif %}
-  </div>
+  </header>
 
   {% if is_admin %}
   <div class="status-select">
@@ -111,6 +113,7 @@
   {% if fk.kit_links %}
   {# Same identity-in-one-cell treatment as the kit database: the name and
      price are blank on most kits, so two columns of em dashes bought nothing. #}
+  <div class="table-scroll">
   <table class="kit-table">
     <thead><tr><th>Tier</th><th>Kit</th><th>Price</th><th><span class="sr-only">Actions</span></th></tr></thead>
     <tbody>
@@ -128,6 +131,7 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
   {% else %}
     <p class="muted">No kits linked to this forklift yet. Link one from the Kits tab on the home page.</p>
   {% endif %}
