@@ -118,11 +118,46 @@ loadingzonesafety.com. Red is `--red: #e10600`.
 
 ## Open items
 
-- **19 rows where the model code disagrees with the stored capacity** (Hyundai 15BRP-9
-  1361→1500, Komatsu FG25T-16 2200→2500, Heli CPYD25C 2200→2500, Linde E35PHL/E35SH
-  3100→3500, Linde HT25CT 2200→2500, HT27CT 2400→2700, …). All metric brands holding US
-  pounds conversions. By the convention above the code should win, but this is a decision
-  about whether the catalog records the metric or the US rating — **ask before normalising.**
+- **19 rows where the model code disagrees with the stored capacity.** Reproduce with
+  `reconcile_capacity()` over the catalog; the list is stable:
+
+  | OEM | Model | Stored | Coded |
+  |---|---|---|---|
+  | Heli | CPYD25C | 2200 | 2500 |
+  | Heli | CQD14X2 | 1350 | 1400 |
+  | Heli | CQD16X1 | 1500 | 1600 |
+  | Heli | QYCD20 | 2040 | 2000 |
+  | Heli | QYCD25 | 2550 | 2500 |
+  | Heli | QYCD30 | 3060 | 3000 |
+  | Heli | QYD45S-SU | 4000 | 4500 |
+  | Hyundai | 15BRP-9 | 1361 | 1500 |
+  | Hyundai | 18BRP-9 | 1588 | 1800 |
+  | Hyundai | 20BRP-9 | 1814 | 2000 |
+  | Hyundai | 23BRP-9 | 2041 | 2300 |
+  | Hyundai | 25BC-9 | 2200 | 2500 |
+  | Komatsu | FG20T-16 | 1800 | 2000 |
+  | Komatsu | FG25ST-16 | 2200 | 2500 |
+  | Komatsu | FG25T-16 | 2200 | 2500 |
+  | Linde | E35PHL | 3100 | 3500 |
+  | Linde | E35SH | 3100 | 3500 |
+  | Linde | HT25CT | 2200 | 2500 |
+  | Linde | HT27CT | 2400 | 2700 |
+
+  **Do not bulk-normalise these.** They are three different situations:
+
+  1. *Genuine rating difference, not an error.* The Hyundai `BRP-9` rows are exact pound
+     figures (1361 kg = 3000 lb, 1814 kg = 4000 lb). Hyundai's model code names the metric
+     family while its North American nameplate rates lower — 1500 kg is 3307 lb, so these
+     are two real ratings, not a botched conversion. Deciding between them is a question
+     about what this catalog publishes, and is the **user's call**.
+  2. *Probable conversion artifact.* Linde and Komatsu rows look like pounds round-trips
+     on trucks whose code states the metric rating.
+  3. *Possible bad decode — check before touching.* The four Heli `QY…` rows move the
+     wrong way (stored figure **above** the coded one). `reconcile_capacity()` assumes the
+     first 2–3 digits are capacity in 100 kg, which holds for `CPxD` counterbalance codes
+     but is unverified for the `QY` lines. Confirm what `QY` designates on Heli's own
+     category page before treating these as errors.
+
 - 984 of 1009 rows are still `info_status = 'yellow'` (pending admin review), so the
   status column is mostly one repeated mark.
 - All 320 Heli rows lack a spec-sheet PDF; Clark has one on 2 of 59.
