@@ -38,6 +38,7 @@ from sqlalchemy.orm import Session
 from ..config import settings
 from ..schemas import EquivalentMatch, ForkliftSpecs, NLQueryResult
 from . import extractor, web_identify
+from .decoders.types import normalize
 from .lookup import find_exact, find_in_db
 from .oem_alias import split_oem
 
@@ -48,14 +49,31 @@ from .oem_alias import split_oem
 # truck, not against two ratings that disagree.
 CAPACITY_TOLERANCE = 0.20
 
+# Hyster and Yale are one group and their trucks are often mechanically
+# identical, so a cross-market search will happily answer a Yale question with
+# a Hyster model. House rule (CLAUDE.md) is that kits must NOT transfer between
+# Hyster/Yale twins even then, and the people asking this question are pricing
+# parts -- so a counterpart that crosses the badge carries the warning with it.
+_TWIN_BRANDS = {"Hyster", "Yale"}
+
 _COLUMNS = ["id", "manufacturer", "series", "model", "capacity_kg",
             "fuel_type", "truck_class", "info_status"]
 _SELECT = "SELECT " + ", ".join(_COLUMNS) + "\nFROM forklifts\n"
 
 # Space- and case-insensitive, matching the house rule for kit SKUs: catalog
 # model strings carry stray spaces ("ETR 230" against "ETR230").
-_EXACT_SQL = _SELECT + "WHERE REPLACE(LOWER(model), ' ', '') = REPLACE(LOWER(:m), ' ', '')"
-_LOOSE_SQL = _SELECT + "WHERE REPLACE(LOWER(model), ' ', '') LIKE REPLACE(LOWER(:m), ' ', '')\nLIMIT 10"
+# Both exclude the subject's own row. Without that, a candidate that is a
+# PREFIX of the model we asked about matches it under the LIKE below -- a web
+# search proposing "ERC040VA" as the counterpart of "ERC040VAN" resolved to the
+# ERC040VAN row itself, compared its capacity against its own, and reported a
+# confirmed counterpart. The guard is written as (:subj IS NULL OR ...) because
+# a bare <> against a NULL subject would exclude every row.
+_NOT_SUBJECT = ("\n  AND (:subj IS NULL OR REPLACE(LOWER(model), ' ', '') "
+                "<> REPLACE(LOWER(:subj), ' ', ''))")
+_EXACT_SQL = (_SELECT + "WHERE REPLACE(LOWER(model), ' ', '') = REPLACE(LOWER(:m), ' ', '')"
+              + _NOT_SUBJECT)
+_LOOSE_SQL = (_SELECT + "WHERE REPLACE(LOWER(model), ' ', '') LIKE REPLACE(LOWER(:m), ' ', '')"
+              + _NOT_SUBJECT + "\nLIMIT 10")
 
 # The backstop, for when the web names no counterpart at all. It names real
 # catalog trucks of the same size and type, which is a different and weaker
@@ -182,7 +200,8 @@ def _subject_specs(db: Session, name: str, oem: str | None,
     return None, sheet.source_url, False
 
 
-def _check(candidate: str, row, subject_cap: float | None) -> EquivalentMatch:
+def _check(candidate: str, row, subject_cap: float | None,
+           exact: bool = True) -> EquivalentMatch:
     """Turn one web-proposed name, plus its catalog row or absence, into a verdict."""
     if row is None:
         return EquivalentMatch(
@@ -192,8 +211,12 @@ def _check(candidate: str, row, subject_cap: float | None) -> EquivalentMatch:
     m = EquivalentMatch(
         model=candidate, forklift_id=row.id, manufacturer=row.manufacturer,
         capacity_kg=row.capacity_kg, fuel_type=row.fuel_type, truck_class=row.truck_class,
-        in_catalog=True, verdict="confirmed",
+        in_catalog=True, verdict="confirmed" if exact else "near_match",
     )
+    if not exact:
+        m.note = (f"No row for {candidate}. The nearest model string in the catalog is "
+                  f"{row.model}, which is a different order code — the suffix decides kit "
+                  f"fit, so confirm this before relying on it.")
     if subject_cap and row.capacity_kg:
         drift = abs(row.capacity_kg - subject_cap) / subject_cap
         if drift > CAPACITY_TOLERANCE:
@@ -207,14 +230,42 @@ def _check(candidate: str, row, subject_cap: float | None) -> EquivalentMatch:
     return m
 
 
-def _lookup_candidate(db: Session, candidate: str):
+def _is_same_designation(candidate: str, subject_model: str | None) -> bool:
+    """Is this "counterpart" just the asked model's own designation again?
+
+    A search for a model's foreign name readily proposes the same code with a
+    suffix added or dropped -- asked for the European name of a Yale ERC040VAN
+    it answered "ERC040VA", which is not a European model at all but Yale's own
+    North American series designation (the spec sheet is "ERC030-040VA"; the
+    catalog stores the full order code, suffix included). Treating that as a
+    cross-market counterpart invents a regional distinction that is not there.
+    """
+    if not subject_model:
+        return False
+    c, s = normalize(candidate), normalize(subject_model)
+    if not c or not s:
+        return False
+    return c in s or s in c
+
+
+def _lookup_candidate(db: Session, candidate: str, subject_model: str | None):
     """The SQL half: a web-named model is only an answer once the catalog has
-    been asked about it. Exact match first, then a contains-match."""
-    row = db.execute(text(_EXACT_SQL), {"m": candidate}).first()
+    been asked about it. Exact match first, then a contains-match.
+
+    Returns (row, sql, exact). `exact` matters: house convention is that a
+    model name is the FULL order code, suffix included, because the suffix
+    identifies the engine/ECU and decides kit fit. So a contains-match found a
+    DIFFERENT truck whose code merely overlaps, and must never be reported with
+    the same confidence as an exact hit.
+    """
+    params = {"m": candidate, "subj": subject_model}
+    row = db.execute(text(_EXACT_SQL), params).first()
     if row is not None:
-        return row, _EXACT_SQL
-    row = db.execute(text(_LOOSE_SQL), {"m": f"%{candidate}%"}).first()
-    return row, (_EXACT_SQL if row is None else _LOOSE_SQL)
+        return row, _EXACT_SQL, True
+    row = db.execute(text(_LOOSE_SQL), {**params, "m": f"%{candidate}%"}).first()
+    if row is None:
+        return None, _EXACT_SQL, False
+    return row, _LOOSE_SQL, False
 
 
 def _nearest_in_catalog(db: Session, specs: ForkliftSpecs):
@@ -318,9 +369,16 @@ Requirements:
   search itself established that.
 - If a counterpart was rejected on capacity, say so and give both figures. Do
   not present it as the equivalent.
+- A "near_match" is NOT a confirmation. It means the catalog has no row for the
+  named model, only a different order code that overlaps its text. Say that the
+  named model is not in the database and name the near match as a separate,
+  different truck. Never write that the counterpart is "confirmed in the
+  catalog" on the strength of a near_match.
 - If no counterpart was confirmed but nearest-by-spec catalog trucks are listed,
   name two or three of them and say exactly what they are: the closest trucks in
   this database by capacity and type, not confirmed equivalents.
+- If a note says two brands are badge twins whose kits do not transfer, carry
+  that warning into your answer. The person asking is pricing parts.
 - Invent nothing. Every model number you write must appear above."""
     resp = _client().messages.create(
         model=settings.claude_model, max_tokens=400,
@@ -361,10 +419,25 @@ def answer(db: Session, question: str) -> NLQueryResult | None:
     subject_cap = subject.capacity_kg if subject else None
     statements: list[str] = []
     rows: list[list] = []
+    subject_model = (subject.model if subject else None) or model
     for candidate in equiv.candidate_models[:5]:
-        row, sql = _lookup_candidate(db, candidate)
+        if _is_same_designation(candidate, subject_model):
+            result.matches.append(EquivalentMatch(
+                model=candidate, in_catalog=False, verdict="same_designation",
+                note=(f"This is the asked model's own designation, not a counterpart — "
+                      f"{candidate} and {subject_model} are the same code with the order-code "
+                      f"suffix added or dropped, not two regional names."),
+            ))
+            continue
+        row, sql, exact = _lookup_candidate(db, candidate, subject_model)
         statements.append(sql)
-        match = _check(candidate, row, subject_cap)
+        match = _check(candidate, row, subject_cap, exact)
+        if (subject and match.manufacturer
+                and {subject.manufacturer, match.manufacturer} == _TWIN_BRANDS):
+            warning = (f"{match.manufacturer} and {subject.manufacturer} are badge twins: "
+                       f"kits do NOT transfer between them, even where the trucks are "
+                       f"mechanically identical.")
+            match.note = f"{match.note} {warning}" if match.note else warning
         result.matches.append(match)
         if row is not None and match.verdict == "confirmed":
             rows.append(list(row))

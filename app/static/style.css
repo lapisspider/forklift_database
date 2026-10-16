@@ -2059,11 +2059,15 @@ form > label {
 }
 
 .equiv-not_in_catalog,
+.equiv-near_match,
+.equiv-same_designation,
 .equiv-unchecked {
   border-left-color: #b8860b;
 }
 
 .equiv-not_in_catalog .verdict,
+.equiv-near_match .verdict,
+.equiv-same_designation .verdict,
 .equiv-unchecked .verdict {
   background: rgba(184, 134, 11, 0.18);
   color: #d9a93a;
