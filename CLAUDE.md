@@ -187,12 +187,22 @@ loadingzonesafety.com. Red is `--red: #e10600`.
 - **18 rows where the model code's tire disagrees with the stored `truck_class`.**
   Reproduce with `audit_tire_class.py` (read-only, writes nothing). The code looks
   right and the stored class looks wrong: within the Cat `C`-series the split
-  tracks **fuel** exactly (Diesel→V, LPG→IV), which is the signature of a class
-  inferred from the wrong field, and Hyster `S` is a cushion line stored as Class V
-  on 8 of 11 rows. That makes this the **third** time class has been got wrong
+  tracks **fuel** on 7 of 8 rows (Diesel→V, LPG→IV; `C5000` is the exception),
+  which is the signature of a class inferred from the wrong field, and Hyster `S`
+  is a cushion line stored as Class V on 7 of 11 rows. Cat `GC40K` and `GP40K` are
+  both stored Class IV, and GC/GP *is* the cushion/pneumatic split, so they cannot
+  both be right. That makes this the **third** time class has been got wrong
   (BYD ECC and Heli above), and the largest. **Do not bulk-fix** — same rule as the
   capacity rows, decide per row. For scale: the parser covers 211 rows across three
   OEMs, and Yale's 53 disagree on none.
+
+- **7 Electric rows stored as Class IV or V**, against the rule above that electric
+  counterbalance is Class I whatever the tire: `2EPC5000`, Hyster `J70XN`/`J80XN`/
+  `J90XN`/`J100XN`/`J120XN`, Yale `ERP030VT`. No row errs the other way. `ERP030VT`
+  shares a `platform_group` with `J30XNT`, which *is* Class I, so two curated twins
+  disagree. Unlike the tire rows this needs no judgement — the rule is already
+  stated — but it is still a data change, so it wants a seed refresh to reach
+  production.
 
 - 984 of 1009 rows are still `info_status = 'yellow'` (pending admin review), so the
   status column is mostly one repeated mark.
