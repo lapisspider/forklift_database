@@ -75,6 +75,32 @@ Dropping `users` matters — the seed is committed, and account rows must not be
 **Electric counterbalance is Class I regardless of tire.** Class II is *only*
 narrow-aisle, never counterbalance. This has been got wrong twice (BYD ECC, Heli).
 
+### Tire type: read it off the code, not the class
+
+The class carries tire for **IC trucks only** (IV cushion, V pneumatic). An
+electric rider is Class I on any tire, so the 303 Class I rows hold no tire
+information at all — and tire is what decides kit fit.
+
+There is deliberately **no `tire_type` column**. The trucks it matters for are
+cross-market counterparts (Yale `ERP18VT`, Hyster `J1.8XN`), which by definition
+have no row here, so a stored field could never answer the question.
+`tire_from_model()` in `app/ai/tire.py` reads it off the designation instead, and
+`crossref` warns when a proposed counterpart swaps cushion for pneumatic.
+
+Conventions, each validated against the Class IV/V rows and the curated
+`platform_group` twins:
+
+| OEM | Cushion | Pneumatic |
+|---|---|---|
+| Yale | `ERC` `ESC` `GC` `GLC` `GDC` | `ERP` `GP` `GLP` `GDP` |
+| Hyster | `S` `E` | `H` `J` |
+| CAT/Mitsubishi | `C` `2C` `GC` `EC` `FGC` `FBC` `2EPC` | `P` `2P` `GP` `EP` `2EP` `FG` `FD` `FB` `DP` |
+
+Longest prefix wins (`FGC` before `FG`, `2EPC` before `2EP`). `None` is a normal
+answer and must be read as *unknown*, never as *no difference*. Don't add an OEM
+without running `audit_tire_class.py` against it first — the `CPD` trap below is
+what guessing from a code string looks like when it goes wrong.
+
 ### Heli model codes
 
 `C` forklift · `P` counterbalanced · fuel letter · optional `D` · capacity in 100 kg.
@@ -157,6 +183,16 @@ loadingzonesafety.com. Red is `--red: #e10600`.
      first 2–3 digits are capacity in 100 kg, which holds for `CPxD` counterbalance codes
      but is unverified for the `QY` lines. Confirm what `QY` designates on Heli's own
      category page before treating these as errors.
+
+- **18 rows where the model code's tire disagrees with the stored `truck_class`.**
+  Reproduce with `audit_tire_class.py` (read-only, writes nothing). The code looks
+  right and the stored class looks wrong: within the Cat `C`-series the split
+  tracks **fuel** exactly (Diesel→V, LPG→IV), which is the signature of a class
+  inferred from the wrong field, and Hyster `S` is a cushion line stored as Class V
+  on 8 of 11 rows. That makes this the **third** time class has been got wrong
+  (BYD ECC and Heli above), and the largest. **Do not bulk-fix** — same rule as the
+  capacity rows, decide per row. For scale: the parser covers 211 rows across three
+  OEMs, and Yale's 53 disagree on none.
 
 - 984 of 1009 rows are still `info_status = 'yellow'` (pending admin review), so the
   status column is mostly one repeated mark.

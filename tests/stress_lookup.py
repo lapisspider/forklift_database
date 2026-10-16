@@ -35,7 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sqlalchemy import text as sql_text  # noqa: E402
 
-from app.ai import extractor, lookup as L, tavily_client, web_identify  # noqa: E402
+from app.ai import crossref, extractor, lookup as L, tavily_client, tire, web_identify  # noqa: E402
 from app.ai.decoders.registry import detect  # noqa: E402
 from app.ai.extractor import reconcile_capacity  # noqa: E402
 from app.ai.oem_alias import OEM_DOMAINS, split_oem  # noqa: E402
@@ -514,11 +514,110 @@ def test_regressions(db) -> None:
         tavily_client.pdf_urls = saved_urls
 
 
-# ----------------------------------------------------------- 8. concurrency
+# ------------------------------------------------------------ 8. tire type
+
+
+# Class IV and V ARE the tire for IC trucks (OSHA: IV = cushion, V = pneumatic),
+# which makes them ground truth for the parser. Class I is not -- it covers every
+# electric rider on any tire -- so those rows can never disagree.
+_CLASS_TIRE = {"Class IV": tire.CUSHION, "Class V": tire.PNEUMATIC}
+
+# Rows where the code and the stored class disagree, as of the audit that
+# introduced this parser. Every one looks like a bad truck_class rather than a
+# bad rule -- the Cat C-series split tracks fuel, and Hyster S is a cushion line
+# stored mostly as Class V. The count is pinned so that adding an OEM rule which
+# quietly breaks an existing family shows up as a failure rather than as noise.
+# Lower is good: fix a class row, drop it from here.
+_KNOWN_CLASS_DISAGREEMENTS = 18
+
+
+def test_tire(db) -> None:
+    R.start("8. Tire from the model code -- the spec no other field carries")
+
+    with _spend_lock:
+        mark = len(_spend_log)
+
+    # Longest prefix must win, or FGC reads as FG and 2EPC as 2EP.
+    for mfr, model, want in (
+        ("Yale", "ERC040VAN", tire.CUSHION),
+        ("Yale", "ERP18VT", tire.PNEUMATIC),
+        ("Yale", "ESC030AD", tire.CUSHION),
+        ("Yale", "GDP080VX", tire.PNEUMATIC),
+        ("Hyster", "S40FT", tire.CUSHION),
+        ("Hyster", "E80XN", tire.CUSHION),
+        ("Hyster", "J1.8XN", tire.PNEUMATIC),
+        ("CAT/Mitsubishi", "FGC25N", tire.CUSHION),
+        ("CAT/Mitsubishi", "FG25N", tire.PNEUMATIC),
+        ("CAT/Mitsubishi", "2EPC5000", tire.CUSHION),
+        ("CAT/Mitsubishi", "2EP5000", tire.PNEUMATIC),
+    ):
+        got = tire.tire_from_model(mfr, model)
+        R.check(f"{mfr} {model} -> {want}", got == want, f"got {got!r}")
+
+    # Silence is the safe answer for anything unvalidated.
+    for mfr, model in (("Heli", "CPD25-GE2G"), ("Toyota", "8FGCU25"), ("Crown", "FC5200"),
+                       ("CAT/Mitsubishi", "ETR 230"), ("Yale", ""), (None, "ERC040VAN")):
+        got = tire.tire_from_model(mfr, model)
+        R.check(f"{mfr} {model!r} -> None", got is None, f"got {got!r}")
+
+    # A conflict needs BOTH sides known; one unknown is not a disagreement.
+    R.check("ERC040VAN vs ERP18VT conflicts",
+            tire.tire_conflict("Yale", "ERC040VAN", "Yale", "ERP18VT") is not None)
+    R.check("ERP040VT vs ERP18VT does not conflict",
+            tire.tire_conflict("Yale", "ERP040VT", "Yale", "ERP18VT") is None)
+    R.check("unknown side never conflicts",
+            tire.tire_conflict("Yale", "ERC040VAN", "Heli", "CPD25") is None)
+
+    # Against the catalog's own Class IV/V rows.
+    disagree = []
+    agreed = 0
+    for f in db.query(Forklift).filter(Forklift.truck_class.in_(tuple(_CLASS_TIRE))).all():
+        expected = _CLASS_TIRE[f.truck_class]
+        got = tire.tire_from_model(f.manufacturer, f.model)
+        if got is None:
+            continue
+        if got == expected:
+            agreed += 1
+        else:
+            disagree.append(f"{f.manufacturer} {f.model} (code {got}, class {expected})")
+    R.check("parser agrees with most Class IV/V rows", agreed > 100, f"only {agreed} agreed")
+    R.check("known class disagreements have not grown",
+            len(disagree) <= _KNOWN_CLASS_DISAGREEMENTS,
+            f"{len(disagree)} disagreements, was {_KNOWN_CLASS_DISAGREEMENTS}: "
+            f"{'; '.join(disagree[:6])}")
+
+    # The warning rides on the match, including when the counterpart has no row
+    # -- which is the normal case for a cross-market name.
+    subject = ForkliftSpecs(manufacturer="Yale", model="ERC040VAN", capacity_kg=1800.0,
+                            fuel_type="Electric", truck_class="Class I")
+    absent = crossref._check("ERP18VT", None, 1800.0, True, subject=subject)
+    R.check("tire warning on a counterpart with no catalog row",
+            absent.note is not None and "ire differs" in absent.note, f"note={absent.note!r}")
+
+    row, _sql, exact = crossref._lookup_candidate(db, "ERP040VT", "ERC040VAN")
+    R.check("ERP040VT resolves in the catalog", row is not None)
+    if row is not None:
+        swapped = crossref._check("ERP040VT", row, 1800.0, exact, subject=subject)
+        R.check("tire warning on a catalogued counterpart",
+                swapped.note is not None and "ire differs" in swapped.note,
+                f"note={swapped.note!r}")
+        R.check("capacity verdict survives the tire note",
+                swapped.verdict == "confirmed", f"verdict={swapped.verdict}")
+
+    same = crossref._check("ERC040GH", None, 1800.0, True, subject=subject)
+    R.check("no tire warning when both sides are cushion",
+            same.note is not None and "ire differs" not in same.note, f"note={same.note!r}")
+
+    with _spend_lock:
+        spent = _spend_log[mark:]
+    R.check("tire parsing spends nothing", not spent, f"spent on {spent}")
+
+
+# ----------------------------------------------------------- 9. concurrency
 
 
 def test_concurrency() -> None:
-    R.start("8. Concurrency -- 200 parallel lookups across 20 threads")
+    R.start("9. Concurrency -- 200 parallel lookups across 20 threads")
     queries = ([q for q, _, _ in SERIAL_CASES] + SPELLINGS + NO_OEM
                + [q for q, _ in JUNK] + ["Hyster A269", "Doosan L7-00116"])
     work = (queries * 10)[:200]
@@ -567,7 +666,7 @@ def test_concurrency() -> None:
         db.close()
 
 
-# --------------------------------------------------------- 9. live OEM domains
+# -------------------------------------------------------- 10. live OEM domains
 
 
 def test_online() -> None:
@@ -613,6 +712,7 @@ def main() -> int:
         test_routing(db)
         test_catalog(db)
         test_regressions(db)
+        test_tire(db)
     finally:
         db.close()
 
@@ -620,7 +720,7 @@ def main() -> int:
     if ONLINE:
         test_online()
     else:
-        print("\n(section 9 skipped -- pass --online to check the OEM domains over HTTP)")
+        print("\n(section 10 skipped -- pass --online to check the OEM domains over HTTP)")
 
     return R.summary()
 

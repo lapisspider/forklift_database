@@ -39,7 +39,7 @@ from sqlalchemy.orm import Session
 
 from ..config import settings
 from ..schemas import EquivalentMatch, ForkliftSpecs, NLQueryResult
-from . import extractor, web_identify
+from . import extractor, tire, web_identify
 from .decoders.types import normalize
 from .lookup import find_exact, find_in_db
 from .oem_alias import split_oem
@@ -207,14 +207,50 @@ def _subject_specs(db: Session, name: str, oem: str | None,
     return None, sheet.source_url, False
 
 
+def _add_note(m: EquivalentMatch, text: str) -> None:
+    m.note = f"{m.note} {text}" if m.note else text
+
+
+def _tire_note(m: EquivalentMatch, candidate: str, row,
+               subject: ForkliftSpecs | None) -> None:
+    """Flag a cushion/pneumatic swap between the asked truck and this candidate.
+
+    Nothing else in the pipeline can see this. Capacity matches (a Yale
+    ERC040VAN and a Yale ERP18VT are both 1800 kg) and OSHA Class I covers
+    every electric rider on any tire, so without the model code these two look
+    like the same truck on every field the catalog holds -- and the tire is
+    what decides whether a kit fits.
+
+    Applied to a candidate with no catalog row as well, since a cross-market
+    counterpart usually has none; that is the ERP18VT case exactly. With no row
+    there is no brand on file either, so fall back to the asked model's brand,
+    which is right for a same-badge counterpart and simply yields None (no
+    claim) for anything else.
+    """
+    if subject is None:
+        return
+    cand_mfr = row.manufacturer if row is not None else subject.manufacturer
+    cand_model = row.model if row is not None else candidate
+    conflict = tire.tire_conflict(subject.manufacturer, subject.model,
+                                  cand_mfr, cand_model)
+    if conflict is None:
+        return
+    subject_tire, cand_tire = conflict
+    _add_note(m, f"Tire differs: the {subject.model} is {subject_tire.lower()} and the "
+                 f"{candidate} is {cand_tire.lower()}. Same truck otherwise, but the tire "
+                 f"decides kit fit — do not treat parts as interchangeable on this.")
+
+
 def _check(candidate: str, row, subject_cap: float | None,
-           exact: bool = True) -> EquivalentMatch:
+           exact: bool = True, subject: ForkliftSpecs | None = None) -> EquivalentMatch:
     """Turn one web-proposed name, plus its catalog row or absence, into a verdict."""
     if row is None:
-        return EquivalentMatch(
+        m = EquivalentMatch(
             model=candidate, in_catalog=False, verdict="not_in_catalog",
             note="Named by the web search, but there is no row for it in this catalog.",
         )
+        _tire_note(m, candidate, None, subject)
+        return m
     m = EquivalentMatch(
         model=candidate, forklift_id=row.id, manufacturer=row.manufacturer,
         capacity_kg=row.capacity_kg, fuel_type=row.fuel_type, truck_class=row.truck_class,
@@ -234,6 +270,7 @@ def _check(candidate: str, row, subject_cap: float | None,
     elif not subject_cap:
         m.verdict = "unchecked"
         m.note = "No capacity on file for the asked model, so this could not be checked."
+    _tire_note(m, candidate, row, subject)
     return m
 
 
@@ -411,6 +448,9 @@ Requirements:
   this database by capacity and type, not confirmed equivalents.
 - If a note says two brands are badge twins whose kits do not transfer, carry
   that warning into your answer. The person asking is pricing parts.
+- If a note says the tire differs, say so in the answer and name both tires. A
+  cushion truck and a pneumatic one of the same rating are not interchangeable
+  for parts, and nothing else in the answer reveals the difference.
 - Invent nothing. Every model number you write must appear above."""
     resp = _client().messages.create(
         model=settings.claude_model, max_tokens=400,
@@ -442,8 +482,13 @@ def answer(db: Session, question: str) -> NLQueryResult | None:
     subject = result.subject
     hint = None
     if subject:
+        # The tire comes off the model code, not the catalog -- it is the one
+        # spec that distinguishes an ERC from an ERP, and the search has no
+        # other way to know it.
+        subject_tire = tire.tire_from_model(subject.manufacturer, subject.model)
         hint = (f"{subject.capacity_kg or 'unknown'} kg, {subject.fuel_type or 'unknown fuel'}, "
-                f"{subject.truck_class or 'class unknown'}")
+                f"{subject.truck_class or 'class unknown'}"
+                + (f", {subject_tire.lower()} tire" if subject_tire else ""))
     equiv = extractor.find_market_equivalent(
         oem or intent.manufacturer or "", model, intent.target_market, specs_hint=hint,
         capacity_kg=subject.capacity_kg if subject else None)
@@ -464,13 +509,12 @@ def answer(db: Session, question: str) -> NLQueryResult | None:
             continue
         row, sql, exact = _lookup_candidate(db, candidate, subject_model)
         statements.append(sql)
-        match = _check(candidate, row, subject_cap, exact)
+        match = _check(candidate, row, subject_cap, exact, subject=subject)
         if (subject and match.manufacturer
                 and {subject.manufacturer, match.manufacturer} == _TWIN_BRANDS):
-            warning = (f"{match.manufacturer} and {subject.manufacturer} are badge twins: "
-                       f"kits do NOT transfer between them, even where the trucks are "
-                       f"mechanically identical.")
-            match.note = f"{match.note} {warning}" if match.note else warning
+            _add_note(match, f"{match.manufacturer} and {subject.manufacturer} are badge "
+                             f"twins: kits do NOT transfer between them, even where the "
+                             f"trucks are mechanically identical.")
         result.matches.append(match)
         if row is not None and match.verdict == "confirmed":
             rows.append(list(row))
