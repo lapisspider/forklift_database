@@ -543,6 +543,13 @@ not offered there at all.
 Rules you must follow:
 - Name a counterpart ONLY if the search content supports it. An invented model
   number is worse than no answer: say so in `reasoning` and return an empty list.
+- A counterpart must be a designation USED IN THE TARGET MARKET. The asked
+  model's own name, a variant of it, or the series range containing it is NOT a
+  counterpart -- for a Yale ERC040VAN, "ERC040VA" is the same North American
+  truck without its order-code suffix and "ERC030-040VA" is that truck's North
+  American spec-sheet range. Neither is a European name. A cross-reference table
+  from the model's HOME market is not evidence of a target-market name either.
+  If that is all the search supports, return an empty list and say so.
 - A counterpart must be in the SAME capacity class as the asked model. A 1.8 tonne
   truck's counterpart is not a 4.0 tonne truck. If the only thing you can find is a
   different size, do not list it -- explain that in `reasoning` instead.
@@ -602,15 +609,16 @@ def find_market_equivalent(manufacturer: str, model: str,
         return hit[1]
 
     content, source_url = _equiv_round(
-        f'"{model}" {manufacturer} forklift {target_market} equivalent model number '
-        f'cross reference what is it called'
+        f'{manufacturer} "{model}" forklift what is this model called in {target_market} '
+        f'{target_market} model designation badge name'
     )
     if model.lower() not in content.lower():
         # Round one never surfaced the designation itself, so it cannot support
-        # naming a counterpart. Ask once more as a product question.
+        # naming a counterpart. Ask once more from the other direction: the
+        # target market's own range, rather than the asked model's name.
         more, url2 = _equiv_round(
-            f'{manufacturer} forklift "{model}" specifications which countries sold '
-            f'North America version'
+            f'{manufacturer} forklift {target_market} range model designations '
+            f'equivalent to "{model}" specifications'
         )
         if more:
             content = (content + "\n\n" + more) if content else more
@@ -651,6 +659,8 @@ def find_market_equivalent(manufacturer: str, model: str,
     }
     prompt = (
         f"Model: {name}\nTarget market: {target_market}\n"
+        + f"Do NOT return '{model}', a variant of it, or the series range "
+          f"containing it -- those are the asked model itself, not a counterpart.\n"
         + (f"Known specs of the asked model: {specs_hint}\n" if specs_hint else "")
         + f"\nWeb search results:\n{content or '(no content retrieved)'}\n\n"
         f"What is the {target_market} counterpart of the {name}, and is the {name} itself "

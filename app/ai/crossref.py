@@ -30,6 +30,8 @@ exactly as it does anywhere else.
 """
 from __future__ import annotations
 
+import re
+
 from anthropic import Anthropic
 from pydantic import BaseModel
 from sqlalchemy import text
@@ -185,7 +187,12 @@ def _subject_specs(db: Session, name: str, oem: str | None,
     search even though the question asked is not "what are its specs".
     """
     row = find_exact(db, name) or find_exact(db, model, manufacturer=oem)
-    if row is None and oem:
+    if row is None:
+        # Loose match whether or not a brand was named. Gating this on `oem`
+        # meant a question that never said "Yale" ("what is the European
+        # equivalent of the ERC040VA?") skipped the catalog entirely and paid
+        # the web for a truck already on file -- it came back "ERC040VA,
+        # 1814 kg, not in this database" when row 209 is ERC040VAN at 1800 kg.
         row = find_in_db(db, model, manufacturer=oem)
     if row is not None:
         return _row_specs(row), row.source_url, True
@@ -230,22 +237,47 @@ def _check(candidate: str, row, subject_cap: float | None,
     return m
 
 
+# A range/series designation: "ERC030-040VA", "E30-40XN", "J1.6-2.0XN".
+_RANGE_RE = re.compile(r"^([A-Za-z]*)(\d+(?:\.\d+)?)\s*[-–/]\s*(\d+(?:\.\d+)?)([A-Za-z0-9]*)$")
+
+
+def _expand_designation(candidate: str) -> list[str]:
+    """A designation plus, for a range, the concrete codes it covers.
+
+    Yale publishes the ERC030-040VA spec sheet for two trucks, ERC030VA and
+    ERC040VA, and a search for a model's foreign name readily answers with that
+    series name. Expanding it is what lets the same-designation check see that
+    it covers the truck we asked about.
+    """
+    out = [candidate]
+    m = _RANGE_RE.match(candidate.strip())
+    if m:
+        prefix, lo, hi, suffix = m.groups()
+        out += [f"{prefix}{lo}{suffix}", f"{prefix}{hi}{suffix}"]
+    return out
+
+
 def _is_same_designation(candidate: str, subject_model: str | None) -> bool:
     """Is this "counterpart" just the asked model's own designation again?
 
     A search for a model's foreign name readily proposes the same code with a
-    suffix added or dropped -- asked for the European name of a Yale ERC040VAN
-    it answered "ERC040VA", which is not a European model at all but Yale's own
-    North American series designation (the spec sheet is "ERC030-040VA"; the
-    catalog stores the full order code, suffix included). Treating that as a
-    cross-market counterpart invents a regional distinction that is not there.
+    suffix added or dropped, or the series name covering it -- asked for the
+    European name of a Yale ERC040VAN it answered "ERC040VA", then
+    "ERC030-040VA". Neither is a European model: the first is the same code
+    without the order-code suffix the catalog stores, the second is Yale's own
+    North American series sheet. Treating either as a cross-market counterpart
+    invents a regional distinction that is not there.
     """
     if not subject_model:
         return False
-    c, s = normalize(candidate), normalize(subject_model)
-    if not c or not s:
+    s = normalize(subject_model)
+    if not s:
         return False
-    return c in s or s in c
+    for form in _expand_designation(candidate):
+        c = normalize(form)
+        if c and (c in s or s in c):
+            return True
+    return False
 
 
 def _lookup_candidate(db: Session, candidate: str, subject_model: str | None):

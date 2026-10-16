@@ -212,6 +212,66 @@
     if (body) body.innerHTML = '';
   }
 
+  // Is this htmx event one of ours -- a request aimed at the modal body?
+  function forModal(e) {
+    const t = e.detail && (e.detail.target || e.detail.elt);
+    if (e.detail && e.detail.target && e.detail.target.id === 'modal-body') return true;
+    // beforeRequest reports the FORM as the target, so fall back to the
+    // element's own hx-target.
+    return !!(t && t.getAttribute && t.getAttribute('hx-target') === '#modal-body');
+  }
+
+  // Buttons are disabled for the whole round trip. These questions take several
+  // seconds (a web search plus two or three model calls), which is long enough
+  // that a second click feels reasonable to the user -- and every one of those
+  // clicks fires another request and spends another search credit.
+  function setBusy(form, busy) {
+    if (!form || !form.querySelectorAll) return;
+    form.querySelectorAll('button[type="submit"]').forEach((b) => {
+      b.disabled = busy;
+      if (busy) {
+        b.dataset.idleLabel = b.textContent;
+        b.textContent = b.dataset.busyLabel || 'Working…';
+      } else if (b.dataset.idleLabel) {
+        b.textContent = b.dataset.idleLabel;
+      }
+    });
+    form.setAttribute('aria-busy', busy ? 'true' : 'false');
+  }
+
+  // Open the modal the moment the request leaves, not when it comes back. The
+  // inline indicator alone was easy to miss next to a button that still looked
+  // clickable.
+  document.body.addEventListener('htmx:beforeRequest', (e) => {
+    if (!forModal(e)) return;
+    const form = e.detail.elt;
+    const d = (form && form.dataset) || {};
+    setBusy(form, true);
+    if (body) {
+      body.innerHTML =
+        '<div class="modal-loading">' +
+        '<span class="spinner" aria-hidden="true"></span>' +
+        '<p class="modal-loading__text">' +
+        (d.loadingText || 'Working…') +
+        '</p></div>';
+    }
+    openModal(d.modalTitle || 'Result');
+  });
+
+  document.body.addEventListener('htmx:afterRequest', (e) => {
+    if (forModal(e)) setBusy(e.detail.elt, false);
+  });
+
+  // A failed request never swaps, so without this the spinner would spin on.
+  function failed(e) {
+    if (!forModal(e) || !body) return;
+    body.innerHTML =
+      '<p class="warn">The request failed. Check the connection and try again.</p>';
+  }
+  document.body.addEventListener('htmx:responseError', failed);
+  document.body.addEventListener('htmx:sendError', failed);
+  document.body.addEventListener('htmx:timeout', failed);
+
   // Open when htmx swaps content into the modal body.
   document.body.addEventListener('htmx:afterSwap', (e) => {
     if (e.detail && e.detail.target && e.detail.target.id === 'modal-body') {

@@ -21,11 +21,12 @@
     <p class="muted">Plain English — e.g. "which electric forklifts lift over 5 meters?"
        or "which kits fit the Crown FC5200?".</p>
     <form hx-post="/ask" hx-target="#modal-body" hx-indicator="#ask-spin"
-          data-modal-title="Answer">
+          data-modal-title="Answer"
+          data-loading-text="Reading the question, then the catalog…">
       <div class="row">
         <input type="text" name="question" placeholder="Ask a question about the database…" required>
-        <button type="submit">Ask</button>
-        <span id="ask-spin" class="htmx-indicator">…thinking</span>
+        <button type="submit" data-busy-label="Thinking…">Ask</button>
+        <span id="ask-spin" class="htmx-indicator"><span class="spinner spinner--sm"></span>thinking</span>
       </div>
     </form>
   </section>
@@ -42,14 +43,15 @@
 
     <div id="tab-lookup-model" class="tab-panel active">
       <form hx-post="/lookup" hx-target="#modal-body" hx-indicator="#lk-model-spin"
-            data-modal-title="Look-up result">
+            data-modal-title="Look-up result"
+            data-loading-text="Checking the database, then searching the web…">
         <input type="hidden" name="mode" value="model">
         <div class="row">
           <input type="text" name="query" placeholder="e.g. Toyota 8FGCU25" required
                  title="Start with the manufacturer, then the model: Toyota 8FGCU25, not just 8FGCU25"
                  aria-describedby="lk-model-help">
-          <button type="submit">Look up</button>
-          <span id="lk-model-spin" class="htmx-indicator">…searching</span>
+          <button type="submit" data-busy-label="Searching…">Look up</button>
+          <span id="lk-model-spin" class="htmx-indicator"><span class="spinner spinner--sm"></span>searching</span>
         </div>
         <p id="lk-model-help" class="muted">Start with the manufacturer.</p>
       </form>
@@ -57,14 +59,15 @@
 
     <div id="tab-lookup-serial" class="tab-panel">
       <form hx-post="/lookup" hx-target="#modal-body" hx-indicator="#lk-serial-spin"
-            data-modal-title="Serial decode">
+            data-modal-title="Serial decode"
+            data-loading-text="Decoding the serial…">
         <input type="hidden" name="mode" value="serial">
         <div class="row">
           <input type="text" name="query" placeholder="e.g. Hyster G004V01515D or Doosan L7-00116" required
                  title="Start with the manufacturer, then the serial: Hyster G004V01515D, not just G004V01515D"
                  aria-describedby="lk-serial-help">
-          <button type="submit">Decode</button>
-          <span id="lk-serial-spin" class="htmx-indicator">…decoding</span>
+          <button type="submit" data-busy-label="Decoding…">Decode</button>
+          <span id="lk-serial-spin" class="htmx-indicator"><span class="spinner spinner--sm"></span>decoding</span>
         </div>
         <p id="lk-serial-help" class="muted">Start with the manufacturer &mdash; it picks the decoding scheme.</p>
       </form>
