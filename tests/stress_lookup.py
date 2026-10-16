@@ -522,13 +522,12 @@ def test_regressions(db) -> None:
 # electric rider on any tire -- so those rows can never disagree.
 _CLASS_TIRE = {"Class IV": tire.CUSHION, "Class V": tire.PNEUMATIC}
 
-# Rows where the code and the stored class disagree, as of the audit that
-# introduced this parser. Every one looks like a bad truck_class rather than a
-# bad rule -- the Cat C-series split tracks fuel, and Hyster S is a cushion line
-# stored mostly as Class V. The count is pinned so that adding an OEM rule which
-# quietly breaks an existing family shows up as a failure rather than as noise.
-# Lower is good: fix a class row, drop it from here.
-_KNOWN_CLASS_DISAGREEMENTS = 18
+# The audit that introduced this parser found 18 rows where the code and the
+# stored class disagreed; all 18 were bad truck_class values and were corrected
+# (fix_truck_class.py). The budget is now zero, which makes this a real guard:
+# a new OEM rule that breaks an existing family fails here instead of passing
+# unnoticed inside a tolerance.
+_KNOWN_CLASS_DISAGREEMENTS = 0
 
 
 def test_tire(db) -> None:

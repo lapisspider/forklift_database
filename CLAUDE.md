@@ -73,7 +73,16 @@ Dropping `users` matters — the seed is committed, and account rows must not be
 | Rough terrain | VII |
 
 **Electric counterbalance is Class I regardless of tire.** Class II is *only*
-narrow-aisle, never counterbalance. This has been got wrong twice (BYD ECC, Heli).
+narrow-aisle, never counterbalance. This keeps going wrong: BYD ECC, Heli, and
+then 24 rows corrected on 2026-10-16 — 7 Electric rows sitting in Class IV/V, and
+17 IC rows whose class contradicted the tire in their own model code (the Cat
+`C`-series had been following *fuel*, and Hyster `S`, a cushion line, was stored
+as Class V on 7 of 11 rows).
+
+Both failures are now guarded rather than just documented. `audit_tire_class.py`
+reports any recurrence, `fix_truck_class.py` corrects it (dry-run by default),
+and the stress suite fails if a single row drifts back — the tolerance is zero,
+not a budget.
 
 ### Tire type: read it off the code, not the class
 
@@ -183,26 +192,6 @@ loadingzonesafety.com. Red is `--red: #e10600`.
      first 2–3 digits are capacity in 100 kg, which holds for `CPxD` counterbalance codes
      but is unverified for the `QY` lines. Confirm what `QY` designates on Heli's own
      category page before treating these as errors.
-
-- **18 rows where the model code's tire disagrees with the stored `truck_class`.**
-  Reproduce with `audit_tire_class.py` (read-only, writes nothing). The code looks
-  right and the stored class looks wrong: within the Cat `C`-series the split
-  tracks **fuel** on 7 of 8 rows (Diesel→V, LPG→IV; `C5000` is the exception),
-  which is the signature of a class inferred from the wrong field, and Hyster `S`
-  is a cushion line stored as Class V on 7 of 11 rows. Cat `GC40K` and `GP40K` are
-  both stored Class IV, and GC/GP *is* the cushion/pneumatic split, so they cannot
-  both be right. That makes this the **third** time class has been got wrong
-  (BYD ECC and Heli above), and the largest. **Do not bulk-fix** — same rule as the
-  capacity rows, decide per row. For scale: the parser covers 211 rows across three
-  OEMs, and Yale's 53 disagree on none.
-
-- **7 Electric rows stored as Class IV or V**, against the rule above that electric
-  counterbalance is Class I whatever the tire: `2EPC5000`, Hyster `J70XN`/`J80XN`/
-  `J90XN`/`J100XN`/`J120XN`, Yale `ERP030VT`. No row errs the other way. `ERP030VT`
-  shares a `platform_group` with `J30XNT`, which *is* Class I, so two curated twins
-  disagree. Unlike the tire rows this needs no judgement — the rule is already
-  stated — but it is still a data change, so it wants a seed refresh to reach
-  production.
 
 - 984 of 1009 rows are still `info_status = 'yellow'` (pending admin review), so the
   status column is mostly one repeated mark.
