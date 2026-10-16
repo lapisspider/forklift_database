@@ -535,14 +535,14 @@ def archive_pdf(fid: int, db: Session = Depends(get_db)):
 # Plain-English question -> safe SQL -> answer
 # ----------------------------------------------------------------------------
 @app.post("/ask", response_class=HTMLResponse)
-def ask(request: Request, question: str = Form(...)):
+def ask(request: Request, question: str = Form(...), db: Session = Depends(get_db)):
     if not settings.ai_enabled:
         result = nl_query.NLQueryResult(
             question=question,
             error="AI is disabled. Add ANTHROPIC_API_KEY to .env to enable questions.",
         )
     else:
-        result = nl_query.ask(question)
+        result = nl_query.ask(db, question)
     return templates.TemplateResponse(
         request, "partials/ask_result.html", _ctx(request, result=result)
     )

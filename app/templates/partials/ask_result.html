@@ -1,10 +1,76 @@
 {% set r = result %}
+{% set verdict_labels = {
+  "confirmed": "in this database",
+  "capacity_mismatch": "rejected — wrong capacity",
+  "not_in_catalog": "not in this database",
+  "unchecked": "not verified",
+} %}
 <div class="result-card">
   {% if r.error %}
     <p class="warn">{{ r.error }}</p>
     {% if r.sql %}<pre class="sql">{{ r.sql }}</pre>{% endif %}
   {% else %}
     {% if r.answer %}<p class="answer">{{ r.answer }}</p>{% endif %}
+
+    {# Cross-market lookup: the counterpart is named and explained whatever the
+       outcome, so an answer that found nothing in the catalog still carries the
+       useful half. The rows table below renders as normal either way. #}
+    {% if r.kind == "crossref" %}
+      <div class="crossref">
+        {% if r.subject %}
+          <p class="crossref-subject">
+            <span class="label">Asked about</span>
+            <strong>{{ r.subject.manufacturer }} {{ r.subject.model }}</strong>
+            {% if r.subject.capacity_kg %}· {{ "%.0f"|format(r.subject.capacity_kg) }} kg{% endif %}
+            {% if r.subject.fuel_type %}· {{ r.subject.fuel_type }}{% endif %}
+            {% if r.subject.truck_class %}· {{ r.subject.truck_class }}{% endif %}
+            <span class="muted">
+              {% if r.subject_in_catalog %}— in this database{% else %}— not in this database; specs from a web search{% endif %}
+            </span>
+            {% if r.subject_source_url %}
+              <a href="{{ r.subject_source_url }}" target="_blank" rel="noopener">source</a>
+            {% endif %}
+          </p>
+        {% endif %}
+
+        {% if r.matches %}
+          <ul class="equiv-list">
+            {% for m in r.matches %}
+              <li class="equiv equiv-{{ m.verdict }}">
+                <span class="equiv-name">
+                  {% if m.forklift_id %}
+                    <a href="/forklift/{{ m.forklift_id }}">{{ m.model }}</a>
+                  {% else %}
+                    {{ m.model }}
+                  {% endif %}
+                </span>
+                <span class="verdict">{{ verdict_labels.get(m.verdict, m.verdict) }}</span>
+                {% if m.in_catalog %}
+                  <span class="muted">
+                    {{ m.manufacturer }}{% if m.capacity_kg %} · {{ "%.0f"|format(m.capacity_kg) }} kg{% endif %}{% if m.truck_class %} · {{ m.truck_class }}{% endif %}
+                  </span>
+                {% endif %}
+                {% if m.note %}<span class="equiv-note">{{ m.note }}</span>{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% elif r.equivalent %}
+          <p class="muted">
+            The web search did not name a counterpart model.
+            {% if r.equivalent.reasoning %}{{ r.equivalent.reasoning }}{% endif %}
+          </p>
+        {% endif %}
+
+        {% if r.equivalent and r.equivalent.source_url %}
+          <p class="muted crossref-source">
+            Cross-reference from a web search —
+            <a href="{{ r.equivalent.source_url }}" target="_blank" rel="noopener">source</a>.
+            Confirm before quoting a part against it.
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
     {% if r.sql %}
       <details>
         <summary>SQL used</summary>
@@ -12,6 +78,12 @@
       </details>
     {% endif %}
     {% if r.rows %}
+      {% if r.rows_are_nearest %}
+        <p class="muted nearest-caption">
+          No counterpart was confirmed. These are the closest trucks in this
+          database by capacity and type — not equivalents.
+        </p>
+      {% endif %}
       <div class="table-scroll">
         <table class="result-table">
           <thead><tr>{% for c in r.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>

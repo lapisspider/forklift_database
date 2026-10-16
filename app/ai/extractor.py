@@ -3,11 +3,12 @@ from __future__ import annotations
 
 import json
 import re
+import time
 
 from anthropic import Anthropic
 
 from ..config import settings
-from ..schemas import ForkliftSpecs, SerialWebGuess, clean_series
+from ..schemas import ForkliftSpecs, MarketEquivalent, SerialWebGuess, clean_series
 from . import tavily_client
 
 _SYSTEM = """You extract forklift specifications from raw web/PDF text.
@@ -530,3 +531,150 @@ def identify_from_serial(raw: str, manufacturer: str | None, content: str,
     except Exception as e:  # noqa: BLE001
         return SerialWebGuess(confidence="low", reasoning=f"Lookup failed: {e}", source_url=source_url)
     return SerialWebGuess(confidence="low", reasoning="No identification returned.", source_url=source_url)
+
+
+_EQUIV_SYSTEM = """You answer one narrow question: what a given forklift model is
+called in another market, and whether it is sold there under its own name.
+
+The same truck is routinely badged differently by region -- a model sold in Europe
+or Asia often reaches North America under a different designation, and sometimes is
+not offered there at all.
+
+Rules you must follow:
+- Name a counterpart ONLY if the search content supports it. An invented model
+  number is worse than no answer: say so in `reasoning` and return an empty list.
+- A counterpart must be in the SAME capacity class as the asked model. A 1.8 tonne
+  truck's counterpart is not a 4.0 tonne truck. If the only thing you can find is a
+  different size, do not list it -- explain that in `reasoning` instead.
+- `candidate_models` is model designations only ("GC25N5"), never prose.
+- "Not sold there" and "sold there under another name" are different answers. Do
+  not collapse them."""
+
+
+_EQUIV_CACHE_TTL = 600  # 10 minutes, matching web_identify's own cache
+_equiv_cache: dict[str, tuple[float, MarketEquivalent]] = {}
+
+
+def _equiv_round(query: str) -> tuple[str, str | None]:
+    """One Tavily answer-search flattened to (content, first_url). ("", None) on failure."""
+    try:
+        search = tavily_client.answer_search(query)
+    except Exception:  # noqa: BLE001 -- best-effort, never fatal
+        return "", None
+    results = search.get("results", [])
+    answer = search.get("answer") or ""
+    content = (("AI SEARCH ANSWER:\n" + answer + "\n\n") if answer else "") + "\n\n".join(
+        (r.get("raw_content") or r.get("content") or "") for r in results[:3]
+    )
+    return content[:9_000], (results[0].get("url") if results else None)
+
+
+def find_market_equivalent(manufacturer: str, model: str,
+                           target_market: str = "the United States",
+                           specs_hint: str | None = None) -> MarketEquivalent:
+    """What is this model called in `target_market`, and is it sold there?
+
+    Same shape as find_series/find_truck_class: targeted Tavily AI-answer
+    searches plus Claude, returning a claim off the web -- NOT a verified fact.
+    crossref.py checks any named candidate against the catalog before the
+    answer presents it. Never raises.
+
+    TWO searches, not one. A single question asking "is it sold there, what is
+    it called there, and where IS it sold" reads as a question about the BRAND
+    rather than the truck, and comes back with corporate history -- the first
+    version of this returned the Mitsubishi Caterpillar joint-venture Wikipedia
+    page for a DP18NTD. The second round asks only for the counterpart
+    designation, and only runs when the first never found the model at all.
+
+    `specs_hint` carries what is already known about the truck (capacity, fuel,
+    class) so the model can reject a counterpart of the wrong size itself,
+    instead of leaving that entirely to the catalog check downstream.
+    """
+    name = f"{manufacturer or ''} {model or ''}".strip()
+    if not name:
+        return MarketEquivalent(reasoning="No model given.")
+
+    # Up to two Tavily searches per call, so a repeated question (the same one
+    # retyped, or a page reload) must not re-spend them.
+    key = f"equiv|{name.lower()}|{target_market.lower()}"
+    hit = _equiv_cache.get(key)
+    if hit and (time.time() - hit[0]) < _EQUIV_CACHE_TTL:
+        return hit[1]
+
+    content, source_url = _equiv_round(
+        f'"{model}" {manufacturer} forklift {target_market} equivalent model number '
+        f'cross reference what is it called'
+    )
+    if model.lower() not in content.lower():
+        # Round one never surfaced the designation itself, so it cannot support
+        # naming a counterpart. Ask once more as a product question.
+        more, url2 = _equiv_round(
+            f'{manufacturer} forklift "{model}" specifications which countries sold '
+            f'North America version'
+        )
+        if more:
+            content = (content + "\n\n" + more) if content else more
+            source_url = source_url or url2
+    content = content[:12_000]
+
+    tool = {
+        "name": "record_equivalent",
+        "description": "Record the market counterpart for a forklift model.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "sold_in_target_market": {
+                    "type": ["boolean", "null"],
+                    "description": ("True if the ASKED model is itself offered in the target "
+                                    "market under that same name. Null if the content does "
+                                    "not say."),
+                },
+                "home_markets": {
+                    "type": "array", "items": {"type": "string"},
+                    "description": "Regions the asked model IS sold in, e.g. ['Europe', 'Asia'].",
+                },
+                "candidate_models": {
+                    "type": "array", "items": {"type": "string"},
+                    "description": ("Model designations sold in the target market that are the "
+                                    "same truck or its direct replacement, same capacity class. "
+                                    "Empty if the content does not support one."),
+                },
+                "reasoning": {
+                    "type": "string",
+                    "description": ("One or two sentences a forklift dealer would accept, saying "
+                                    "what the evidence was. If no counterpart could be named, say "
+                                    "why."),
+                },
+            },
+            "required": ["reasoning"],
+        },
+    }
+    prompt = (
+        f"Model: {name}\nTarget market: {target_market}\n"
+        + (f"Known specs of the asked model: {specs_hint}\n" if specs_hint else "")
+        + f"\nWeb search results:\n{content or '(no content retrieved)'}\n\n"
+        f"What is the {target_market} counterpart of the {name}, and is the {name} itself "
+        f"sold there?"
+    )
+    try:
+        resp = _client().messages.create(
+            model=settings.claude_model,
+            max_tokens=400,
+            system=_EQUIV_SYSTEM,
+            tools=[tool],
+            tool_choice={"type": "tool", "name": "record_equivalent"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        for block in resp.content:
+            if block.type == "tool_use" and block.name == "record_equivalent":
+                data = dict(block.input)
+                data["source_url"] = source_url
+                found = MarketEquivalent.model_validate(data)
+                _equiv_cache[key] = (time.time(), found)
+                return found
+    except Exception as e:  # noqa: BLE001
+        # Not cached: a transport failure should be retried, not remembered.
+        return MarketEquivalent(reasoning=f"Lookup failed: {e}", source_url=source_url)
+    empty = MarketEquivalent(reasoning="No counterpart returned.", source_url=source_url)
+    _equiv_cache[key] = (time.time(), empty)
+    return empty

@@ -12,10 +12,12 @@ import re
 
 from anthropic import Anthropic
 from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from ..config import settings
 from ..database import engine
 from ..schemas import NLQueryResult
+from . import crossref
 
 MAX_ROWS = 200
 
@@ -226,8 +228,20 @@ def _summarize(question: str, columns: list[str], rows: list[list]) -> str:
     return "".join(b.text for b in resp.content if b.type == "text").strip()
 
 
-def ask(question: str) -> NLQueryResult:
-    """Full pipeline: question -> validated SQL -> rows -> plain-English answer."""
+def ask(db: Session, question: str) -> NLQueryResult:
+    """Full pipeline: question -> validated SQL -> rows -> plain-English answer.
+
+    One question shape is handled before SQL: "what is this European model
+    called in the US". It has no answer in the schema -- the asked model
+    usually has no row at all -- so crossref.answer() takes it, names the
+    counterpart off the web and then runs its own SELECT against the catalog
+    for that name. Everything else (counts, filters, kits, capacities) is a
+    question a SELECT answers, and goes down the original path untouched.
+    """
+    handled = crossref.answer(db, question)
+    if handled is not None:
+        return handled
+
     result = NLQueryResult(question=question)
     try:
         raw_sql = _generate_sql(question)

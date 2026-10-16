@@ -1966,3 +1966,110 @@ form > label {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Cross-market lookup ("what is this European model called in the US").
+   Appended at the end of the file deliberately: the hand-tuned blocks above
+   are easy to clobber with an anchored edit, and nothing here needs to sit
+   near them.
+   --------------------------------------------------------------------------- */
+
+.crossref {
+  margin: 0 0 1rem;
+}
+
+.crossref-subject {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.crossref-subject .label {
+  display: inline-block;
+  margin-right: 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.equiv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.equiv {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  margin-bottom: 0.4rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--line);
+  background: var(--bg-card-alt);
+  font-size: 0.94rem;
+}
+
+.equiv-name {
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink-light);
+}
+
+.equiv .verdict {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+}
+
+/* The note carries the reason a candidate was rejected, so it takes the whole
+   line rather than being squeezed onto the end of the flex row. */
+.equiv-note {
+  flex-basis: 100%;
+  margin-top: 0.15rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.equiv-confirmed {
+  border-left-color: #2ea043;
+}
+
+.equiv-confirmed .verdict {
+  background: rgba(46, 160, 67, 0.15);
+  color: #4ec46a;
+}
+
+.equiv-capacity_mismatch {
+  border-left-color: var(--red);
+}
+
+.equiv-capacity_mismatch .verdict {
+  background: var(--red-soft);
+  color: var(--red-hover);
+}
+
+.equiv-not_in_catalog,
+.equiv-unchecked {
+  border-left-color: #b8860b;
+}
+
+.equiv-not_in_catalog .verdict,
+.equiv-unchecked .verdict {
+  background: rgba(184, 134, 11, 0.18);
+  color: #d9a93a;
+}
+
+.crossref-source {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+}

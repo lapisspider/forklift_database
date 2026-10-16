@@ -141,11 +141,57 @@ class LookupResult(BaseModel):
     web_query: str | None = None       # the raw query to resubmit with web=1
 
 
+
+
+class MarketEquivalent(BaseModel):
+    """What a web search found about a model's market and its counterpart
+    elsewhere. Every field is a CLAIM off the web, not a verified fact -- the
+    catalog check in crossref.py is what turns a named candidate into an
+    answer we are willing to print."""
+    sold_in_target_market: bool | None = None   # is the ASKED model itself sold there
+    home_markets: list[str] = []                # where the asked model IS sold
+    candidate_models: list[str] = []            # counterpart model names in the target market
+    reasoning: str | None = None
+    source_url: str | None = None
+
+
+class EquivalentMatch(BaseModel):
+    """A candidate counterpart model, after it has been looked up in the
+    catalog and checked against the subject's capacity."""
+    model: str                          # the name the web proposed
+    forklift_id: int | None = None      # catalog row, when the name matched one
+    manufacturer: str | None = None
+    capacity_kg: float | None = None
+    fuel_type: str | None = None
+    truck_class: str | None = None
+    in_catalog: bool = False
+    verdict: str = "unchecked"          # confirmed | capacity_mismatch | not_in_catalog
+    note: str | None = None             # why it was rejected, when it was
+
+
 class NLQueryResult(BaseModel):
-    """Result of a plain-English question against the database."""
+    """Result of a plain-English question against the database.
+
+    Two shapes share this type, told apart by `kind`:
+      - "sql": the historical path. Claude writes a SELECT, it runs, `rows`
+        holds the result.
+      - "crossref": a "what is this model called in the US" question. The web
+        names candidate counterparts, each candidate is then looked up in the
+        catalog BY SQL (same `sql`/`columns`/`rows` fields, so the template is
+        unchanged), and `matches` records what survived the capacity check.
+    """
     question: str
+    kind: str = "sql"                   # sql | crossref
     sql: str | None = None
     columns: list[str] = []
     rows: list[list] = []
     answer: str = ""
     error: str | None = None
+
+    # --- crossref only ---
+    subject: ForkliftSpecs | None = None          # the model that was ASKED about
+    subject_source_url: str | None = None         # where its specs came from
+    subject_in_catalog: bool = False
+    equivalent: MarketEquivalent | None = None    # the raw web claim
+    matches: list[EquivalentMatch] = []           # candidates after the catalog check
+    rows_are_nearest: bool = False                # rows are nearest-by-spec, NOT counterparts
