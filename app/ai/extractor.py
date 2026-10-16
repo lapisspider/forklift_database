@@ -553,6 +553,11 @@ Rules you must follow:
 - A counterpart must be in the SAME capacity class as the asked model. A 1.8 tonne
   truck's counterpart is not a 4.0 tonne truck. If the only thing you can find is a
   different size, do not list it -- explain that in `reasoning` instead.
+- Capacity is written differently per market, and that is the strongest signal
+  you have. North American codes carry hundreds of POUNDS (Yale ERC040VAN =
+  4000 lb); European codes carry TONNES (Hyster J2.0XN = 2.0 t). A counterpart
+  whose code carries the asked model's own number, in the asked model's own
+  units, is almost certainly the same truck rather than its counterpart.
 - `candidate_models` is model designations only ("GC25N5"), never prose.
 - "Not sold there" and "sold there under another name" are different answers. Do
   not collapse them."""
@@ -560,6 +565,40 @@ Rules you must follow:
 
 _EQUIV_CACHE_TTL = 600  # 10 minutes, matching web_identify's own cache
 _equiv_cache: dict[str, tuple[float, MarketEquivalent]] = {}
+
+# Markets whose model codes state capacity in tonnes rather than hundreds of
+# pounds. Matched loosely against the target-market phrase.
+_METRIC_MARKET_WORDS = ("europe", "european", "emea", "uk", "britain", "germany",
+                        "france", "asia", "australia", "international")
+
+
+def _capacity_bridge(capacity_kg: float | None, target_market: str) -> str | None:
+    """The arithmetic that turns an American designation into a European one.
+
+    A North American code states capacity in hundreds of POUNDS -- a Yale
+    ERC040VAN is 4000 lb. A European code states it in TONNES -- a Hyster
+    J2.0XN is 2.0 t. The same truck therefore carries a different number in
+    each market, so knowing the capacity tells us what number the counterpart's
+    code should carry. That is a local calculation, and it is worth far more
+    than another search: it gives the model something to recognise a real
+    counterpart BY, instead of reaching for whatever string looked closest.
+    """
+    if not capacity_kg:
+        return None
+    tonnes = capacity_kg / 1000.0
+    hundred_lb = round(capacity_kg * 2.20462 / 100.0)
+    metric = any(w in (target_market or "").lower() for w in _METRIC_MARKET_WORDS)
+    if metric:
+        return (f"The asked model is {capacity_kg:,.0f} kg. North American codes state "
+                f"capacity in hundreds of pounds ({hundred_lb:03d} = {hundred_lb * 100:,} lb); "
+                f"codes in {target_market} state it in tonnes. So a counterpart in "
+                f"{target_market} should carry roughly {tonnes:.1f} in its code (or "
+                f"{tonnes * 10:.0f} where tenths are written without the point), NOT "
+                f"{hundred_lb:03d}.")
+    return (f"The asked model is {capacity_kg:,.0f} kg ({tonnes:.1f} tonnes). North American "
+            f"codes state capacity in hundreds of pounds, so a counterpart in {target_market} "
+            f"should carry roughly {hundred_lb:03d} in its code ({hundred_lb * 100:,} lb), NOT "
+            f"{tonnes:.1f}.")
 
 
 def _equiv_round(query: str) -> tuple[str, str | None]:
@@ -578,7 +617,8 @@ def _equiv_round(query: str) -> tuple[str, str | None]:
 
 def find_market_equivalent(manufacturer: str, model: str,
                            target_market: str = "the United States",
-                           specs_hint: str | None = None) -> MarketEquivalent:
+                           specs_hint: str | None = None,
+                           capacity_kg: float | None = None) -> MarketEquivalent:
     """What is this model called in `target_market`, and is it sold there?
 
     Same shape as find_series/find_truck_class: targeted Tavily AI-answer
@@ -608,21 +648,36 @@ def find_market_equivalent(manufacturer: str, model: str,
     if hit and (time.time() - hit[0]) < _EQUIV_CACHE_TTL:
         return hit[1]
 
-    content, source_url = _equiv_round(
-        f'{manufacturer} "{model}" forklift what is this model called in {target_market} '
-        f'{target_market} model designation badge name'
+    # Two searches, always, because they fail in opposite directions and each
+    # one finds what the other misses.
+    #
+    # The model-led query ranks whatever repeats the model string most often,
+    # which for a North American truck is North American parts and auction
+    # sites -- that is how "ERC040VA", a string those pages sit beside, came
+    # back as the European name of an ERC040VAN. But the same query is exactly
+    # what surfaces an OEM interchange table, which is where the Cat DP18NTD's
+    # counterpart was found.
+    #
+    # The chart query avoids the model string and anchors on capacity instead,
+    # which reaches the target market's own range -- but only when that range
+    # is published as a chart, and it says nothing about a specific truck.
+    #
+    # Running one or the other lost a case each time, so run both and let the
+    # model read them together. Two searches is what this already cost at
+    # worst, and the result is cached for ten minutes.
+    tonnes = f"{capacity_kg / 1000:.1f} tonne " if capacity_kg else ""
+    chart, chart_url = _equiv_round(
+        f'{manufacturer} forklift {target_market} equivalent model number capacity '
+        f'matrix cross reference chart {tonnes}'.strip()
     )
-    if model.lower() not in content.lower():
-        # Round one never surfaced the designation itself, so it cannot support
-        # naming a counterpart. Ask once more from the other direction: the
-        # target market's own range, rather than the asked model's name.
-        more, url2 = _equiv_round(
-            f'{manufacturer} forklift {target_market} range model designations '
-            f'equivalent to "{model}" specifications'
-        )
-        if more:
-            content = (content + "\n\n" + more) if content else more
-            source_url = source_url or url2
+    named, named_url = _equiv_round(
+        f'{manufacturer} "{model}" forklift {target_market} equivalent model number '
+        f'cross reference what is it called'
+    )
+    content = "\n\n".join(p for p in (chart, named) if p)
+    # Prefer the source that actually mentioned the truck.
+    source_url = (named_url if named and model.lower() in named.lower()
+                  else chart_url or named_url)
     content = content[:12_000]
 
     tool = {
@@ -661,6 +716,7 @@ def find_market_equivalent(manufacturer: str, model: str,
         f"Model: {name}\nTarget market: {target_market}\n"
         + f"Do NOT return '{model}', a variant of it, or the series range "
           f"containing it -- those are the asked model itself, not a counterpart.\n"
+        + ((_capacity_bridge(capacity_kg, target_market) or "") + "\n")
         + (f"Known specs of the asked model: {specs_hint}\n" if specs_hint else "")
         + f"\nWeb search results:\n{content or '(no content retrieved)'}\n\n"
         f"What is the {target_market} counterpart of the {name}, and is the {name} itself "

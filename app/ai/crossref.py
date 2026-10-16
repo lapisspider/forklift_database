@@ -445,7 +445,8 @@ def answer(db: Session, question: str) -> NLQueryResult | None:
         hint = (f"{subject.capacity_kg or 'unknown'} kg, {subject.fuel_type or 'unknown fuel'}, "
                 f"{subject.truck_class or 'class unknown'}")
     equiv = extractor.find_market_equivalent(
-        oem or intent.manufacturer or "", model, intent.target_market, specs_hint=hint)
+        oem or intent.manufacturer or "", model, intent.target_market, specs_hint=hint,
+        capacity_kg=subject.capacity_kg if subject else None)
     result.equivalent = equiv
 
     subject_cap = subject.capacity_kg if subject else None
