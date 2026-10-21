@@ -208,18 +208,49 @@ def _generate_sql(question: str) -> str:
     return _extract_sql("".join(parts))
 
 
-def _summarize(question: str, columns: list[str], rows: list[list]) -> str:
-    """Ask Claude to phrase the result set as a short plain-English answer."""
+_TRAILING_LIMIT = re.compile(r"\s+LIMIT\s+\d+\s*$", re.IGNORECASE)
+
+
+def _true_total(conn, sql: str) -> int | None:
+    """How many rows the query would return without the row cap.
+
+    Without this the summary counts the rows it was HANDED. Asked which
+    forklifts have no kit assigned it answered "200" -- the cap -- when the
+    real answer is 604, and stated it with full confidence. Every result wider
+    than MAX_ROWS was being miscounted the same way.
+    """
+    inner = _TRAILING_LIMIT.sub("", sql)
+    try:
+        row = conn.execute(text(f"SELECT COUNT(*) FROM ({inner})")).fetchone()
+        return int(row[0]) if row else None
+    except Exception:  # noqa: BLE001 -- a count that fails just means no total
+        return None
+
+
+def _summarize(question: str, columns: list[str], rows: list[list],
+               total: int | None = None) -> str:
+    """Ask Claude to phrase the result set as a short plain-English answer.
+
+    Runs on the cheap model: wording a result set is mechanical next to
+    deciding what the SQL should be.
+    """
     client = _client()
     preview = [dict(zip(columns, r)) for r in rows[:30]]
+    shown = len(rows)
+    if total is not None and total > shown:
+        scope = (f"The query MATCHED {total} row(s) in total; only the first {shown} "
+                 f"are shown below. If the question asks how many, the answer is "
+                 f"{total}, NOT {shown}.")
+    else:
+        scope = f"Query returned {shown} row(s)."
     resp = client.messages.create(
-        model=settings.claude_model,
+        model=settings.claude_fast_model,
         max_tokens=400,
         messages=[{
             "role": "user",
             "content": (
                 f"Question: {question}\n\n"
-                f"Query returned {len(rows)} row(s). Sample:\n{preview}\n\n"
+                f"{scope} Sample:\n{preview}\n\n"
                 "Answer the question in 1-3 plain sentences. If zero rows, say "
                 "no matching forklifts were found."
             ),
@@ -243,8 +274,12 @@ def ask(db: Session, question: str) -> NLQueryResult:
         return handled
 
     result = NLQueryResult(question=question)
+    capped_by_us = False
     try:
         raw_sql = _generate_sql(question)
+        # Did WE add the cap, or did the model write its own LIMIT? Only our
+        # cap can silently hide rows the user was asking to have counted.
+        capped_by_us = not re.search(r"\blimit\b", raw_sql, re.IGNORECASE)
         safe_sql = validate_select(raw_sql)
         result.sql = safe_sql
     except UnsafeQueryError as e:
@@ -266,6 +301,10 @@ def ask(db: Session, question: str) -> NLQueryResult:
                 cursor = conn.execute(text(safe_sql))
                 result.columns = list(cursor.keys())
                 result.rows = [list(row) for row in cursor.fetchall()]
+                if capped_by_us and len(result.rows) >= MAX_ROWS:
+                    result.total_rows = _true_total(conn, safe_sql)
+                    result.truncated = bool(result.total_rows
+                                            and result.total_rows > len(result.rows))
             finally:
                 if is_sqlite:
                     conn.exec_driver_sql("PRAGMA query_only = OFF")
@@ -274,7 +313,9 @@ def ask(db: Session, question: str) -> NLQueryResult:
         return result
 
     try:
-        result.answer = _summarize(question, result.columns, result.rows)
+        result.answer = _summarize(question, result.columns, result.rows,
+                                   result.total_rows)
     except Exception:  # noqa: BLE001 - summary is best-effort
-        result.answer = f"Found {len(result.rows)} matching forklift(s)."
+        found = result.total_rows if result.total_rows is not None else len(result.rows)
+        result.answer = f"Found {found} matching forklift(s)."
     return result

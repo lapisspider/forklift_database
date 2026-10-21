@@ -57,6 +57,19 @@ def _ensure_schema() -> None:
         conn.exec_driver_sql(
             "CREATE INDEX IF NOT EXISTS ix_forklifts_platform_group ON forklifts(platform_group)"
         )
+        # Shared cache for paid web results (app/ai/web_cache.py). It lives in
+        # the database rather than in a dict because production runs two
+        # gunicorn workers, which would otherwise keep two separate caches and
+        # lose both on every deploy.
+        conn.exec_driver_sql(
+            "CREATE TABLE IF NOT EXISTS web_cache ("
+            "  key TEXT PRIMARY KEY,"
+            "  value TEXT NOT NULL,"
+            "  expires_at REAL NOT NULL)"
+        )
+        conn.exec_driver_sql(
+            "CREATE INDEX IF NOT EXISTS ix_web_cache_expires ON web_cache(expires_at)"
+        )
         # Kits no longer transfer between twins -- drop the old inherited-fit view
         # (kept as a DROP so existing DBs/the seed get cleaned up on upgrade).
         conn.exec_driver_sql("DROP VIEW IF EXISTS kit_fit_effective")

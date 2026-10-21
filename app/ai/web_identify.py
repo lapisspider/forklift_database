@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 
 from ..config import settings
 from ..schemas import ForkliftSpecs, SerialWebGuess
-from . import extractor, tavily_client
+from . import extractor, tavily_client, web_cache
 from .oem_alias import OEM_DOMAINS, split_oem
 from .pdf_verify import verify_pdf_url
 
@@ -27,8 +27,11 @@ _ALPHA_REPEAT_RE = re.compile(r"([A-Za-z])\1{3,}")  # same LETTER 4+ times in a 
 # digits are deliberately excluded: a zero/nine-padded sequence (e.g. "ZZ-99999")
 # is a normal-looking serial, not junk, so only letter-mashing counts here.
 
-_CACHE_TTL = 600  # 10 minutes
-_cache: dict[str, tuple[float, object]] = {}
+# Namespaces in the shared web_cache (app/ai/web_cache.py). These used to be
+# one module-level dict, which meant a cache per gunicorn worker, emptied on
+# every deploy.
+_SERIAL_NS = "serial"
+_SHEET_NS = "specsheet"
 
 
 @dataclass
@@ -87,20 +90,33 @@ def _cache_key(raw: str, manufacturer: str | None) -> str:
     return f"{(manufacturer or '').lower()}|{norm_raw}"
 
 
-def _cache_get(key: str):
-    cached = _cache.get(key)
-    if cached and (time.time() - cached[0]) < _CACHE_TTL:
-        return cached[1]
-    return None
+def _sheet_to_dict(r: "SpecSheetResult") -> dict:
+    d = {
+        "found": r.found, "source_url": r.source_url, "pdf_url": r.pdf_url,
+        "pdf_status": r.pdf_status, "pdf_note": r.pdf_note,
+        "pages_tried": r.pages_tried, "field_sources": r.field_sources,
+        "specs": r.specs.model_dump() if r.specs else None,
+    }
+    return d
+
+
+def _sheet_from_dict(d: dict) -> "SpecSheetResult":
+    specs = ForkliftSpecs.model_validate(d["specs"]) if d.get("specs") else None
+    return SpecSheetResult(
+        found=d["found"], specs=specs, source_url=d.get("source_url"),
+        pdf_url=d.get("pdf_url"), pdf_status=d.get("pdf_status"),
+        pdf_note=d.get("pdf_note"), pages_tried=d.get("pages_tried", 0),
+        field_sources=d.get("field_sources") or {},
+    )
 
 
 def identify_from_serial(raw: str, manufacturer: str | None = None) -> SerialWebGuess:
     """Search the web for what truck a serial belongs to. Never raises --
     a failure just comes back as a low-confidence empty guess."""
-    key = f"serial|{_cache_key(raw, manufacturer)}"
-    cached = _cache_get(key)
+    key = _cache_key(raw, manufacturer)
+    cached = web_cache.get(_SERIAL_NS, key)
     if cached is not None:
-        return cached
+        return SerialWebGuess.model_validate(cached)
 
     if manufacturer:
         query = f'{manufacturer} forklift serial number "{raw}" model year'
@@ -111,7 +127,7 @@ def identify_from_serial(raw: str, manufacturer: str | None = None) -> SerialWeb
         search = tavily_client.answer_search(query)
     except Exception:  # noqa: BLE001 -- best-effort, never fatal
         guess = SerialWebGuess(confidence="low", reasoning="Web search failed.")
-        _cache[key] = (time.time(), guess)
+        # Not cached: a transport failure should be retried, not remembered.
         return guess
 
     results = search.get("results", [])
@@ -123,7 +139,7 @@ def identify_from_serial(raw: str, manufacturer: str | None = None) -> SerialWeb
     source_url = results[0].get("url") if results else None
 
     guess = extractor.identify_from_serial(raw, manufacturer, content, source_url)
-    _cache[key] = (time.time(), guess)
+    web_cache.put(_SERIAL_NS, key, guess.model_dump())
     return guess
 
 
@@ -290,10 +306,10 @@ def find_spec_sheet(raw: str) -> SpecSheetResult:
     capacity/fuel/chassis) and escalate until a verified PDF is found or the
     searches are exhausted. For a MODEL query, not a serial -- see
     identify_from_serial. Never raises."""
-    key = f"specsheet|{_cache_key(raw, None)}"
-    cached = _cache_get(key)
+    key = _cache_key(raw, None)
+    cached = web_cache.get(_SHEET_NS, key)
     if cached is not None:
-        return cached
+        return _sheet_from_dict(cached)
 
     oem, rest = split_oem(raw)
     text = raw.strip()
@@ -319,7 +335,7 @@ def find_spec_sheet(raw: str) -> SpecSheetResult:
             result.pdf_note = (f'No spec-sheet PDF was found. Searched: "{name} forklift '
                                f'specifications spec sheet"{searched}.')
         result.source_url = result.source_url or finder.first_page
-        _cache[key] = (time.time(), result)
+        web_cache.put(_SHEET_NS, key, _sheet_to_dict(result))
         return result
 
     try:

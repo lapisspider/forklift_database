@@ -9,7 +9,7 @@ from anthropic import Anthropic
 
 from ..config import settings
 from ..schemas import ForkliftSpecs, MarketEquivalent, SerialWebGuess, clean_series
-from . import tavily_client
+from . import tavily_client, web_cache
 
 _SYSTEM = """You extract forklift specifications from raw web/PDF text.
 Return ONLY the fields you are confident about; leave anything uncertain as null.
@@ -563,8 +563,7 @@ Rules you must follow:
   not collapse them."""
 
 
-_EQUIV_CACHE_TTL = 600  # 10 minutes, matching web_identify's own cache
-_equiv_cache: dict[str, tuple[float, MarketEquivalent]] = {}
+_EQUIV_NS = "equiv"  # web_cache namespace; shared across workers and restarts
 
 # Markets whose model codes state capacity in tonnes rather than hundreds of
 # pounds. Matched loosely against the target-market phrase.
@@ -643,10 +642,10 @@ def find_market_equivalent(manufacturer: str, model: str,
 
     # Up to two Tavily searches per call, so a repeated question (the same one
     # retyped, or a page reload) must not re-spend them.
-    key = f"equiv|{name.lower()}|{target_market.lower()}"
-    hit = _equiv_cache.get(key)
-    if hit and (time.time() - hit[0]) < _EQUIV_CACHE_TTL:
-        return hit[1]
+    key = f"{name.lower()}|{target_market.lower()}"
+    hit = web_cache.get(_EQUIV_NS, key)
+    if hit is not None:
+        return MarketEquivalent.model_validate(hit)
 
     # Two searches, always, because they fail in opposite directions and each
     # one finds what the other misses.
@@ -736,11 +735,11 @@ def find_market_equivalent(manufacturer: str, model: str,
                 data = dict(block.input)
                 data["source_url"] = source_url
                 found = MarketEquivalent.model_validate(data)
-                _equiv_cache[key] = (time.time(), found)
+                web_cache.put(_EQUIV_NS, key, found.model_dump())
                 return found
     except Exception as e:  # noqa: BLE001
         # Not cached: a transport failure should be retried, not remembered.
         return MarketEquivalent(reasoning=f"Lookup failed: {e}", source_url=source_url)
     empty = MarketEquivalent(reasoning="No counterpart returned.", source_url=source_url)
-    _equiv_cache[key] = (time.time(), empty)
+    web_cache.put(_EQUIV_NS, key, empty.model_dump())
     return empty

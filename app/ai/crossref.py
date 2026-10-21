@@ -116,6 +116,35 @@ in the database is "sql", not "crossref". Only a question about MARKET or REGION
 is "crossref"."""
 
 
+# A question has to mention a market or an equivalence before it is worth
+# paying a model to ask whether it is a cross-market question. Every ordinary
+# catalog question ("how many Class I trucks", "which kits fit X") was being
+# classified first, which cost a full round trip -- measured at ~0.6-1.0 s --
+# on every single ask, to answer "no" almost every time.
+#
+# Deliberately generous. A false positive costs one classifier call, which is
+# exactly what used to happen unconditionally; a false negative would silently
+# turn the feature off, so anything arguably regional belongs in here.
+_MARKET_WORDS = re.compile(
+    r"\b("
+    r"europe|european|emea|eu|uk|british|britain|england|germany|german|france|french|"
+    r"italy|spain|netherlands|nordic|scandinav|"
+    r"america|american|usa|us|u\.s|states|canada|canadian|north american|"
+    r"asia|asian|japan|japanese|china|chinese|korea|australia|"
+    r"equivalent|counterpart|cross[- ]?reference|crossref|interchange|"
+    r"overseas|abroad|import|imported|export|domestic|"
+    r"sold in|offered in|available in|sold here|market|markets|"
+    r"version of|called in|badged|badge|rebadge|same truck|other name"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
+def is_market_question(question: str) -> bool:
+    """Cheap gate before the classifier. No market word, no classifier call."""
+    return bool(_MARKET_WORDS.search(question or ""))
+
+
 def _client() -> Anthropic:
     return Anthropic(api_key=settings.anthropic_api_key)
 
@@ -150,7 +179,7 @@ def classify(question: str) -> CrossRefIntent:
     }
     try:
         resp = _client().messages.create(
-            model=settings.claude_model,
+            model=settings.claude_fast_model,
             max_tokens=200,
             system=_CLASSIFY_SYSTEM,
             tools=[tool],
@@ -462,6 +491,8 @@ Requirements:
 def answer(db: Session, question: str) -> NLQueryResult | None:
     """Answer a cross-market question, or return None if this is not one -- the
     caller then runs the normal SQL path."""
+    if not is_market_question(question):
+        return None
     intent = classify(question)
     if not intent.is_crossref or not intent.model:
         return None

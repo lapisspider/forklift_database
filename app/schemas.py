@@ -185,6 +185,8 @@ class NLQueryResult(BaseModel):
     sql: str | None = None
     columns: list[str] = []
     rows: list[list] = []
+    total_rows: int | None = None   # true row count when `rows` was capped
+    truncated: bool = False         # rows is a MAX_ROWS slice, not the whole answer
     answer: str = ""
     error: str | None = None
 

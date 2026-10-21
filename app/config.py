@@ -8,6 +8,11 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     tavily_api_key: str = ""
     claude_model: str = "claude-sonnet-5"
+    # Classification and summarising are mechanical: measured at ~580 ms on
+    # Haiku against ~1020 ms on Sonnet, and every ask pays for both. SQL
+    # generation and spec extraction stay on claude_model -- those decide
+    # what the answer IS, and are not worth trading accuracy for 440 ms.
+    claude_fast_model: str = "claude-haiku-5-5"
     database_url: str = "sqlite:///./data/forklifts.db"
 
     # ---- Auth / access control ----

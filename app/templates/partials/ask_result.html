@@ -80,6 +80,11 @@
       </details>
     {% endif %}
     {% if r.rows %}
+      {% if r.truncated %}
+        <p class="muted nearest-caption">
+          Showing the first {{ r.rows|length }} of {{ r.total_rows }} matching rows.
+        </p>
+      {% endif %}
       {% if r.rows_are_nearest %}
         <p class="muted nearest-caption">
           No counterpart was confirmed. These are the closest trucks in this
