@@ -2,7 +2,7 @@
 import json
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -133,6 +133,14 @@ class Kit(Base):
     forklifts = association_proxy("forklift_links", "forklift",
                                   creator=lambda f: KitForklift(forklift=f))
 
+    # The serial-aware fitment rules (app/serials.py). Additive alongside
+    # forklift_links, which stays until the new path is proven -- see the plan.
+    fitments: Mapped[list["KitFitment"]] = relationship(
+        back_populates="kit", cascade="all, delete-orphan")
+    # Trucks order management has actually supplied this kit for.
+    serial_records: Mapped[list["SerialRecord"]] = relationship(
+        back_populates="kit")
+
     def as_dict(self) -> dict:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
@@ -243,3 +251,157 @@ class DoosanYearSerial(Base):
     sequence_raw: Mapped[str] = mapped_column(String(10))  # as printed (e.g. "0389" vs "00389")
     raw: Mapped[str] = mapped_column(String(20))           # full marker as printed, e.g. "21-00932"
     flag: Mapped[str | None] = mapped_column(Text)         # source anomaly note, if any
+
+
+class KitFitment(Base):
+    """One curated rule: this kit fits this OEM's model expression, under this
+    serial condition.
+
+    This replaces the assumption behind `kit_forklift` -- that a kit either fits
+    a model or does not. It can fit a model up to a serial and not after it:
+    `174-MCA1-00G05-01` fits a GP40-50K to serial 10230 and
+    `174-MCA2-00G05-01` from 10231 on, because production changed mid-model.
+    One row per kit x OEM x model expression x serial condition, so those two
+    kits produce two rows naming the same model.
+
+    `model_expr` is stored AS WRITTEN on the kit sheet (`GC35-70K`), not expanded
+    into one row per model. app/kit_ranges.py reads the expression; expanding it
+    here would bake today's reading of it into the data.
+
+    `origin` stays split for a reason. The range a salesperson sees is the
+    documented bound WIDENED BY what order management has actually supplied, and
+    those two must stay tellable apart -- a rule drifting far past its documented
+    bound is the signal that something is wrong, and it is invisible once the two
+    are blended into one number.
+    """
+    __tablename__ = "kit_fitment"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    kit_id: Mapped[int] = mapped_column(
+        ForeignKey("kits.id", ondelete="CASCADE"), index=True)
+
+    # Truck OEM this rule is scoped to. A kit sheet naming a Hyster code and its
+    # Yale twin inline produces one row per brand -- the codes are not
+    # interchangeable across brands (app/kit_ranges.py).
+    manufacturer: Mapped[str] = mapped_column(String(120), index=True)
+    model_expr: Mapped[str] = mapped_column(String(200), index=True)
+
+    # How the serial constrains this rule:
+    #   always  -- it does not; the kit fits the whole model
+    #   range   -- [serial_lo, serial_hi], either bound nullable (hi NULL = "10231+")
+    #   pattern -- a test we cannot evaluate in code, held verbatim in
+    #              serial_pattern for a human to read ("if there is a 3 in the
+    #              serial #"). Never silently treated as a match.
+    condition: Mapped[str] = mapped_column(String(10), default="always", index=True)
+    serial_lo: Mapped[int | None] = mapped_column(Integer)
+    serial_hi: Mapped[int | None] = mapped_column(Integer)
+    # The scope a sequence counts within -- the Hyster/Yale 4-char prefix, or ""
+    # where the OEM runs one sequence (CAT/Mitsubishi). See app/serials.py.
+    serial_scope: Mapped[str] = mapped_column(String(8), default="")
+    serial_pattern: Mapped[str | None] = mapped_column(Text)
+
+    origin: Mapped[str] = mapped_column(String(12), default="documented", index=True)
+    source_note: Mapped[str | None] = mapped_column(Text)
+    confirmed_by: Mapped[str | None] = mapped_column(String(255))
+    confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+
+    kit: Mapped["Kit"] = relationship(back_populates="fitments")
+
+    __table_args__ = (
+        # The salesperson's query arrives as (OEM, model, serial).
+        Index("ix_kit_fitment_lookup", "manufacturer", "model_expr"),
+    )
+
+    @property
+    def serial_display(self) -> str:
+        """The serial condition in the words the sheet uses."""
+        if self.condition == "pattern":
+            return self.serial_pattern or "serial condition on record"
+        if self.condition != "range":
+            return "any serial"
+        lo, hi = self.serial_lo, self.serial_hi
+        if lo is not None and hi is not None:
+            return f"{lo:05d}-{hi:05d}"
+        if lo is not None:
+            return f"{lo:05d}+"
+        if hi is not None:
+            return f"up to {hi:05d}"
+        return "any serial"
+
+    def matches_serial(self, serial: str | None) -> bool | None:
+        """Does this rule cover that serial? None means the question cannot be
+        answered -- an unordered or unknown OEM scheme, an unplaceable serial, or
+        a `pattern` condition only a person can read. Callers must not read None
+        as "does not fit"."""
+        from . import serials
+
+        if self.condition == "always":
+            return True
+        if self.condition == "pattern":
+            return None
+        return serials.in_range(self.manufacturer, serial,
+                                self.serial_lo, self.serial_hi,
+                                scope=self.serial_scope or "")
+
+    def as_dict(self) -> dict:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class SerialRecord(Base):
+    """One truck order management has actually supplied a kit for: append-only.
+
+    The ruling on what this table means: **an order record is truth.** Order
+    management records the kit that was genuinely shipped, so a serial landing
+    outside a documented range widens that range rather than contradicting it.
+    A record entered wrongly is corrected by pointing it at another kit or
+    superseding it -- never by editing or deleting the row, because the derived
+    ranges are rebuilt from these rows and an edit rewrites history silently.
+
+    `part_number` is what OM sends and is the authoritative link; `kit_id` is the
+    catalog row it resolved to, and is null when the part number is not in the
+    catalog yet. Keeping both means an unrecognised part number is still
+    recorded instead of rejected.
+    """
+    __tablename__ = "serial_record"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    # From order management.
+    part_number: Mapped[str] = mapped_column(String(120), index=True)
+    manufacturer: Mapped[str] = mapped_column(String(120), index=True)
+    model: Mapped[str] = mapped_column(String(200), index=True)
+    serial: Mapped[str] = mapped_column(String(120), index=True)   # raw, as supplied
+    customer: Mapped[str | None] = mapped_column(String(255), index=True)
+    location: Mapped[str | None] = mapped_column(String(255))
+    order_ref: Mapped[str | None] = mapped_column(String(120), index=True)
+
+    # Resolved on write, both nullable so an unplaceable serial is still kept.
+    kit_id: Mapped[int | None] = mapped_column(
+        ForeignKey("kits.id", ondelete="SET NULL"), index=True)
+    serial_norm: Mapped[str | None] = mapped_column(String(120), index=True)
+    serial_seq: Mapped[int | None] = mapped_column(Integer)
+    serial_scope: Mapped[str | None] = mapped_column(String(8))
+
+    # active | superseded | rejected. A superseded row keeps its data and stops
+    # feeding the derived ranges.
+    status: Mapped[str] = mapped_column(String(12), default="active", index=True)
+    superseded_by_id: Mapped[int | None] = mapped_column(
+        ForeignKey("serial_record.id", ondelete="SET NULL"))
+
+    note: Mapped[str | None] = mapped_column(Text)
+    recorded_by: Mapped[str | None] = mapped_column(String(255))
+    recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+
+    kit: Mapped["Kit | None"] = relationship(back_populates="serial_records")
+
+    __table_args__ = (
+        # Re-importing the same export must add nothing (verification step 4).
+        # order_ref is nullable, and SQLite treats NULLs as distinct, so a row
+        # without one is not deduped by an index -- the importer checks in Python.
+        Index("ix_serial_record_identity", "order_ref", "part_number", "serial"),
+        Index("ix_serial_record_truck", "manufacturer", "model", "serial_norm"),
+    )
+
+    def as_dict(self) -> dict:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -44,6 +44,7 @@ from app.models import Forklift  # noqa: E402
 from app.schemas import ForkliftSpecs, clean_series  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import test_kit_fitment  # noqa: E402  (same; needs the db)
 import test_kit_ranges  # noqa: E402  (shares this module's scoreboard)
 import test_serials  # noqa: E402  (same)
 
@@ -718,6 +719,7 @@ def main() -> int:
         test_tire(db)
         test_kit_ranges.run(R)
         test_serials.run(R)
+        test_kit_fitment.run(R, db)
     finally:
         db.close()
 

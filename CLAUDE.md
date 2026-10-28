@@ -190,6 +190,106 @@ already on file. Never derive a row from code arithmetic.
   below, and the user's call.** `reconcile_capacity()` would not catch it:
   2268 against 2200 is 3%, inside its 12% tolerance.
 
+### Fitment keyed on serials (`kit_fitment`, `serial_record`)
+
+The project is now an internal sales tool, and the kit is the spine rather than
+the forklift. A kit does not simply fit a model or not — it can fit a model up
+to a serial and not after it, because production changes mid-model:
+
+| Kit | Fits | Serial |
+|---|---|---|
+| `174-MCA1-00G05-01` | GC35-70K, GP40-50K, FGC35-70K, FG40-50K | `00001-10230` |
+| `174-MCA2-00G05-01` | GC35-50K, GP40-50K, FGC35-50K, FG40-50K | `10231+` |
+
+`kit_forklift` cannot express that and still exists — `kit_fitment` is
+**additive** and runs alongside it until the new path is proven. Retiring it is
+a separate decision.
+
+**`kit_fitment`** — one curated rule per kit × OEM × model expression × serial
+condition. `model_expr` is stored **as written** (`GC35-50K`), never expanded to
+one row per truck: `app/kit_ranges.py` reads it at query time, and expanding it
+here would bake one reading of the notes into the data permanently.
+`condition` is one of:
+
+- `always` — no serial constraint on record. 157 of the 178 migrated rows.
+- `range` — `[serial_lo, serial_hi]`, either bound nullable (`hi` NULL = `10231+`),
+  optionally scoped by `serial_scope`. 12 rows.
+- `pattern` — a test only a person can read, held verbatim in `serial_pattern`
+  (`'within the serial # if there is "3"'`). 9 rows. **Answers `None`, never a
+  quiet match.**
+
+`origin` (`documented` | `observed`) must stay split. The range a salesperson
+sees is the documented bound *widened by* what order management actually
+supplied, and a rule drifting far past its documented bound is the signal that
+something is wrong — invisible once the two are blended into one number.
+
+**`serial_record`** — append-only facts from order management (part number, OEM,
+model, serial, customer, location, order ref). **An order record is truth**
+(user's ruling): a serial outside a documented range *widens* that range, because
+OM only records kits actually supplied. A wrong record is corrected by
+re-pointing it at another kit or superseding it — **never** by editing or
+deleting the row, because the derived ranges are rebuilt from these rows and an
+edit rewrites history silently.
+
+### Serial comparability (`app/serials.py`)
+
+**A serial comparison is refused unless the scheme is known to be ordered.**
+`in_range()` returns `None` for "cannot say", which is a different answer from
+`False`, and callers must treat it as such. Three real cases produce it:
+
+- **Bobcat/Doosan is `UNORDERED`** — batch-allocated, so a higher sequence can
+  predate a lower one. `serial >= 10231` is meaningless there; exact matching
+  only, never a range.
+- **Hyster/Yale sequences count only within their 4-char prefix**, which names
+  the design generation and model family. `01515` under `G004` has no
+  relationship to `01515` under `H177`, so every point carries a scope and
+  cross-scope comparison is refused.
+- **Most OEMs have no scheme on file.** Toyota is deliberately **not** listed as
+  ordered — nothing in this repo documents its serial structure, and `int()` of
+  whatever digits appear is exactly the guess that reads as confident and is
+  wrong.
+
+Only `CAT/Mitsubishi`, `Hyster` and `Yale` are `ORDERED`. Adding an OEM means
+evidence — a documented serial structure, or a range SSC already relies on — not
+inference.
+
+### Reading a serial caveat off a kit sheet
+
+6 of the 119 kits mention a serial and **each was read by hand** in
+`migrate_kit_fitment.py` (`_SERIAL_RULES`). There is no grammar to generalise
+from six examples, and two of them are traps:
+
+- **Kit 81** says `Series R177, within the serial # of the truck`. `R177` is a
+  *documented Hyster prefix* (`data/reference/hy_serial_prefixes.json`: H40-70FT,
+  4000-7000 lbs, 4-wheel pneumatic), so it is a **scope, not a range**. Its
+  recorded twin `E875` is Yale `GP040-070VX` — same capacity, same tire — so the
+  kit's Yale `GP040-070VX` row gets `E875`. The kit's other Yale rows
+  (`GC`/`GLC` are **cushion**, plus `GLP`/`GDP`) are *not* covered by E875,
+  which is pneumatic-only, so they keep the caveat verbatim as a `pattern`
+  rather than borrowing a prefix that does not name them.
+- **Kits 100 and 101** name Linde series numbers (`1276`, `1346`) read out of the
+  serial. Linde has no scheme in `app/serials.py`, so even a real bound could
+  not be compared. Verbatim.
+
+A kit with nothing on record gets `always` — the sheet's own claim, no more.
+
+### The lookup (`app/fitment.py`)
+
+`kits_for(db, oem, model, serial)` answers the salesperson's actual question and
+returns a verdict per rule. The three are kept apart on purpose:
+
+- `confirmed` — a rule names the model and the serial falls inside it.
+- `excluded` — a rule names the model and the serial falls **outside** it. Shown,
+  not dropped: it is the reason the other kit is the right one.
+- `unconfirmed` — the serial cannot be placed. Unordered OEM, unreadable serial,
+  a `pattern` condition, or no serial given. Never shown as a fit, never as a miss.
+
+An **empty** list means no rule names the model at all, which is different from
+"no kit fits it", and the caller must say so in those words.
+
+Both query shapes resolve: a single truck (`GP40K`, found inside the range the
+sheet wrote) and the sheet's own wording (`GP40-50K`, which names itself).
+
 ## Lookup pipeline
 
 Decoder registry in `app/ai/decoders/`, each exposing `match()` / `decode()` /
@@ -206,10 +306,17 @@ read as a Doosan serial — be careful changing it.
 .venv/Scripts/python.exe tests/stress_lookup.py
 ```
 
-722 checks. Free by design: it monkeypatches every Tavily method and the
+806 checks. Free by design: it monkeypatches every Tavily method and the
 Anthropic client with a blocker, and **asserts on the spend log rather than on a raised
 exception**, because `web_identify` wraps searches in a broad `except Exception` that
 would swallow the probe. `--online` adds 26 live checks and does cost money. `-v` for detail.
+
+Section 16 is serial comparability (`tests/test_serials.py`, 41 checks, pure
+string work) and section 17 is kit fitment (`tests/test_kit_fitment.py`,
+43 checks). Section 17 **does read the database** — it checks the rows
+`migrate_kit_fitment.py` wrote, not a fixture, because the thing most likely
+to be wrong is the reading of a kit sheet rather than the comparison code.
+Both run on their own too.
 
 Sections 11–15 are the kit `Fits:` reader, which lives in
 `tests/test_kit_ranges.py` and shares this suite's scoreboard. It also runs on
@@ -230,6 +337,47 @@ SSC house fonts: Crimson Text (serif, headings) + Hind (body), matching
 loadingzonesafety.com. Red is `--red: #e10600`.
 
 ## Open items
+
+- **`174-MCA1-00G05-01`'s notes field says only `test link`.** The MCA1 half of
+  the flagship serial pair was never entered: no `OEM:` line, no `Fits:` line, so
+  `kit_ranges` reads nothing from it. Its four `kit_fitment` rows and the
+  `00001-10230` range come from `_SHEET_FITS` in `migrate_kit_fitment.py` —
+  the sheet's line as quoted in chat on 2026-10-27 — and say so in their
+  `source_note`. **The kits.notes field itself is deliberately untouched**; the
+  migration does not edit the catalog. The line it should hold is:
+
+  ```
+  OEM: CAT/Mitsubishi
+  Fits: GC35-70K and GP40-50K / Mitsubishi Forklift FGC35-70K and FG40-50K (serial # 00001-10230)
+  ```
+
+  Once that is in the notes, drop `_SHEET_FITS` and the rows migrate like every
+  other kit's.
+
+- **16 of the 119 kits have no readable `Fits:` line**, so they have no
+  `kit_fitment` rows at all and cannot be found by model at all. Nine are blank
+  (`#57 174-CSC52`, `#59 174-CPR45`, `#60`/`#61 174-CRC55`, `#62 174-CSP34`,
+  `#63 174-CFC45`, `#64 174-CTR4`, `#65 174-CPC4`, `#66 174-CMPC3`,
+  `#119 174-RK6NC`); the rest name something the parser refuses rather than
+  guesses at — `#13 EC22N2-EC30LN2`, `#30 Platinum II trucks`,
+  `#53 8610Tugger`, `#86 E30HSDS3-E40HSD3`, `#110 16-SERIES TRUCKS`,
+  `#116 CarryAll 300-500`. Run `.venv/Scripts/python.exe migrate_kit_fitment.py`
+  (dry run) for the current list.
+
+- **Kit 89's model expression reads as `H3.0`, dropping `OXT`.** Its notes say
+  `Fits: H3.0 OXT`; `kit_ranges` splits on the space and keeps only the first
+  token, so the stored `model_expr` is `H3.0`. Not fixed here because the fix
+  belongs in the parser and would move other kits' readings with it.
+
+- **Kit 101's caveat contradicts its `Fits:` line.** `Fits: 25-27C` against
+  `Caveats: ... Can only be a model E18S-E20S`. Both are recorded (the caveat is
+  in `source_note`); which one is right is a question for the sheet's author.
+
+- **`deploy/seed.db` has not been refreshed** for `kit_fitment` /
+  `serial_record`. The tables are created by `create_all` on startup, so a
+  deploy will not break — but it will come up with zero fitment rows until the
+  seed is rebuilt per the procedure above. Do that when the UI for this lands,
+  not before.
 
 - **19 rows where the model code disagrees with the stored capacity.** Reproduce with
   `reconcile_capacity()` over the catalog; the list is stable:
