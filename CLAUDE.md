@@ -456,15 +456,29 @@ loadingzonesafety.com. Red is `--red: #e10600`.
   Once that is in the notes, drop `_SHEET_FITS` and the rows migrate like every
   other kit's.
 
-- **16 of the 119 kits have no readable `Fits:` line**, so they have no
-  `kit_fitment` rows at all and cannot be found by model at all. Nine are blank
+- **15 of the 119 kits have no `kit_fitment` rows at all**, so they cannot be
+  found by truck model — only by part number. Nine have an empty `Fits:` line
   (`#57 174-CSC52`, `#59 174-CPR45`, `#60`/`#61 174-CRC55`, `#62 174-CSP34`,
   `#63 174-CFC45`, `#64 174-CTR4`, `#65 174-CPC4`, `#66 174-CMPC3`,
   `#119 174-RK6NC`); the rest name something the parser refuses rather than
   guesses at — `#13 EC22N2-EC30LN2`, `#30 Platinum II trucks`,
-  `#53 8610Tugger`, `#86 E30HSDS3-E40HSD3`, `#110 16-SERIES TRUCKS`,
-  `#116 CarryAll 300-500`. Run `.venv/Scripts/python.exe migrate_kit_fitment.py`
-  (dry run) for the current list.
+  `#53 8610Tugger`, `#110 16-SERIES TRUCKS`, `#116 CarryAll 300-500`,
+  `#45`'s stray part-number reference. Run
+  `.venv/Scripts/python.exe migrate_kit_fitment.py` (dry run) for the current
+  list.
+
+  17 kits are *unreadable* by `kit_ranges.readable`, which is a different count:
+  two of them still produced rows. `#1` comes from `_SHEET_FITS` (above), and
+  `#86 174-E30HSD3-00G00` is the one worth looking at —
+
+- **Kit 86 is a Hyster kit that can only be found under Yale.** Its notes read
+  `Fits: E30HSDS3-E40HSD3 | ESC030AD - ESC040AD`. The Yale twin range parses and
+  became a row; the Hyster range does not, because the two endpoints carry
+  **different suffixes** (`HSDS3` against `HSD3`) and `kit_ranges` refuses a
+  reading it cannot pin down rather than guessing which letter is the typo. So
+  a salesperson holding a Hyster E30HSD3 will not find this kit. Almost
+  certainly `E30HSDS3` should read `E30HSD3`; that is a correction to the kit
+  sheet, not to the parser, and it needs someone who knows the truck.
 
 - **Kit 89's model expression reads as `H3.0`, dropping `OXT`.** Its notes say
   `Fits: H3.0 OXT`; `kit_ranges` splits on the space and keeps only the first
@@ -475,11 +489,13 @@ loadingzonesafety.com. Red is `--red: #e10600`.
   `Caveats: ... Can only be a model E18S-E20S`. Both are recorded (the caveat is
   in `source_note`); which one is right is a question for the sheet's author.
 
-- **`deploy/seed.db` has not been refreshed** for `kit_fitment` /
-  `serial_record`. The tables are created by `create_all` on startup, so a
-  deploy will not break — but it will come up with zero fitment rows until the
-  seed is rebuilt per the procedure above. Do that when the UI for this lands,
-  not before.
+- ~~`deploy/seed.db` has not been refreshed~~ **Done 2026-10-27**, once the UI
+  landed. The seed now carries the 178 `kit_fitment` rows and an empty
+  `serial_record`. Verified off the seed itself: GP40K serial 05000 returns
+  MCA1 and 12000 returns MCA2. Refresh it again whenever fitment rules or
+  catalog data change — the procedure is under **Deploy** above, and the
+  `DELETE FROM users` step is not optional (the working database had six dev
+  accounts in it).
 
 - **19 rows where the model code disagrees with the stored capacity.** Reproduce with
   `reconcile_capacity()` over the catalog; the list is stable:
