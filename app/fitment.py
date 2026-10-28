@@ -23,27 +23,38 @@ result that reads as "no kit exists".
 from __future__ import annotations
 
 from dataclasses import dataclass
+from dataclasses import field as dc_field
 from functools import lru_cache
 
 from sqlalchemy.orm import Session
 
 from . import kit_ranges, serials
-from .models import Kit, KitFitment
+from .models import Kit, KitFitment, SerialRecord
 
+# A record of this exact truck having been supplied this kit. Stronger than any
+# range -- it is the thing ranges are inferred FROM -- and it is the only verdict
+# available on an OEM whose serials cannot be ordered at all.
+SUPPLIED = "supplied"
 CONFIRMED = "confirmed"
 EXCLUDED = "excluded"
 UNCONFIRMED = "unconfirmed"
 
-_ORDER = {CONFIRMED: 0, UNCONFIRMED: 1, EXCLUDED: 2}
+_ORDER = {SUPPLIED: 0, CONFIRMED: 1, UNCONFIRMED: 2, EXCLUDED: 3}
 
 
 @dataclass
 class FitHit:
-    """One kit_fitment rule weighed against a truck."""
+    """One kit weighed against a truck.
+
+    `fitment` is the rule behind the verdict, and is None for a hit that rests
+    on an order record alone -- a kit supplied to this exact truck for which no
+    fitment rule has been written yet.
+    """
     kit: Kit
-    fitment: KitFitment
+    fitment: KitFitment | None
     verdict: str
     reason: str
+    records: list[SerialRecord] = dc_field(default_factory=list)
 
     @property
     def sku(self) -> str:
@@ -115,11 +126,28 @@ def _weigh(fit: KitFitment, serial: str | None) -> tuple[str, str]:
         f"'{serial}' is prefix {point.scope}")
 
 
+def records_for(db: Session, manufacturer: str, model: str,
+                serial: str | None) -> list[SerialRecord]:
+    """Order records for this exact truck. Matched on the normalised serial, so
+    `L7-00116` and `l7 00116` are one truck."""
+    if not serial:
+        return []
+    norm = serials.normalize_serial(serial)
+    if not norm:
+        return []
+    return (db.query(SerialRecord)
+            .filter(SerialRecord.status == "active",
+                    SerialRecord.manufacturer == manufacturer,
+                    SerialRecord.serial_norm == norm)
+            .order_by(SerialRecord.recorded_at)
+            .all())
+
+
 def kits_for(db: Session, manufacturer: str, model: str,
              serial: str | None = None) -> list[FitHit]:
-    """Every kit with a rule naming this truck, confirmed hits first.
+    """Every kit with a rule naming this truck, strongest evidence first.
 
-    An empty list means no rule names the model at all -- which is different
+    An empty list means nothing names the model at all -- which is different
     from "no kit fits it", and the caller must say so in those words.
     """
     rows = (
@@ -134,12 +162,33 @@ def kits_for(db: Session, manufacturer: str, model: str,
         verdict, reason = _weigh(fit, serial)
         hits.append(FitHit(kit=fit.kit, fitment=fit, verdict=verdict, reason=reason))
 
+    # An order record for this exact truck outranks every rule, including a rule
+    # that excludes it: the kit demonstrably went on this machine. Jacob's
+    # ruling -- an order record is truth -- lives here.
+    by_sku: dict[str, FitHit] = {}
+    for h in hits:
+        by_sku.setdefault(h.sku, h)
+    for rec in records_for(db, manufacturer, model, serial):
+        hit = by_sku.get(rec.part_number)
+        if hit is None:
+            if rec.kit is None:
+                continue        # part number not in the catalog; nothing to show
+            hit = FitHit(kit=rec.kit, fitment=None, verdict=SUPPLIED, reason="")
+            hits.append(hit)
+            by_sku[rec.part_number] = hit
+        hit.records.append(rec)
+        hit.verdict = SUPPLIED
+        where = f" at {rec.customer}" if rec.customer else ""
+        hit.reason = (f"this exact truck was supplied {rec.part_number}"
+                      f"{where} -- recorded by order management")
+
     hits.sort(key=lambda h: (_ORDER[h.verdict], h.kit.sku))
     return hits
 
 
 def confirmed(hits: list[FitHit]) -> list[FitHit]:
-    return [h for h in hits if h.verdict == CONFIRMED]
+    """Hits a salesperson can quote: a rule confirmed it, or it was supplied."""
+    return [h for h in hits if h.verdict in (SUPPLIED, CONFIRMED)]
 
 
 def kits_by_manufacturer(db: Session) -> dict[str, list[Kit]]:

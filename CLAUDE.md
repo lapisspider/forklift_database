@@ -273,6 +273,66 @@ from six examples, and two of them are traps:
 
 A kit with nothing on record gets `always` — the sheet's own claim, no more.
 
+### Intake: order records in, observed ranges out
+
+```bash
+.venv/Scripts/python.exe import_serials.py orders.csv          # preview, writes nothing
+.venv/Scripts/python.exe import_serials.py orders.csv --apply
+.venv/Scripts/python.exe import_serials.py --derive-only       # rebuild ranges only
+```
+
+`app/serial_intake.py` holds the parsing and validation (not the script) so the
+CSV path and a future web form cannot disagree about them. Headers are matched
+**by meaning, not position** — `Order No`, `Truck Make`, `Model Number`,
+`Serial Number`, `Site` and about thirty other spellings all land on the right
+field, so order management's own export should work unchanged. Required: part
+number, OEM, model, serial. Optional: customer, location, order ref, note.
+`--show-mapping` prints what matched.
+
+**Nothing is rejected for being unrecognised.** A part number not in the kit
+catalog and a serial that cannot be placed in its OEM's scheme are *warnings*;
+the row is still written with `kit_id` or `serial_seq` left null. The record is
+order management's fact; our ability to interpret it is ours, and discarding the
+row loses the only copy.
+
+**Re-importing adds nothing.** Identity is `order_ref` + part number + serial
+where there is an order reference, and part number + OEM + model + serial where
+there is not. Checked against the database *and* within the file being read.
+
+#### The derivation pass (`app/fitment_derive.py`)
+
+**It never edits a `documented` row.** The widening happens in a separate
+`observed` row beside it, so you can always see which part of a range came from
+the sheet and which came from the field. The effective range is the union;
+`app/fitment.py` reports each hit separately, so a rule that has drifted far
+past its documented bound stays visible instead of being blended away.
+
+**It never narrows.** The absence of an order record at some serial is not
+evidence that the kit does not fit there — it is evidence nobody has ordered one
+yet.
+
+**It never ranges an unordered scheme.** Doosan records produce no range at all.
+They are still recorded, and the lookup matches them by **exact serial**, which
+is stronger evidence than any range and needs no scheme at all.
+
+Observed rows are rebuilt from scratch on every pass (`origin='observed'` and
+`confirmed_by='derive'` is the pass's own territory) — they are derived data, and
+recomputing is the only way a *superseded* record actually stops counting.
+
+Two things get flagged for a person rather than resolved:
+
+- **observed past the documented bound** — the sheet says `00001-10230` and the
+  records reach 10400.
+- **one truck, several kits** — two part numbers both recorded against one
+  serial.
+
+#### `supplied` outranks everything
+
+A record of this exact truck having been supplied this kit beats every rule,
+*including a rule that excludes it*: the kit demonstrably went on that machine.
+That is the user's ruling — an order record is truth — and it lives in
+`kits_for()`. The verdict is `supplied` and the reason names the customer.
+
 ### The lookup (`app/fitment.py`)
 
 `kits_for(db, oem, model, serial)` answers the salesperson's actual question and
@@ -306,7 +366,7 @@ read as a Doosan serial — be careful changing it.
 .venv/Scripts/python.exe tests/stress_lookup.py
 ```
 
-806 checks. Free by design: it monkeypatches every Tavily method and the
+851 checks. Free by design: it monkeypatches every Tavily method and the
 Anthropic client with a blocker, and **asserts on the spend log rather than on a raised
 exception**, because `web_identify` wraps searches in a broad `except Exception` that
 would swallow the probe. `--online` adds 26 live checks and does cost money. `-v` for detail.
@@ -316,7 +376,12 @@ string work) and section 17 is kit fitment (`tests/test_kit_fitment.py`,
 43 checks). Section 17 **does read the database** — it checks the rows
 `migrate_kit_fitment.py` wrote, not a fixture, because the thing most likely
 to be wrong is the reading of a kit sheet rather than the comparison code.
-Both run on their own too.
+Section 18 is order-record intake and range derivation
+(`tests/test_serial_intake.py`, 45 checks), which builds its OWN database
+in a temp file and never touches `data/forklifts.db` — its cases need
+customer names and order references, and inventing those in the real
+database would leave fabricated orders sitting next to real ones with
+nothing to tell them apart. All three run on their own too.
 
 Sections 11–15 are the kit `Fits:` reader, which lives in
 `tests/test_kit_ranges.py` and shares this suite's scoreboard. It also runs on
