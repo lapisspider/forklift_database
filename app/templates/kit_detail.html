@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}{{ kit.sku }} · SSC Forklift Database{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <header class="section-head">
+    <div class="section-head__id">
+      <h2>{{ kit.sku }}</h2>
+      <p class="section-head__count">
+        {% if kit.name %}{{ kit.name }} · {% endif %}
+        {% if kit.price is not none %}{{ "$%.2f"|format(kit.price) }}{% else %}no price on record{% endif %}
+      </p>
+    </div>
+    <div class="row">
+      <a class="button" href="/kits">All kits</a>
+      {% if can_edit %}<a class="button" href="/kit/{{ kit.id }}/edit">Edit</a>{% endif %}
+    </div>
+  </header>
+
+  {% if not blocks %}
+    <div class="fit-empty">
+      No fitment on record for this kit. Its <code>Fits:</code> line is missing
+      or could not be read, so the kit cannot be found by truck model.
+      {% if kit.notes %}<br><br>Notes say: <code>{{ kit.notes }}</code>{% endif %}
+    </div>
+  {% endif %}
+
+  {% for b in blocks %}
+  <div class="fit-group">
+    <header class="fit-group__head">
+      <h3>{{ b.manufacturer }} <code>{{ b.model_expr }}</code></h3>
+      {% if b.beyond_documented %}
+        <span class="attention-flag">order records reach past the sheet</span>
+      {% endif %}
+    </header>
+
+    {# Documented and observed are listed separately and never added together.
+       The sheet's bound is what was signed off; the observed bound is where
+       kits have actually gone. A rule that has drifted has to look different
+       from one that was always right. #}
+    {% if b.documented or b.observed %}
+    <table class="record-table">
+      <thead>
+        <tr><th>Source</th><th>Serial condition</th><th>Where it comes from</th></tr>
+      </thead>
+      <tbody>
+        {% for r in b.rules %}
+        <tr>
+          <td><span class="origin origin--{{ r.origin }}">{{ r.origin }}</span></td>
+          <td class="serial-range">
+            {{ r.serial_display }}
+          </td>
+          <td class="muted">{{ r.source_note or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {% if b.records %}
+      <p class="fit-group__note" style="margin-top:0.8rem;">
+        {{ b.records|length }} truck{{ 's' if b.records|length != 1 }} this kit
+        has been supplied for:
+      </p>
+      <table class="record-table">
+        <thead>
+          <tr><th>Serial</th><th>Model</th><th>Customer</th><th>Location</th><th>Order</th></tr>
+        </thead>
+        <tbody>
+          {% for rec in b.records %}
+          <tr>
+            <td class="serial">{{ rec.serial }}</td>
+            <td>{{ rec.model }}</td>
+            <td>{{ rec.customer or "—" }}</td>
+            <td>{{ rec.location or "—" }}</td>
+            <td>{{ rec.order_ref or "—" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="fit-group__note" style="margin-top:0.8rem;">
+        No order records yet — nothing has been confirmed in the field for this
+        model.
+      </p>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  {% if superseded %}
+  <div class="fit-group">
+    <header class="fit-group__head">
+      <h3>Superseded records</h3>
+      {# Kept rather than deleted: the derived ranges are rebuilt from these
+         rows, and an edit would rewrite history with nothing to show for it. #}
+      <span class="fit-group__note">kept on record, not counted in any range</span>
+    </header>
+    <table class="record-table">
+      <thead>
+        <tr><th>Serial</th><th>Model</th><th>Customer</th><th>Status</th><th>Note</th></tr>
+      </thead>
+      <tbody>
+        {% for rec in superseded %}
+        <tr class="is-superseded">
+          <td class="serial">{{ rec.serial }}</td>
+          <td>{{ rec.model }}</td>
+          <td>{{ rec.customer or "—" }}</td>
+          <td>{{ rec.status }}</td>
+          <td>{{ rec.note or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if kit.forklift_links %}
+  <div class="fit-group">
+    <header class="fit-group__head">
+      <h3>Older model links</h3>
+      {# kit_forklift predates serial-keyed fitment and is kept until the new
+         path is proven. It cannot express a serial cutoff, so it is shown as
+         history rather than as an answer. #}
+      <span class="fit-group__note">from before fitment was keyed on serials</span>
+    </header>
+    <ul class="fit-list">
+      {% for link in kit.forklift_links %}
+        <li><a href="/forklift/{{ link.forklift.id }}">{{ link.forklift.manufacturer }} {{ link.forklift.model }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

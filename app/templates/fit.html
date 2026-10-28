@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Find a kit · SSC Forklift Database{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <header class="section-head">
+    <div class="section-head__id">
+      <h2>Find a kit</h2>
+      {# The serial is the point of this page. Two kits can fit one model and
+         differ only by where the serial falls, so a lookup without it returns
+         both and no way to choose. #}
+      <p class="section-head__count">
+        The truck's make, model and serial number. The serial matters: kits for
+        the same model can differ by serial range.
+      </p>
+    </div>
+    <div class="row"><a class="button" href="/kits">All kits</a></div>
+  </header>
+
+  {# A GET so a result can be sent to someone as a link. The HTMX post below
+     updates the panel in place for the person typing. #}
+  <form class="fit-form" method="get" action="/fit"
+        hx-post="/fit" hx-target="#fit-result" hx-swap="innerHTML"
+        hx-indicator="#fit-busy">
+    <label>
+      <span class="label-text">Truck manufacturer</span>
+      <select name="oem" required>
+        <option value="">Choose…</option>
+        {% for o in oems %}
+          <option value="{{ o }}" {% if o == oem %}selected{% endif %}>{{ o }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span class="label-text">Model</span>
+      <input type="text" name="model" value="{{ model }}" required
+             placeholder="GP40K" autocomplete="off">
+    </label>
+    <label>
+      <span class="label-text">Serial number</span>
+      <input type="text" name="serial" value="{{ serial }}"
+             placeholder="05000" autocomplete="off">
+    </label>
+    <div>
+      <button type="submit">Find the kit</button>
+      <span id="fit-busy" class="htmx-indicator muted">checking…</span>
+    </div>
+    <p class="fit-form__hint">
+      Type the single truck (<code>GP40K</code>), not a range. Leave the serial
+      out and anything serial-dependent comes back unconfirmed rather than
+      guessed at.
+    </p>
+  </form>
+
+  <div id="fit-result">
+    {% if result %}
+      {% include "partials/fit_result.html" %}
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

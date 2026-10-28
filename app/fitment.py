@@ -108,7 +108,10 @@ def _weigh(fit: KitFitment, serial: str | None) -> tuple[str, str]:
 
     verdict = fit.matches_serial(serial)
     if verdict is True:
-        return CONFIRMED, f"serial is within {fit.serial_display}"
+        # "within 00001-10230" for a numeric bound, "in series R177" for a rule
+        # that only names the series -- "within series R177" reads as a range.
+        preposition = "within" if fit.bounded else "in"
+        return CONFIRMED, f"serial is {preposition} {fit.serial_display}"
     if verdict is False:
         return EXCLUDED, f"serial is outside {fit.serial_display}"
 

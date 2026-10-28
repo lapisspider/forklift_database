@@ -13,13 +13,13 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
 
-from . import auth
+from . import auth, fitment, kit_view, serials
 from .ai import lookup as lookup_service
 from .ai import nl_query
 from .auth import current_user
 from .config import settings
 from .database import get_db, init_db
-from .models import Forklift, Kit, KitForklift, User
+from .models import Forklift, Kit, KitFitment, KitForklift, SerialRecord, User
 from .schemas import ForkliftSpecs
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -376,6 +376,90 @@ async def create_kit(request: Request, db: Session = Depends(get_db)):
     _sync_kit_links(db, kit, form.getlist("forklift_ids"), reviewer)
     db.commit()
     return RedirectResponse(url="/#kits", status_code=303)
+
+
+# ----------------------------------------------------------------------------
+# Kit-centric views. The kit is the spine now: these answer "which kit does
+# this truck need", where the older routes answer "what do we know about this
+# truck". See CLAUDE.md, "Fitment keyed on serials".
+# ----------------------------------------------------------------------------
+@app.get("/kits", response_class=HTMLResponse)
+def kit_list(request: Request, sort: str = "oem", db: Session = Depends(get_db)):
+    if sort not in kit_view.SORTS:
+        sort = "oem"
+    rows = kit_view.kit_summaries(db, sort)
+    groups = kit_view.grouped_by_oem(rows) if sort == "oem" else {}
+    unlinked = (db.query(SerialRecord)
+                .filter(SerialRecord.status == "active",
+                        SerialRecord.kit_id.is_(None))
+                .count())
+    return templates.TemplateResponse(
+        request, "kits.html",
+        _ctx(request, rows=rows, groups=groups, sort=sort,
+             sorts=kit_view.SORTS, unlinked=unlinked,
+             needs_attention=sum(1 for r in rows if r.attention)),
+    )
+
+
+@app.get("/kit/{kid}", response_class=HTMLResponse)
+def kit_detail(kid: int, request: Request, db: Session = Depends(get_db)):
+    kit = db.get(Kit, kid)
+    if not kit:
+        raise HTTPException(404, "Kit not found")
+    blocks = kit_view.kit_models(db, kit)
+    return templates.TemplateResponse(
+        request, "kit_detail.html",
+        _ctx(request, kit=kit, blocks=blocks,
+             superseded=[r for r in kit.serial_records if r.status != "active"]),
+    )
+
+
+@app.get("/fit", response_class=HTMLResponse)
+def fit_page(request: Request, oem: str = "", model: str = "", serial: str = "",
+             db: Session = Depends(get_db)):
+    """The salesperson's lookup. A GET so a result can be sent to someone."""
+    oems = [row[0] for row in db.query(KitFitment.manufacturer)
+            .distinct().order_by(KitFitment.manufacturer).all()]
+    result = None
+    if oem and model:
+        result = _fit_result(db, oem, model, serial)
+    return templates.TemplateResponse(
+        request, "fit.html",
+        _ctx(request, oems=oems, oem=oem, model=model, serial=serial, result=result),
+    )
+
+
+@app.post("/fit", response_class=HTMLResponse)
+def fit_lookup(request: Request, oem: str = Form(""), model: str = Form(""),
+               serial: str = Form(""), db: Session = Depends(get_db)):
+    """The same lookup over HTMX, for the result panel alone."""
+    return templates.TemplateResponse(
+        request, "partials/fit_result.html",
+        _ctx(request, result=_fit_result(db, oem, model, serial)),
+    )
+
+
+def _fit_result(db: Session, oem: str, model: str, serial: str) -> dict:
+    """Everything the result panel needs, including why it is empty."""
+    oem, model, serial = oem.strip(), model.strip(), serial.strip()
+    if not oem or not model:
+        return {"error": "Pick a truck manufacturer and type a model."}
+
+    hits = fitment.kits_for(db, oem, model, serial or None)
+    note = None
+    if serial and not serials.scheme_is_ordered(oem):
+        # Say this before the results, not after: it changes how every verdict
+        # below should be read.
+        note = serials.explain(oem)
+    return {
+        "oem": oem, "model": model, "serial": serial,
+        "hits": hits,
+        "quotable": fitment.confirmed(hits),
+        "unconfirmed": [h for h in hits if h.verdict == fitment.UNCONFIRMED],
+        "excluded": [h for h in hits if h.verdict == fitment.EXCLUDED],
+        "scheme_note": note,
+        "records": fitment.records_for(db, oem, model, serial or None),
+    }
 
 
 @app.get("/kit/{kid}/edit", response_class=HTMLResponse)

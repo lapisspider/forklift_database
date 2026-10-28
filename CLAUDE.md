@@ -350,6 +350,35 @@ An **empty** list means no rule names the model at all, which is different from
 Both query shapes resolve: a single truck (`GP40K`, found inside the range the
 sheet wrote) and the sheet's own wording (`GP40-50K`, which names itself).
 
+### The kit-centric pages
+
+| Route | What it answers |
+|---|---|
+| `GET /kits` | every kit, grouped by the **truck's** OEM (default) — a kit fitting several makes appears under all of them. Other sorts: part number, most recently confirmed, most trucks confirmed, needs attention. |
+| `GET /kit/{kid}` | one kit: documented and observed rules **side by side, never merged**, plus the order records behind them and any superseded ones. |
+| `GET,POST /fit` | the salesperson's `(OEM, model, serial)` lookup. GET so a result is a shareable link; POST is the same thing over HTMX. |
+
+`app/kit_view.py` assembles both shapes; it sits apart from `app/fitment.py`
+because it reads `app/fitment_derive.py`, which reads `fitment` — a view helper
+is the right place for that knot, not the lookup.
+
+Styling is in `app/static/fitment.css`, kept separate like `serial.css`. The one
+thing it has to get right: **`unconfirmed` must not look like either answer.**
+It gets amber and a dotted edge — visibly unfinished — because giving it the
+green of a confirmed fit or the red of an exclusion would undo in CSS exactly
+what the code works to keep apart.
+
+Two wording traps, both already hit:
+
+- A rule scoped to a serial prefix with no numeric bounds is **not** "any
+  serial" — kit 81 fits only trucks carrying prefix R177, and dropping the
+  scope reads as the opposite of what it means. `serial_display` says
+  `series R177`, and `_weigh` says "in" rather than "within" for it
+  (`KitFitment.bounded` is the test).
+- The fit card shows the rule's **origin**, not its whole `source_note`. The
+  provenance sentence is internal and belongs on the kit's own page, not in
+  front of a customer.
+
 ## Lookup pipeline
 
 Decoder registry in `app/ai/decoders/`, each exposing `match()` / `decode()` /

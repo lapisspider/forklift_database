@@ -1,0 +1,89 @@
+{% if result.error %}
+  <div class="fit-empty">{{ result.error }}</div>
+{% else %}
+
+  {# This sentence goes BEFORE the verdicts, not after: on a manufacturer whose
+     serials are not in a running order, every range below means nothing, and a
+     reader who meets that fact at the bottom has already drawn a conclusion. #}
+  {% if result.scheme_note %}
+    <p class="scheme-note">{{ result.scheme_note }}</p>
+  {% endif %}
+
+  {% macro fit_card(h) %}
+  <div class="fit-card fit-card--{{ h.verdict }}">
+    <div class="fit-card__sku"><a href="/kit/{{ h.kit.id }}">{{ h.sku }}</a></div>
+    <span class="verdict verdict--{{ h.verdict }}">{{ h.verdict }}</span>
+    <div class="fit-card__reason">{{ h.reason }}</div>
+    <div class="fit-card__meta">
+      {# Where the rule came from, not the whole provenance sentence -- that is
+         internal and belongs on the kit's own page, not in front of a customer. #}
+      {% if h.fitment %}
+        fits <code>{{ h.fitment.model_expr }}</code> ·
+        <span class="origin origin--{{ h.fitment.origin }}">{{ h.fitment.origin }}</span>
+      {% else %}
+        no fitment rule written for this model yet — this rests on the order
+        record alone
+      {% endif %}
+      {% if h.records %}
+        <br>order record{{ 's' if h.records|length != 1 }}:
+        {% for r in h.records %}{{ r.order_ref or 'no order ref' }}{% if r.location %} ({{ r.location }}){% endif %}{% if not loop.last %}, {% endif %}{% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  {% endmacro %}
+
+  {% if result.quotable %}
+    <div class="fit-group">
+      <header class="fit-group__head">
+        <h3>Fits</h3>
+        <span class="fit-group__note">
+          {{ result.quotable|length }} kit{{ 's' if result.quotable|length != 1 }}
+        </span>
+      </header>
+      {% for h in result.quotable %}{{ fit_card(h) }}{% endfor %}
+    </div>
+  {% elif result.hits %}
+    <div class="fit-empty">
+      {# An important distinction: rules name this truck, but none of them could
+         be confirmed for that serial. That is not the same as no kit fitting. #}
+      Nothing is confirmed for serial <strong>{{ result.serial or "(none given)" }}</strong>.
+      {% if not result.serial %}
+        Add the truck's serial number — these kits differ by serial range.
+      {% else %}
+        The kits below name this model, but the serial could not be placed
+        against them.
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="fit-empty">
+      No kit on record names a <strong>{{ result.oem }} {{ result.model }}</strong>.
+      That is not the same as no kit fitting it — it means nothing has been
+      written down for this model yet. Check the model spelling, or look for the
+      kit by part number under <a href="/kits">all kits</a>.
+    </div>
+  {% endif %}
+
+  {% if result.unconfirmed %}
+    <div class="fit-group">
+      <header class="fit-group__head">
+        <h3>Cannot be confirmed</h3>
+        <span class="fit-group__note">a person has to decide these</span>
+      </header>
+      {% for h in result.unconfirmed %}{{ fit_card(h) }}{% endfor %}
+    </div>
+  {% endif %}
+
+  {% if result.excluded %}
+    <div class="fit-group">
+      <header class="fit-group__head">
+        <h3>Does not fit this serial</h3>
+        {# Shown rather than dropped: it is the reason the kit above is the
+           right one, and a salesperson who can see it does not have to wonder
+           whether the tool simply missed it. #}
+        <span class="fit-group__note">named for this model, ruled out by the serial</span>
+      </header>
+      {% for h in result.excluded %}{{ fit_card(h) }}{% endfor %}
+    </div>
+  {% endif %}
+
+{% endif %}

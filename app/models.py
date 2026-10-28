@@ -314,20 +314,36 @@ class KitFitment(Base):
     )
 
     @property
+    def bounded(self) -> bool:
+        """Does this rule put numbers on the serial, as opposed to only naming
+        the series it has to belong to?"""
+        return self.condition == "range" and (
+            self.serial_lo is not None or self.serial_hi is not None)
+
+    @property
     def serial_display(self) -> str:
-        """The serial condition in the words the sheet uses."""
+        """The serial condition in the words the sheet uses.
+
+        A scoped rule with no numeric bounds is NOT "any serial" -- kit 81 fits
+        only trucks whose serial carries the prefix R177, which is a real
+        constraint and reads as the opposite if the scope is dropped.
+        """
         if self.condition == "pattern":
             return self.serial_pattern or "serial condition on record"
+        series = f"series {self.serial_scope}" if self.serial_scope else ""
         if self.condition != "range":
-            return "any serial"
+            return series or "any serial"
+
         lo, hi = self.serial_lo, self.serial_hi
         if lo is not None and hi is not None:
-            return f"{lo:05d}-{hi:05d}"
-        if lo is not None:
-            return f"{lo:05d}+"
-        if hi is not None:
-            return f"up to {hi:05d}"
-        return "any serial"
+            body = f"{lo:05d}-{hi:05d}"
+        elif lo is not None:
+            body = f"{lo:05d}+"
+        elif hi is not None:
+            body = f"up to {hi:05d}"
+        else:
+            return series or "any serial"
+        return f"{body} in {series}" if series else body
 
     def matches_serial(self, serial: str | None) -> bool | None:
         """Does this rule cover that serial? None means the question cannot be

@@ -1,0 +1,265 @@
+/* Kit-centric pages: the kit list, a kit's detail, and the (model, serial)
+   lookup. Kept apart from style.css the same way serial.css is, so the kit
+   work can move without disturbing the catalog pages.
+
+   The one thing this file really has to get right is that the four verdicts
+   never blur together. `supplied` and `confirmed` are quotable, `excluded` is
+   a stated no, and `unconfirmed` is neither -- it is the tool saying it cannot
+   tell. Giving `unconfirmed` the same green as a confirmed fit, or the same red
+   as an exclusion, would undo the whole point of keeping them apart in the
+   code. So it gets amber and a dotted edge: visibly unfinished. */
+
+:root {
+  --fit-yes: #3ddc84;
+  --fit-yes-soft: rgba(61, 220, 132, 0.10);
+  --fit-maybe: #f0b429;
+  --fit-maybe-soft: rgba(240, 180, 41, 0.10);
+  --fit-no: #ff6b6b;
+  --fit-no-soft: rgba(255, 107, 107, 0.08);
+}
+
+/* ---------------------------------------------------------- verdict badges */
+
+.verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.verdict--supplied   { background: var(--fit-yes-soft);   color: var(--fit-yes);   border-color: var(--fit-yes); }
+.verdict--confirmed  { background: var(--fit-yes-soft);   color: var(--fit-yes);   border-color: rgba(61, 220, 132, 0.45); }
+.verdict--unconfirmed{ background: var(--fit-maybe-soft); color: var(--fit-maybe); border-style: dotted; border-color: var(--fit-maybe); }
+.verdict--excluded   { background: var(--fit-no-soft);    color: var(--fit-no);    border-color: rgba(255, 107, 107, 0.45); }
+
+/* `supplied` is the only verdict backed by a truck that actually exists, so it
+   is the only one that gets a solid marker. */
+.verdict--supplied::before { content: "\25CF"; font-size: 0.6rem; }
+
+/* --------------------------------------------------------- the fit results */
+
+.fit-group { margin: 1.5rem 0 0; }
+
+.fit-group__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.fit-group__head h3 { margin: 0; font-size: 1rem; }
+.fit-group__note { color: var(--muted); font-size: 0.85rem; }
+
+.fit-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem 1rem;
+  align-items: start;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--line);
+  border-radius: 6px;
+}
+
+.fit-card--supplied, .fit-card--confirmed { border-left-color: var(--fit-yes); }
+.fit-card--unconfirmed { border-left-color: var(--fit-maybe); }
+.fit-card--excluded { border-left-color: var(--fit-no); opacity: 0.85; }
+
+.fit-card__sku {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-light);
+}
+
+.fit-card__sku a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
+.fit-card__sku a:hover { color: var(--red-hover); border-bottom-color: var(--red-hover); }
+
+.fit-card__reason { grid-column: 1 / -1; color: var(--ink); font-size: 0.88rem; }
+.fit-card__meta { grid-column: 1 / -1; color: var(--muted); font-size: 0.8rem; }
+
+/* The sentence that has to be read before the verdicts, not after: on an
+   unordered scheme every range below means nothing. */
+.scheme-note {
+  margin: 0 0 1rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--fit-maybe-soft);
+  border-left: 3px solid var(--fit-maybe);
+  border-radius: 4px;
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.fit-empty {
+  padding: 1.2rem;
+  background: var(--bg-card-alt);
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------- origin pills */
+
+/* Documented and observed must not look alike anywhere they appear together --
+   that split is the audit trail. */
+.origin {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.origin--documented { background: rgba(245, 245, 245, 0.10); color: var(--ink); }
+.origin--observed { background: var(--red-soft); color: var(--red-hover); }
+
+.serial-range {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9rem;
+  color: var(--ink-light);
+}
+
+/* ------------------------------------------------------------ attention */
+
+.attention {
+  margin: 0.5rem 0 0;
+  padding: 0.6rem 0.8rem;
+  background: var(--fit-maybe-soft);
+  border-left: 3px solid var(--fit-maybe);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.attention ul { margin: 0; padding-left: 1.1rem; }
+.attention li + li { margin-top: 0.3rem; }
+
+.attention-flag {
+  color: var(--fit-maybe);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------- the kit list page */
+
+.oem-group { margin-bottom: 2rem; }
+
+.oem-group__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.oem-group__head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ink-light);
+}
+
+.oem-group__count { color: var(--muted); font-size: 0.85rem; }
+
+.kit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 0.75rem;
+}
+
+.kit-card {
+  padding: 0.85rem 1rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+}
+
+.kit-card:hover { border-color: var(--line); }
+
+.kit-card__sku {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  color: var(--ink-light);
+  text-decoration: none;
+}
+
+.kit-card__sku:hover { color: var(--red-hover); }
+.kit-card__name { color: var(--muted); font-size: 0.85rem; }
+
+.kit-card__models {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.kit-card__models code {
+  padding: 0.05rem 0.3rem;
+  background: rgba(245, 245, 245, 0.06);
+  border-radius: 3px;
+  font-size: 0.82rem;
+}
+
+.kit-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+/* ----------------------------------------------------------- the fit form */
+
+.fit-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.fit-form label { display: block; }
+.fit-form .label-text {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fit-form__hint { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.82rem; }
+
+/* ---------------------------------------------------- order record tables */
+
+.record-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.record-table th {
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--line);
+}
+.record-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--line-soft); }
+.record-table tr:last-child td { border-bottom: none; }
+.record-table .serial { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.record-table tr.is-superseded td { color: var(--muted); text-decoration: line-through; }
