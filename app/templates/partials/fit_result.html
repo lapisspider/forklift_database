@@ -24,6 +24,13 @@
         no fitment rule written for this model yet — this rests on the order
         record alone
       {% endif %}
+      {# The other rules on the same kit -- usually the documented bound behind
+         an observed one. Shown here rather than as a second card, which would
+         put one part number on the page twice with two different verdicts. #}
+      {% if h.alternates %}
+        <br>also on this kit:
+        {% for a in h.alternates %}<span class="origin origin--{{ a.origin }}">{{ a.origin }}</span> {{ a.serial_display }}{% if not loop.last %}, {% endif %}{% endfor %}
+      {% endif %}
       {% if h.records %}
         <br>order record{{ 's' if h.records|length != 1 }}:
         {% for r in h.records %}{{ r.order_ref or 'no order ref' }}{% if r.location %} ({{ r.location }}){% endif %}{% if not loop.last %}, {% endif %}{% endfor %}

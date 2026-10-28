@@ -13,7 +13,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
 
-from . import auth, fitment, kit_view, serials
+from . import auth, fitment, fitment_derive, kit_view, serial_intake, serials
 from .ai import lookup as lookup_service
 from .ai import nl_query
 from .auth import current_user
@@ -66,6 +66,7 @@ def _needs_editor(method: str, path: str) -> bool:
         return True
     if method == "POST" and path not in _READONLY_POSTS and (
         path.startswith("/forklift") or path.startswith("/kit")
+        or path.startswith("/record")         # recording / superseding a serial
     ):                                        # create / delete / archive-pdf
         return True
     return False
@@ -460,6 +461,69 @@ def _fit_result(db: Session, oem: str, model: str, serial: str) -> dict:
         "scheme_note": note,
         "records": fitment.records_for(db, oem, model, serial or None),
     }
+
+
+@app.get("/records", response_class=HTMLResponse)
+def record_list(request: Request, db: Session = Depends(get_db)):
+    """Order records, newest first, with the form for typing one in.
+
+    The CSV importer is the bulk path; this is the one-off a clerk types when a
+    single kit ships. Both go through app/serial_intake.py so they cannot
+    disagree about what a valid record is.
+    """
+    records = (db.query(SerialRecord)
+               .order_by(SerialRecord.recorded_at.desc(), SerialRecord.id.desc())
+               .limit(500).all())
+    oems = [row[0] for row in db.query(KitFitment.manufacturer)
+            .distinct().order_by(KitFitment.manufacturer).all()]
+    return templates.TemplateResponse(
+        request, "records.html",
+        _ctx(request, records=records, oems=oems,
+             total=db.query(SerialRecord).count()),
+    )
+
+
+@app.post("/record")
+def create_record(request: Request, part_number: str = Form(""),
+                  manufacturer: str = Form(""), model: str = Form(""),
+                  serial: str = Form(""), customer: str = Form(""),
+                  location: str = Form(""), order_ref: str = Form(""),
+                  note: str = Form(""), db: Session = Depends(get_db)):
+    row = serial_intake.judge(db, 0, {
+        "part_number": part_number, "manufacturer": manufacturer,
+        "model": model, "serial": serial, "customer": customer,
+        "location": location, "order_ref": order_ref, "note": note,
+    })
+    if row.errors:
+        raise HTTPException(400, "; ".join(row.errors))
+    if row.duplicate_of is not None:
+        # Already on record. Not an error -- the clerk is told, not scolded.
+        return RedirectResponse(url="/records?dup=1", status_code=303)
+
+    recorded_by = (current_user(request) or {}).get("email")
+    db.add(serial_intake.to_record(row, recorded_by))
+    db.commit()
+    # The record changes what the derived ranges say, so rebuild them now
+    # rather than leaving the kit pages stale until someone runs the script.
+    fitment_derive.apply(db)
+    return RedirectResponse(url="/records?saved=1", status_code=303)
+
+
+@app.post("/record/{rid}/supersede")
+def supersede_record(rid: int, request: Request, db: Session = Depends(get_db)):
+    """Retire a record without deleting it.
+
+    The derived ranges are rebuilt FROM these rows, so deleting one would
+    rewrite history with nothing left to show what changed. A superseded row
+    keeps its data and stops counting.
+    """
+    rec = db.get(SerialRecord, rid)
+    if not rec:
+        raise HTTPException(404, "Record not found")
+    rec.status = "superseded"
+    db.commit()
+    fitment_derive.apply(db)
+    return RedirectResponse(url="/records", status_code=303)
 
 
 @app.get("/kit/{kid}/edit", response_class=HTMLResponse)

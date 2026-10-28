@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Order records · SSC Forklift Database{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <header class="section-head">
+    <div class="section-head__id">
+      <h2>Order records</h2>
+      {# These rows are the evidence the serial ranges are built from, which is
+         why nothing here is ever edited or deleted -- only superseded. #}
+      <p class="section-head__count">
+        {{ total }} record{{ 's' if total != 1 }}. Each one is a truck a kit was
+        actually supplied for, and the serial ranges are rebuilt from them.
+      </p>
+    </div>
+    <div class="row"><a class="button" href="/kits">All kits</a></div>
+  </header>
+
+  {% if request.query_params.get('saved') %}
+    <p class="scheme-note">Recorded. The serial ranges have been rebuilt.</p>
+  {% elif request.query_params.get('dup') %}
+    <p class="scheme-note">That truck is already on record for that part number —
+      nothing was added.</p>
+  {% endif %}
+
+  {% if can_edit %}
+  <div class="subsection">
+    <h3>Record a kit that shipped</h3>
+    <form class="fit-form" method="post" action="/record">
+      <label>
+        <span class="label-text">Part number *</span>
+        <input type="text" name="part_number" required placeholder="174-MCA1-00G05-01">
+      </label>
+      <label>
+        <span class="label-text">Truck manufacturer *</span>
+        <input type="text" name="manufacturer" list="oem-list" required placeholder="CAT/Mitsubishi">
+        <datalist id="oem-list">
+          {% for o in oems %}<option value="{{ o }}">{% endfor %}
+        </datalist>
+      </label>
+      <label>
+        <span class="label-text">Model *</span>
+        <input type="text" name="model" required placeholder="GP40K">
+      </label>
+      <label>
+        <span class="label-text">Serial *</span>
+        <input type="text" name="serial" required placeholder="05000">
+      </label>
+      <label>
+        <span class="label-text">Customer</span>
+        <input type="text" name="customer" placeholder="Acme Freight">
+      </label>
+      <label>
+        <span class="label-text">Location</span>
+        <input type="text" name="location" placeholder="Dallas, TX">
+      </label>
+      <label>
+        <span class="label-text">Order reference</span>
+        <input type="text" name="order_ref" placeholder="SO-1001">
+      </label>
+      <div><button type="submit">Record it</button></div>
+      <p class="fit-form__hint">
+        {# Both of these are warnings in the importer for the same reason: the
+           fact is order management's, and dropping the row loses the only copy. #}
+        A part number not yet in the catalog, or a serial on a manufacturer
+        whose numbering we cannot place, is still recorded — it just will not
+        widen a range until it can be resolved. For a whole export, use
+        <code>import_serials.py</code> instead.
+      </p>
+    </form>
+  </div>
+  {% endif %}
+
+  {% if records %}
+  <div class="table-scroll" style="margin-top:1.5rem;">
+    <table class="record-table">
+      <thead>
+        <tr>
+          <th>Part number</th><th>Truck</th><th>Serial</th><th>Customer</th>
+          <th>Location</th><th>Order</th><th>Status</th>
+          {% if can_edit %}<th><span class="sr-only">Actions</span></th>{% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr {% if r.status != 'active' %}class="is-superseded"{% endif %}>
+          <td>
+            {% if r.kit %}<a href="/kit/{{ r.kit.id }}">{{ r.part_number }}</a>
+            {% else %}{{ r.part_number }} <span class="attention-flag">not in catalog</span>{% endif %}
+          </td>
+          <td>{{ r.manufacturer }} {{ r.model }}</td>
+          <td class="serial">
+            {{ r.serial }}
+            {# A serial with no sequence could not be placed in its OEM's
+               scheme, so it can only ever be matched exactly. Worth showing. #}
+            {% if r.serial_seq is none %}<span class="attention-flag">not placeable</span>{% endif %}
+          </td>
+          <td>{{ r.customer or "—" }}</td>
+          <td>{{ r.location or "—" }}</td>
+          <td>{{ r.order_ref or "—" }}</td>
+          <td>{{ r.status }}</td>
+          {% if can_edit %}
+          <td>
+            {% if r.status == 'active' %}
+            <form method="post" action="/record/{{ r.id }}/supersede"
+                  onsubmit="return confirm('Supersede this record? It stays on file but stops counting towards any serial range.');">
+              <button type="submit">Supersede</button>
+            </form>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="fit-empty" style="margin-top:1.5rem;">
+      No order records yet. Every serial range on the kit pages is still exactly
+      what the kit sheets documented.
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

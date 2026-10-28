@@ -240,6 +240,20 @@ def _cases(R, db, tmpdir: Path) -> None:
             {MCA1, MCA2} <= {h.sku for h in F.confirmed(hits)},
             f"{[(h.sku, h.verdict) for h in hits]}")
 
+    # MCA1 now has TWO rules naming this truck -- the documented 00001-10230
+    # that excludes 10400 and the observed row that reaches it. One kit is one
+    # answer: showing both would put one part number on the page twice with two
+    # different verdicts, which reads as the tool contradicting itself.
+    R.check("a kit matched by two rules appears once",
+            len([h for h in hits if h.sku == MCA1]) == 1,
+            f"{[(h.sku, h.verdict) for h in hits]}")
+    mca1_hit = [h for h in hits if h.sku == MCA1][0]
+    R.check("the stronger verdict is the one shown",
+            mca1_hit.verdict in (F.SUPPLIED, F.CONFIRMED), f"{mca1_hit.verdict}")
+    R.check("and the documented rule it overrode is still carried",
+            any(a.origin == "documented" for a in mca1_hit.alternates),
+            f"alternates {[(a.origin, a.serial_display) for a in mca1_hit.alternates]}")
+
     # --- an order record outranks a rule that excludes it ----------------
     # Serial 10400 is outside MCA1's DOCUMENTED range, but a truck at 10400 was
     # supplied MCA1. The record wins, and says so.

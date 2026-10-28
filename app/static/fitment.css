@@ -263,3 +263,8 @@
 .record-table tr:last-child td { border-bottom: none; }
 .record-table .serial { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .record-table tr.is-superseded td { color: var(--muted); text-decoration: line-through; }
+
+/* Two more nav items (Kits, Find a kit, Records) tighten the header. Keep each
+   label whole: "Find a kit" broken over three lines is worse than a nav that
+   wraps as a whole. */
+.nav-main .nav-item { white-space: nowrap; }

@@ -55,6 +55,10 @@ class FitHit:
     verdict: str
     reason: str
     records: list[SerialRecord] = dc_field(default_factory=list)
+    # Other rules on the same kit that also name this truck -- typically the
+    # documented bound sitting behind an observed one that reaches further.
+    # Kept so the card can show them; never a second card for the same kit.
+    alternates: list[KitFitment] = dc_field(default_factory=list)
 
     @property
     def sku(self) -> str:
@@ -165,12 +169,25 @@ def kits_for(db: Session, manufacturer: str, model: str,
         verdict, reason = _weigh(fit, serial)
         hits.append(FitHit(kit=fit.kit, fitment=fit, verdict=verdict, reason=reason))
 
-    # An order record for this exact truck outranks every rule, including a rule
-    # that excludes it: the kit demonstrably went on this machine. Jacob's
-    # ruling -- an order record is truth -- lives here.
-    by_sku: dict[str, FitHit] = {}
+    # One card per kit, not per rule. A kit routinely has two rules naming one
+    # truck -- the documented bound and the observed one that reaches past it --
+    # and listing both would show the same part number twice with two different
+    # verdicts. The strongest verdict wins and the rest ride along as
+    # `alternates`, so nothing is lost from the page.
+    grouped: dict[str, list[FitHit]] = {}
     for h in hits:
-        by_sku.setdefault(h.sku, h)
+        grouped.setdefault(h.sku, []).append(h)
+    hits = []
+    for group in grouped.values():
+        group.sort(key=lambda h: (_ORDER[h.verdict], h.fitment.origin != "documented"))
+        winner = group[0]
+        winner.alternates = [g.fitment for g in group[1:] if g.fitment is not None]
+        hits.append(winner)
+
+    # An order record for this exact truck outranks every rule, including a rule
+    # that excludes it: the kit demonstrably went on this machine. The ruling
+    # that an order record is truth lives here.
+    by_sku: dict[str, FitHit] = {h.sku: h for h in hits}
     for rec in records_for(db, manufacturer, model, serial):
         hit = by_sku.get(rec.part_number)
         if hit is None:

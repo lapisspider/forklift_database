@@ -357,6 +357,7 @@ sheet wrote) and the sheet's own wording (`GP40-50K`, which names itself).
 | `GET /kits` | every kit, grouped by the **truck's** OEM (default) — a kit fitting several makes appears under all of them. Other sorts: part number, most recently confirmed, most trucks confirmed, needs attention. |
 | `GET /kit/{kid}` | one kit: documented and observed rules **side by side, never merged**, plus the order records behind them and any superseded ones. |
 | `GET,POST /fit` | the salesperson's `(OEM, model, serial)` lookup. GET so a result is a shareable link; POST is the same thing over HTMX. |
+| `GET /records`, `POST /record` | order records, and the form for typing one in. `POST /record/{rid}/supersede` retires a record **without deleting it** — the ranges are rebuilt from these rows, so a delete would rewrite history. Both writes rerun the derivation immediately rather than leaving the kit pages stale. Editor-gated (`/record` is added to `_needs_editor`). |
 
 `app/kit_view.py` assembles both shapes; it sits apart from `app/fitment.py`
 because it reads `app/fitment_derive.py`, which reads `fitment` — a view helper
@@ -378,6 +379,13 @@ Two wording traps, both already hit:
 - The fit card shows the rule's **origin**, not its whole `source_note`. The
   provenance sentence is internal and belongs on the kit's own page, not in
   front of a customer.
+
+And one shape trap: **one card per kit, not per rule.** A kit routinely has two
+rules naming one truck — the documented bound and the observed one that reaches
+past it — and listing both put the same part number on the page twice with two
+different verdicts, which reads as the tool contradicting itself. `kits_for()`
+collapses by SKU, keeps the strongest verdict, and carries the rest as
+`FitHit.alternates` so nothing is lost.
 
 ## Lookup pipeline
 
