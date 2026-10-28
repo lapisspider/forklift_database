@@ -123,7 +123,72 @@ Resolve `CPD` by the category page it came from, never by the string alone.
 ## Kits
 
 Kits must **not** transfer between Hyster/Yale twins, even where the trucks are
-mechanically identical. Don't link them.
+mechanically identical. Don't link them. **40 existing links already break this**
+— see the open item below; they were not created by this rule's enforcement and
+have not been removed.
+
+### The `Fits:` line is the fitment authority
+
+Every kit's `notes` holds its own fitment statement:
+
+```
+OEM: Toyota
+Fits: 8FGCU20-32, 8FGCU35U-70U, 8FGU20-32, 8FG35U-80U, 8FDU20-32
+Caveats: ...
+```
+
+A truck **inside a stated range is documented to fit** — that is SSC's own
+paperwork, not an inference. A truck outside every stated range is a question
+only a technician can answer, so nothing may be linked beyond what a `Fits:`
+line names. `Caveats:` is **not** fitment: it carries serial cutoffs, dates,
+installer notes, and sometimes the counterpart brand.
+
+`app/kit_ranges.py` reads those lines; `audit_kit_ranges.py` reconciles them
+against the catalog (read-only). Three things the parser must keep doing, each
+of which cost real time to get right:
+
+- **Scope every code to the `OEM:` line.** Model codes collide across brands
+  (Yale `GP40N` vs CAT `GP40N`), and a first pass linked the wrong one.
+- **Expect digits in a suffix.** `GC35-50K5` is GC35K5..GC50K5 and
+  `EC15-18LN3` is EC15LN3..EC18LN3. A `[A-Za-z]*` suffix pattern silently
+  drops the generation digit and claims an N3 kit fits an LN3 truck.
+- **The Hyster kits name their Yale twin inline.** Kit 77 is
+  `H135-160FT | S135-160FT | GC/GLC/GDC135-160VX | GP/GLP/GDP135-160VX` under
+  `OEM: Hyster`. `GC GLC GDC GP GLP GDP ERC ERP ESC` are Yale prefixes (see
+  the tire table above), so the parser sets them aside as another brand.
+  Without that, the gap list proposed creating 37 Hyster-branded rows for
+  trucks already on file as Yale.
+
+**A range's number is not always an ordered scale.** Reading `ETG216-318` as
+the interval 216..318 assumes it is, and Jungheinrich's leading digit is the
+*series*: `ETG 230` is rated 1300 kg, **below** `ETG 216` at 1600 kg. Section 0
+of `audit_kit_ranges.py` tests every range for this by checking that stored
+capacity rises with the model number, and holds the failures back. The same
+test catches a plain bad capacity in a family that is ordered — which is how
+the Toyota `7FGCU30` row below was found.
+
+Gaps are filled with `fill_kit_gaps.py` (dry run by default, `--apply` to
+write). It inserts a row only when the web confirms the **exact** designation
+asked for under the right OEM, with every field filled, a reachable spec-sheet
+PDF **that names this model**, and a capacity in order with the siblings
+already on file. Never derive a row from code arithmetic.
+
+**The open web could not fill the Toyota 8-series or CAT N-series gaps**
+(tried 2026-10-27, 25 candidates). Two reasons, both likely to recur:
+
+- **No sheet names the individual model.** All 10 that passed the field check
+  rested on a family-level PDF covering a span of trucks, leaving the
+  extractor to pick one capacity out of a chart. That is how `7FGU80` and
+  `7FDU80` came back at 7938 kg — 17,500 lb exactly — for an 8,000 lb truck,
+  and `7FGCU70` at 3175 kg when `7FGCU35` is already on file at 3600 kg.
+- **The web answers in pounds, the catalog stores metric.** Every figure
+  returned was an exact pound conversion — 2268 = 5,000 lb, 2722 = 6,000 lb,
+  2948 = 6,500 lb, 3175 = 7,000 lb — while every existing `25` in these
+  families is stored 2200 and every `30` is 2700. Both readings are real
+  (Toyota's NA nameplate vs the metric family), so writing them would add 10
+  rows under a second convention. **That is the same question as the 19 rows
+  below, and the user's call.** `reconcile_capacity()` would not catch it:
+  2268 against 2200 is 3%, inside its 12% tolerance.
 
 ## Lookup pipeline
 
@@ -141,10 +206,23 @@ read as a Doosan serial — be careful changing it.
 .venv/Scripts/python.exe tests/stress_lookup.py
 ```
 
-518 checks, all passing. Free by design: it monkeypatches every Tavily method and the
+722 checks. Free by design: it monkeypatches every Tavily method and the
 Anthropic client with a blocker, and **asserts on the spend log rather than on a raised
 exception**, because `web_identify` wraps searches in a broad `except Exception` that
 would swallow the probe. `--online` adds 26 live checks and does cost money. `-v` for detail.
+
+Sections 11–15 are the kit `Fits:` reader, which lives in
+`tests/test_kit_ranges.py` and shares this suite's scoreboard. It also runs on
+its own (`.venv/Scripts/python.exe tests/test_kit_ranges.py`, 176 checks) and
+is pure string work — no database, no network.
+
+The suite is idempotent again (fixed 2026-10-27). It had passed once and then
+failed three "uses the spec-sheet search" probes on every later run: the
+blocked Tavily call raised, `web_identify` swallowed it in its broad
+`except Exception`, and the empty result was written to `web_cache` — which,
+once that cache became shared and persistent, outlived the process. `finish()`
+in `find_spec_sheet` now takes `searched=False` on that path and caches
+nothing, because a result the web never gave says nothing about the model.
 
 ## Branding
 
@@ -192,6 +270,29 @@ loadingzonesafety.com. Red is `--red: #e10600`.
      first 2–3 digits are capacity in 100 kg, which holds for `CPxD` counterbalance codes
      but is unverified for the `QY` lines. Confirm what `QY` designates on Heli's own
      category page before treating these as errors.
+
+- **40 of the 433 `kit_forklift` links join a Hyster kit to a Yale truck**, which the
+  Kits rule above forbids. They are not an oversight: kits 77/79/81/82/83/84/86
+  declare `OEM: Hyster` and their own `Fits:` lines name the Yale counterpart.
+  So the standing rule and the kits' own documentation disagree, and the user's
+  rule is that the `Fits:` notes are the authority. **Decided to leave them in
+  place and not create more** (2026-10-27) — a spec sheet can't settle it, since
+  a truck's sheet never mentions aftermarket kits. Listed by
+  `audit_kit_ranges.py` section 4. Which rule wins is a question about what this
+  catalog publishes, and is the **user's call**.
+
+- **Four more capacity rows that contradict their own model code**, found by
+  `audit_kit_ranges.py` section 0 and *not* in the 19-row list above:
+
+  | OEM | Model | Stored | Looks like |
+  |---|---|---|---|
+  | Toyota | 7FGCU30 | 1300 | 3000 — sits between 7FGCU25 at 2200 and 7FGCU32 at 2900, and equals 7FGCU15 exactly, so probably copied from it |
+  | CAT/Mitsubishi | GC50K | 6100 | ~5000 — above GC60K at 6000 |
+  | CAT/Mitsubishi | NOR030 | 400 | ~1360 — NOR15 is 1360 and `NOR030` is likely the same truck spelled differently |
+  | Jungheinrich | ETG 230 | 1300 | not an error — the leading digit is the series, see Kits above |
+
+  Same standing rule as the 19: **do not bulk-normalise.** The Jungheinrich row
+  is correct as stored; the other three need checking against the OEM's sheet.
 
 - 984 of 1009 rows are still `info_status = 'yellow'` (pending admin review), so the
   status column is mostly one repeated mark.

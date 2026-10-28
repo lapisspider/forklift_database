@@ -43,6 +43,10 @@ from app.database import SessionLocal, init_db  # noqa: E402
 from app.models import Forklift  # noqa: E402
 from app.schemas import ForkliftSpecs, clean_series  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import test_kit_ranges  # noqa: E402  (shares this module's scoreboard)
+import test_serials  # noqa: E402  (same)
+
 ONLINE = "--online" in sys.argv
 VERBOSE = "-v" in sys.argv or "--verbose" in sys.argv
 
@@ -712,6 +716,8 @@ def main() -> int:
         test_catalog(db)
         test_regressions(db)
         test_tire(db)
+        test_kit_ranges.run(R)
+        test_serials.run(R)
     finally:
         db.close()
 

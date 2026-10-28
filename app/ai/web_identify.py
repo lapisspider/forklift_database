@@ -318,7 +318,7 @@ def find_spec_sheet(raw: str) -> SpecSheetResult:
     name = f"{typed_oem} {model_text}".strip()
     finder = _PdfFinder(name, model_text, OEM_DOMAINS.get(oem or ""))
 
-    def finish(result: SpecSheetResult) -> SpecSheetResult:
+    def finish(result: SpecSheetResult, searched: bool = True) -> SpecSheetResult:
         best = finder.best()
         if best:
             url, status, exact, on_oem = best
@@ -335,13 +335,21 @@ def find_spec_sheet(raw: str) -> SpecSheetResult:
             result.pdf_note = (f'No spec-sheet PDF was found. Searched: "{name} forklift '
                                f'specifications spec sheet"{searched}.')
         result.source_url = result.source_url or finder.first_page
-        web_cache.put(_SHEET_NS, key, _sheet_to_dict(result))
+        # Only cache an answer the web actually gave. When the search itself
+        # never ran -- a transport error, or the test suite's blocker -- the
+        # empty result says nothing about this model, and storing it means the
+        # next caller is served a "not found" that was never looked up. Since
+        # the cache became shared and persistent this outlived the process and
+        # made the stress suite non-idempotent: it passed once, then failed the
+        # three "uses the spec-sheet search" probes on every later run.
+        if searched:
+            web_cache.put(_SHEET_NS, key, _sheet_to_dict(result))
         return result
 
     try:
         search = tavily_client.search_spec_sheet(raw)
     except Exception:  # noqa: BLE001 -- best-effort, never fatal
-        return finish(SpecSheetResult(found=False))
+        return finish(SpecSheetResult(found=False), searched=False)
 
     results = search.get("results", [])
     first_url = results[0].get("url") if results else None
