@@ -268,3 +268,9 @@
    label whole: "Find a kit" broken over three lines is worse than a nav that
    wraps as a whole. */
 .nav-main .nav-item { white-space: nowrap; }
+
+/* The kit cards live inside the home page's Kits tab, where each card also
+   carries Edit/Delete. Push those to the bottom so the part number and the
+   models it fits stay the first things read. */
+.kit-card__actions { margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px solid var(--line-soft); }
+.kit-sorts { flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0; }

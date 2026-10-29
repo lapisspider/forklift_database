@@ -77,12 +77,12 @@
 
 <section class="panel">
   <div class="tabs" data-hash-tab="kits">
-    <button type="button" class="tab active" data-tab="forklifts">Forklifts ({{ forklifts|length }})</button>
-    <button type="button" class="tab" data-tab="kits">Kits ({{ kits|length }})</button>
+    <button type="button" class="tab" data-tab="forklifts">Forklifts ({{ forklifts|length }})</button>
+    <button type="button" class="tab active" data-tab="kits">Kits ({{ kit_rows|length }})</button>
   </div>
 
   <!-- ============ Forklifts tab ============ -->
-  <div id="tab-forklifts" class="tab-panel active">
+  <div id="tab-forklifts" class="tab-panel">
     {# Title, scale and controls sit in one header band above a single rule,
        rather than the title carrying a rule of its own that stops where the
        words stop. #}
@@ -190,59 +190,114 @@
   </div>
 
   <!-- ============ Kits tab ============ -->
-  <div id="tab-kits" class="tab-panel">
+  <div id="tab-kits" class="tab-panel active">
+    {# The kit-centric view. Grouped by the manufacturer of the TRUCK, not of
+       the kit, because a salesperson arrives knowing the brand of the machine
+       in front of them. A kit fitting several makes appears under all of them. #}
     <header class="section-head">
       <div class="section-head__id">
         <h2>Kit database</h2>
-        <p class="section-head__count">{{ kits|length }} kit{{ 's' if kits|length != 1 }}, each fitting one or more forklift models</p>
+        <p class="section-head__count">
+          {{ kit_rows|length }} kit{{ 's' if kit_rows|length != 1 }}, grouped by
+          the manufacturer of the truck they fit
+        </p>
+      </div>
+      <div class="row">
+        <a class="button" href="/fit">Find a kit by truck</a>
       </div>
     </header>
 
-    {% if kits %}
-    <div class="table-scroll">
-      <table class="kit-table">
-        <thead>
-          <tr>
-            <th>Kit</th><th>Price</th><th>Fits forklifts</th><th><span class="sr-only">Actions</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for k in kits %}
-          <tr>
-            {# SKU and name are one identity, not two columns -- the name was
-               empty on most rows and the pair cost width the fit list needed. #}
-            <td class="kit-id">
-              <span class="kit-sku">{{ k.sku }}</span>
-              {% if k.name %}<span class="kit-name">{{ k.name }}</span>{% endif %}
-            </td>
-            <td>{{ "$%.2f"|format(k.price) if k.price is not none else "—" }}</td>
-            <td class="fit-cell">
-              {% if k.forklift_links %}
-                <ul class="fit-list">
-                  {% for link in k.forklift_links %}
-                    <li>{{ tier_badge(link.tier) }} <a href="/forklift/{{ link.forklift.id }}">{{ link.forklift.manufacturer }} {{ link.forklift.model }}</a></li>
-                  {% endfor %}
-                </ul>
-              {% else %}<span class="muted">Not linked yet</span>{% endif %}
-            </td>
-            <td>
-              {% if can_edit %}
-              <div class="row row-actions">
-                <a class="button" href="/kit/{{ k.id }}/edit">Edit</a>
-                <form method="post" action="/kit/{{ k.id }}/delete"
-                      onsubmit="return confirm('Delete kit {{ k.sku }}? This cannot be undone.');">
-                  <button class="danger" type="submit">Delete</button>
-                </form>
-              </div>
-              {% else %}<span class="muted">—</span>{% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    {% if needs_attention or unlinked %}
+    <div class="attention">
+      <ul>
+        {% if needs_attention %}
+        <li>
+          <strong>{{ needs_attention }}</strong> kit{{ 's' if needs_attention != 1 }}
+          need{{ '' if needs_attention != 1 else 's' }} a look —
+          <a href="/?kitsort=attention#kits">show them</a>.
+        </li>
+        {% endif %}
+        {% if unlinked %}
+        <li>
+          <strong>{{ unlinked }}</strong> order record{{ 's' if unlinked != 1 }}
+          name{{ '' if unlinked != 1 else 's' }} a part number that is not in this
+          catalog, so they are not counted against any kit.
+        </li>
+        {% endif %}
+      </ul>
     </div>
+    {% endif %}
+
+    {# The sort carries the #kits hash so choosing one does not drop you back
+       on the Forklifts tab. #}
+    <div class="row kit-sorts">
+      {% for key, label in kitsorts.items() %}
+        {% if key == kitsort %}
+          <span class="badge ok">{{ label }}</span>
+        {% else %}
+          <a class="button" href="/?kitsort={{ key }}#kits">{{ label }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% macro kit_card(s) %}
+    <div class="kit-card">
+      <a class="kit-card__sku" href="/kit/{{ s.kit.id }}">{{ s.kit.sku }}</a>
+      {% if s.kit.name %}<span class="kit-card__name">{{ s.kit.name }}</span>{% endif %}
+
+      {% if s.model_exprs %}
+        <p class="kit-card__models">
+          {% for expr in s.model_exprs %}<code>{{ expr }}</code>{% if not loop.last %} {% endif %}{% endfor %}
+        </p>
+      {% else %}
+        {# Shown, not hidden: these are precisely the kits that need work. #}
+        <p class="kit-card__models muted">No fitment on record — the kit's
+          <code>Fits:</code> line is missing or unreadable.</p>
+      {% endif %}
+
+      <div class="kit-card__stats">
+        {% if s.oems|length > 1 %}<span>{{ s.oems|join(' · ') }}</span>{% endif %}
+        {% if s.has_serial_rule %}<span>serial-dependent</span>{% endif %}
+        {% if s.kit.price is not none %}<span>{{ "$%.2f"|format(s.kit.price) }}</span>{% endif %}
+        {% if s.record_count %}
+          <span>{{ s.record_count }} truck{{ 's' if s.record_count != 1 }} confirmed</span>
+        {% endif %}
+        {% if s.attention %}<span class="attention-flag">needs a look</span>{% endif %}
+      </div>
+
+      {% if can_edit %}
+      <div class="row row-actions kit-card__actions">
+        <a class="button" href="/kit/{{ s.kit.id }}/edit">Edit</a>
+        <form method="post" action="/kit/{{ s.kit.id }}/delete"
+              onsubmit="return confirm('Delete kit {{ s.kit.sku }}? This cannot be undone.');">
+          <button class="danger" type="submit">Delete</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    {% endmacro %}
+
+    {% if kitsort == 'oem' %}
+      {% for oem, group in kit_groups.items() %}
+      <div class="oem-group">
+        <header class="oem-group__head">
+          <h3>{{ oem }}</h3>
+          <span class="oem-group__count">{{ group|length }} kit{{ 's' if group|length != 1 }}</span>
+        </header>
+        <div class="kit-grid">
+          {% for s in group %}{{ kit_card(s) }}{% endfor %}
+        </div>
+      </div>
+      {% endfor %}
     {% else %}
-      <p class="muted">No kits yet. Add one below.</p>
+      <div class="kit-grid">
+        {% for s in kit_rows %}{{ kit_card(s) }}{% endfor %}
+      </div>
+      {% if kitsort == 'attention' and kit_rows and not kit_rows[0].attention %}
+        <p class="muted" style="margin-top:1rem;">Nothing needs attention: no kit
+          has an order record reaching past its documented serial range, and no
+          truck is claimed by two part numbers.</p>
+      {% endif %}
     {% endif %}
 
     {% if can_edit %}
@@ -261,6 +316,7 @@
     </div>
     {% endif %}
   </div>
+
 </section>
 
 {% endblock %}

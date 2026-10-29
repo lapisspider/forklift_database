@@ -17,8 +17,11 @@
       panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
     }
     buttons.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
-    const hashTab = tabs.dataset.hashTab;
-    if (hashTab && location.hash === '#' + hashTab) activate(hashTab);
+    // Any tab in this group can be opened by its hash. Kits is the default
+    // panel now, so `#forklifts` has to work as well as `#kits`; naming only
+    // one tab here would make the other unreachable by link.
+    const hash = location.hash.slice(1);
+    if (hash && Array.from(buttons).some(b => b.dataset.tab === hash)) activate(hash);
   });
 })();
 

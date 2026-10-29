@@ -354,7 +354,7 @@ sheet wrote) and the sheet's own wording (`GP40-50K`, which names itself).
 
 | Route | What it answers |
 |---|---|
-| `GET /kits` | every kit, grouped by the **truck's** OEM (default) — a kit fitting several makes appears under all of them. Other sorts: part number, most recently confirmed, most trucks confirmed, needs attention. |
+| `GET /` → **Kits tab** | every kit, grouped by the **truck's** OEM — a kit fitting several makes appears under all of them. `?kitsort=` takes part number, most recently confirmed, most trucks confirmed, needs attention. **Kits is the default tab**; `#forklifts` opens the catalog. There is one kit list, in this tab — `/kits` is a 307 to `/#kits` for old links. |
 | `GET /kit/{kid}` | one kit: documented and observed rules **side by side, never merged**, plus the order records behind them and any superseded ones. |
 | `GET,POST /fit` | the salesperson's `(OEM, model, serial)` lookup. GET so a result is a shareable link; POST is the same thing over HTMX. |
 | `GET /records`, `POST /record` | order records, and the form for typing one in. `POST /record/{rid}/supersede` retires a record **without deleting it** — the ranges are rebuilt from these rows, so a delete would rewrite history. Both writes rerun the derivation immediately rather than leaving the kit pages stale. Editor-gated (`/record` is added to `_needs_editor`). |

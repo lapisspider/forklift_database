@@ -135,9 +135,12 @@ SORTS = {
 
 
 @app.get("/", response_class=HTMLResponse)
-def index(request: Request, q: str = "", sort: str = "oem", db: Session = Depends(get_db)):
+def index(request: Request, q: str = "", sort: str = "oem",
+          kitsort: str = "oem", db: Session = Depends(get_db)):
     if sort not in SORTS:
         sort = "oem"
+    if kitsort not in kit_view.SORTS:
+        kitsort = "oem"
     query = db.query(Forklift).order_by(*SORTS[sort])
     if q:
         like = f"%{q.lower()}%"
@@ -159,12 +162,23 @@ def index(request: Request, q: str = "", sort: str = "oem", db: Session = Depend
             series = f.series or "(no series)"
             oem_groups.setdefault(f.manufacturer, {}).setdefault(series, []).append(f)
 
-    kits = db.query(Kit).order_by(Kit.sku).limit(5000).all()
+    # The Kits tab is the kit-centric view: grouped by the TRUCK's OEM, because
+    # a salesperson arrives knowing the brand of the machine in front of them.
+    # It lives here rather than on a page of its own so there is one kit list.
+    kit_rows = kit_view.kit_summaries(db, kitsort)
+    kit_groups = kit_view.grouped_by_oem(kit_rows) if kitsort == "oem" else {}
+    unlinked = (db.query(SerialRecord)
+                .filter(SerialRecord.status == "active",
+                        SerialRecord.kit_id.is_(None))
+                .count())
     # Full forklift list for the "add kit" picker (unaffected by the filter).
     all_forklifts = db.query(Forklift).order_by(Forklift.manufacturer, Forklift.model).all()
     return templates.TemplateResponse(
         request, "index.html",
-        _ctx(request, forklifts=forklifts, oem_groups=oem_groups, kits=kits,
+        _ctx(request, forklifts=forklifts, oem_groups=oem_groups,
+             kit_rows=kit_rows, kit_groups=kit_groups, kitsort=kitsort,
+             kitsorts=kit_view.SORTS, unlinked=unlinked,
+             needs_attention=sum(1 for r in kit_rows if r.attention),
              all_forklifts=all_forklifts, q=q, sort=sort),
     )
 
@@ -384,22 +398,11 @@ async def create_kit(request: Request, db: Session = Depends(get_db)):
 # this truck need", where the older routes answer "what do we know about this
 # truck". See CLAUDE.md, "Fitment keyed on serials".
 # ----------------------------------------------------------------------------
-@app.get("/kits", response_class=HTMLResponse)
-def kit_list(request: Request, sort: str = "oem", db: Session = Depends(get_db)):
-    if sort not in kit_view.SORTS:
-        sort = "oem"
-    rows = kit_view.kit_summaries(db, sort)
-    groups = kit_view.grouped_by_oem(rows) if sort == "oem" else {}
-    unlinked = (db.query(SerialRecord)
-                .filter(SerialRecord.status == "active",
-                        SerialRecord.kit_id.is_(None))
-                .count())
-    return templates.TemplateResponse(
-        request, "kits.html",
-        _ctx(request, rows=rows, groups=groups, sort=sort,
-             sorts=kit_view.SORTS, unlinked=unlinked,
-             needs_attention=sum(1 for r in rows if r.attention)),
-    )
+@app.get("/kits")
+def kit_list_redirect():
+    """The kit list lives in the Kits tab on the home page -- there is one kit
+    list, not two. Kept as a redirect so older links and bookmarks still land."""
+    return RedirectResponse(url="/#kits", status_code=307)
 
 
 @app.get("/kit/{kid}", response_class=HTMLResponse)
