@@ -77,8 +77,10 @@
 
 <section class="panel">
   <div class="tabs" data-hash-tab="kits">
-    <button type="button" class="tab" data-tab="forklifts">Forklifts ({{ forklifts|length }})</button>
+    {# Kits sits first because it is the default and the kit is the spine now;
+       the catalog is what you reach for second. #}
     <button type="button" class="tab active" data-tab="kits">Kits ({{ kit_rows|length }})</button>
+    <button type="button" class="tab" data-tab="forklifts">Forklifts ({{ forklifts|length }})</button>
   </div>
 
   <!-- ============ Forklifts tab ============ -->
