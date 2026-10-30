@@ -1,0 +1,127 @@
+{% from "partials/indicators.html" import tier_badge, status_dot %}
+{# The Forklifts tab's body. Rendered two ways and they must agree: included by
+   index.html on a full page load, and returned on its own by GET
+   /forklifts/list when the filter or the sort changes.
+
+   A partial for the same reason as the kit list: the filter must not reload
+   the page, because a reload resets the scroll position. #}
+{% if oob %}
+{# Only on the swap -- the tab strip is outside this block. #}
+<span id="forklift-tab-count" hx-swap-oob="true">Forklifts ({{ forklifts|length }})</span>
+{% endif %}
+    {# Title, scale and controls sit in one header band above a single rule,
+       rather than the title carrying a rule of its own that stops where the
+       words stop. #}
+    <header class="section-head">
+      <div class="section-head__id">
+        <h2>Forklift database</h2>
+        <p class="section-head__count">{{ forklifts|length }} model{{ 's' if forklifts|length != 1 }}{% if q %} matching &ldquo;{{ q }}&rdquo;{% endif %}</p>
+      </div>
+      {# Swaps this block in place rather than navigating, so the page never
+         reloads and the scroll position cannot move. `action` and the Kits
+         fields below stay as a no-JS fallback. #}
+      <form method="get" action="/#forklifts" class="row section-head__controls"
+            hx-get="/forklifts/list" hx-target="#forklift-list" hx-swap="innerHTML"
+            hx-indicator="#forklift-busy">
+        {# The Kits tab's filter and sort ride along, same reason as there. #}
+        <input type="hidden" name="kitq" value="{{ kitq }}">
+        <input type="hidden" name="kitsort" value="{{ kitsort }}">
+        <input type="text" name="q" value="{{ q }}" placeholder="Filter by OEM, series, model or serial" aria-label="Filter the database">
+        <select name="sort" aria-label="Sort order"
+                hx-get="/forklifts/list" hx-target="#forklift-list" hx-swap="innerHTML"
+                hx-include="closest form" hx-trigger="change"
+                hx-indicator="#forklift-busy">
+          <option value="oem" {% if sort == 'oem' %}selected{% endif %}>Sort: OEM (grouped)</option>
+          <option value="az" {% if sort == 'az' %}selected{% endif %}>Sort: Model A→Z</option>
+          <option value="za" {% if sort == 'za' %}selected{% endif %}>Sort: Model Z→A</option>
+          <option value="serial" {% if sort == 'serial' %}selected{% endif %}>Sort: SSC serial</option>
+          <option value="year" {% if sort == 'year' %}selected{% endif %}>Sort: Year</option>
+        </select>
+        <button type="submit" class="subtle">Filter</button>
+        <span id="forklift-busy" class="htmx-indicator muted">filtering…</span>
+      </form>
+    </header>
+
+    {% if not forklifts %}
+      <p class="muted">No forklifts yet. Use "Lookup by forklift OEM and model/serial number" above to add one.</p>
+
+    {% elif sort == 'oem' %}
+      {# ---- Accordion: OEM -> Series -> models ---- #}
+      {% for oem, series_map in oem_groups.items() %}
+        {% set oem_idx = loop.index %}
+        {% set oem_count = series_map.values() | map('length') | sum %}
+        <div class="oem-group">
+          <button type="button" class="oem-bar accordion-toggle" data-target="oem-{{ oem_idx }}">
+            <span class="caret">▸</span> {{ oem }} <span class="count">{{ oem_count }}</span>
+          </button>
+          <div id="oem-{{ oem_idx }}" class="accordion-body" hidden>
+            {% for series, models in series_map.items() %}
+              {# unique per OEM: outer index captured above, inner index here #}
+              {% set series_id = "oem-%s-s-%s"|format(oem_idx, loop.index) %}
+              <div class="series-group">
+                <button type="button" class="series-bar accordion-toggle" data-target="{{ series_id }}">
+                  <span class="caret">▸</span> {{ series }} <span class="count">{{ models|length }}</span>
+                </button>
+                <div id="{{ series_id }}" class="accordion-body" hidden>
+                  <div class="table-scroll">
+                    {# The model leads, because it is what the reader came for
+                       and what the group is about; the two review marks sit
+                       together at the end as the pair of workflow flags they
+                       are, rather than bracketing the specs. The model is the
+                       link, so the separate "View" column is gone. #}
+                    <table class="model-table">
+                      <thead><tr>
+                        <th>Model</th><th>SSC #</th><th class="num">Capacity</th>
+                        <th>Fuel</th><th>Years</th>
+                        <th class="mark-col">Status</th><th class="mark-col">Tier</th>
+                      </tr></thead>
+                      <tbody>
+                        {% for f in models %}
+                        <tr>
+                          <td class="model-cell"><a href="/forklift/{{ f.id }}">{{ f.model }}</a></td>
+                          <td class="ssc-no">{{ f.internal_serial or "—" }}</td>
+                          <td class="num">{{ "{:,}".format(f.capacity_kg|round|int) ~ " kg" if f.capacity_kg else "—" }}</td>
+                          <td>{{ f.fuel_type or "—" }}</td>
+                          <td class="years">{{ f.year_display }}</td>
+                          <td class="mark-col">{{ status_dot(f.info_status) }}</td>
+                          <td class="mark-col">{{ tier_badge(f.best_tier) }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+
+    {% else %}
+      {# ---- Flat table for az / za / serial ---- #}
+      <div class="table-scroll">
+      <table class="model-table">
+        <thead><tr>
+          <th>Model</th><th>OEM</th><th>Series</th><th>SSC #</th>
+          <th class="num">Capacity</th><th>Fuel</th><th>Class</th><th>Years</th>
+          <th class="mark-col">Status</th><th class="mark-col">Tier</th>
+        </tr></thead>
+        <tbody>
+          {% for f in forklifts %}
+          <tr>
+            <td class="model-cell"><a href="/forklift/{{ f.id }}">{{ f.model }}</a></td>
+            <td>{{ f.manufacturer }}</td>
+            <td>{{ f.series or "—" }}</td>
+            <td class="ssc-no">{{ f.internal_serial or "—" }}</td>
+            <td class="num">{{ "{:,}".format(f.capacity_kg|round|int) ~ " kg" if f.capacity_kg else "—" }}</td>
+            <td>{{ f.fuel_type or "—" }}</td>
+            <td>{{ f.truck_class or "—" }}</td>
+            <td class="years">{{ f.year_display }}</td>
+            <td class="mark-col">{{ status_dot(f.info_status) }}</td>
+            <td class="mark-col">{{ tier_badge(f.best_tier) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    {% endif %}

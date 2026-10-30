@@ -137,6 +137,22 @@ SORTS = {
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request, q: str = "", sort: str = "oem",
           kitsort: str = "oem", kitq: str = "", db: Session = Depends(get_db)):
+    # Full forklift list for the "add kit" picker (unaffected by the filter).
+    all_forklifts = db.query(Forklift).order_by(Forklift.manufacturer, Forklift.model).all()
+    return templates.TemplateResponse(
+        request, "index.html",
+        _ctx(request, all_forklifts=all_forklifts,
+             **_forklift_context(db, q, sort),
+             **_kit_context(db, kitq, kitsort)),
+    )
+
+
+def _forklift_context(db: Session, q: str, sort: str) -> dict:
+    """The Forklifts tab's list, for the page and for its HTMX partial.
+
+    Shared for the same reason as _kit_context: the swapped markup has to be
+    exactly what a full render produces, or filtering shows something the page
+    itself would not."""
     if sort not in SORTS:
         sort = "oem"
     query = db.query(Forklift).order_by(*SORTS[sort])
@@ -159,14 +175,19 @@ def index(request: Request, q: str = "", sort: str = "oem",
         for f in forklifts:
             series = f.series or "(no series)"
             oem_groups.setdefault(f.manufacturer, {}).setdefault(series, []).append(f)
+    return {"forklifts": forklifts, "oem_groups": oem_groups, "q": q, "sort": sort}
 
-    # Full forklift list for the "add kit" picker (unaffected by the filter).
-    all_forklifts = db.query(Forklift).order_by(Forklift.manufacturer, Forklift.model).all()
+
+@app.get("/forklifts/list", response_class=HTMLResponse)
+def forklift_list_partial(request: Request, q: str = "", sort: str = "oem",
+                          db: Session = Depends(get_db)):
+    """Just the Forklifts tab's body, for its filter to swap in place.
+
+    Same reason as GET /kits/list: a reload put the scroll position back to the
+    top, and restoring it afterwards did not hold. Nothing navigates now."""
     return templates.TemplateResponse(
-        request, "index.html",
-        _ctx(request, forklifts=forklifts, oem_groups=oem_groups,
-             all_forklifts=all_forklifts, q=q, sort=sort,
-             **_kit_context(db, kitq, kitsort)),
+        request, "partials/forklift_list.html",
+        _ctx(request, oob=True, **_forklift_context(db, q, sort)),
     )
 
 

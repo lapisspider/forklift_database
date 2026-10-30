@@ -149,8 +149,6 @@
 // Open sections are remembered in localStorage so navigating into a record and
 // back (a full page load) restores whatever OEM/series tabs you had open.
 (function () {
-  const toggles = document.querySelectorAll('.accordion-toggle');
-  if (!toggles.length) return;
   const KEY = 'forklift_accordion_open';
 
   function load() {
@@ -164,26 +162,36 @@
 
   const open = load();
 
-  // Restore: reopen any remembered section that still exists on this page.
-  toggles.forEach(btn => {
-    const body = document.getElementById(btn.dataset.target);
-    if (body && open.has(btn.dataset.target)) {
-      body.hidden = false;
-      btn.classList.add('open');
-    }
-  });
+  // Runs over the whole page at load, and again over whatever HTMX swaps in.
+  // Filtering the list replaces every toggle with a fresh element that has no
+  // listener and none of the remembered open state, so without the second call
+  // the sections would all collapse and stop responding to clicks.
+  function init(root) {
+    (root || document).querySelectorAll('.accordion-toggle').forEach(btn => {
+      if (btn.dataset.accordionBound === '1') return;   // never bind twice
+      btn.dataset.accordionBound = '1';
 
-  toggles.forEach(btn => {
-    btn.addEventListener('click', () => {
+      // Restore: reopen any remembered section that still exists.
       const body = document.getElementById(btn.dataset.target);
-      if (!body) return;
-      body.hidden = !body.hidden;
-      btn.classList.toggle('open', !body.hidden);
-      if (body.hidden) open.delete(btn.dataset.target);
-      else open.add(btn.dataset.target);
-      save(open);
+      if (body && open.has(btn.dataset.target)) {
+        body.hidden = false;
+        btn.classList.add('open');
+      }
+
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (!target) return;
+        target.hidden = !target.hidden;
+        btn.classList.toggle('open', !target.hidden);
+        if (target.hidden) open.delete(btn.dataset.target);
+        else open.add(btn.dataset.target);
+        save(open);
+      });
     });
-  });
+  }
+
+  init(document);
+  document.body.addEventListener('htmx:afterSwap', (e) => init(e.target));
 })();
 
 // ----- Preserve scroll position on the database list across navigation -----
