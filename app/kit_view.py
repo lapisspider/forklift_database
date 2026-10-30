@@ -152,6 +152,26 @@ def kit_summaries(db: Session, sort: str = "oem") -> list[KitSummary]:
     return rows
 
 
+def search(rows: list[KitSummary], q: str) -> list[KitSummary]:
+    """Kits matching a typed query, case-insensitively.
+
+    A substring of the part number, kit name, truck OEM or model expression, or
+    -- through `fitment.expr_matches` -- a single truck sitting inside one of the
+    kit's stated ranges, so `GP40K` finds the kit whose sheet says `GP40-50K`.
+    """
+    needle = q.strip().lower()
+    if not needle:
+        return rows
+    out = []
+    for s in rows:
+        haystack = [s.kit.sku, s.kit.name or "", *s.oems, *s.model_exprs]
+        if any(needle in h.lower() for h in haystack) or any(
+                fitment.expr_matches(f.manufacturer, f.model_expr, q.strip())
+                for f in s.fitments):
+            out.append(s)
+    return out
+
+
 def grouped_by_oem(rows: list[KitSummary]) -> dict[str, list[KitSummary]]:
     """The default view: a kit appears under EVERY OEM it fits, not just the
     first. Kits with no readable fitment go under a bucket of their own rather

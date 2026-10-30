@@ -273,4 +273,3 @@
    carries Edit/Delete. Push those to the bottom so the part number and the
    models it fits stay the first things read. */
 .kit-card__actions { margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px solid var(--line-soft); }
-.kit-sorts { flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0; }

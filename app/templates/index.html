@@ -97,6 +97,9 @@
          on this tab instead of the default one. Without it, filtering from
          here lands you on Kits. #}
       <form method="get" action="/#forklifts" class="row section-head__controls">
+        {# The Kits tab's filter and sort ride along, same reason as there. #}
+        <input type="hidden" name="kitq" value="{{ kitq }}">
+        <input type="hidden" name="kitsort" value="{{ kitsort }}">
         <input type="text" name="q" value="{{ q }}" placeholder="Filter by OEM, series, model or serial" aria-label="Filter the database">
         <select name="sort" onchange="this.form.submit()" aria-label="Sort order">
           <option value="oem" {% if sort == 'oem' %}selected{% endif %}>Sort: OEM (grouped)</option>
@@ -203,14 +206,27 @@
       <div class="section-head__id">
         <h2>Kit database</h2>
         <p class="section-head__count">
-          {{ kit_rows|length }} kit{{ 's' if kit_rows|length != 1 }}, grouped by
+          {{ kit_rows|length }} kit{{ 's' if kit_rows|length != 1 }}{% if kitq %} matching &ldquo;{{ kitq }}&rdquo;{% endif %}, grouped by
           the manufacturer of the truck they fit
         </p>
       </div>
-      <div class="row">
-        <a class="button" href="/fit">Find a kit by truck</a>
-      </div>
+      {# Same band as the Forklifts tab. The fragment survives a GET submit, so
+         the results come back here and not on the default tab; q and sort ride
+         along as hidden fields so filtering kits does not reset the Forklifts
+         filter. #}
+      <form method="get" action="/#kits" class="row section-head__controls">
+        <input type="hidden" name="q" value="{{ q }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <input type="text" name="kitq" value="{{ kitq }}" placeholder="Filter by part number, truck model or OEM" aria-label="Filter the kits">
+        <select name="kitsort" onchange="this.form.submit()" aria-label="Sort order">
+          {% for key, label in kitsorts.items() %}
+          <option value="{{ key }}" {% if kitsort == key %}selected{% endif %}>Sort: {{ label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="subtle">Filter</button>
+      </form>
     </header>
+    <p class="muted kit-hint">Know the truck and its serial number? <a href="/fit">Find a kit by truck</a>.</p>
 
     {% if needs_attention or unlinked %}
     <div class="attention">
@@ -232,18 +248,6 @@
       </ul>
     </div>
     {% endif %}
-
-    {# The sort carries the #kits hash so choosing one does not drop you back
-       on the Forklifts tab. #}
-    <div class="row kit-sorts">
-      {% for key, label in kitsorts.items() %}
-        {% if key == kitsort %}
-          <span class="badge ok">{{ label }}</span>
-        {% else %}
-          <a class="button" href="/?q={{ q|urlencode }}&amp;sort={{ sort }}&amp;kitsort={{ key }}#kits">{{ label }}</a>
-        {% endif %}
-      {% endfor %}
-    </div>
 
     {% macro kit_card(s) %}
     <div class="kit-card">
@@ -282,7 +286,9 @@
     </div>
     {% endmacro %}
 
-    {% if kitsort == 'oem' %}
+    {% if not kit_rows %}
+      <p class="muted">No kits match &ldquo;{{ kitq }}&rdquo;. Try a part number, an OEM, or a truck model such as GP40K.</p>
+    {% elif kitsort == 'oem' %}
       {% for oem, group in kit_groups.items() %}
       <div class="oem-group">
         <header class="oem-group__head">

@@ -136,7 +136,7 @@ SORTS = {
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request, q: str = "", sort: str = "oem",
-          kitsort: str = "oem", db: Session = Depends(get_db)):
+          kitsort: str = "oem", kitq: str = "", db: Session = Depends(get_db)):
     if sort not in SORTS:
         sort = "oem"
     if kitsort not in kit_view.SORTS:
@@ -165,7 +165,14 @@ def index(request: Request, q: str = "", sort: str = "oem",
     # The Kits tab is the kit-centric view: grouped by the TRUCK's OEM, because
     # a salesperson arrives knowing the brand of the machine in front of them.
     # It lives here rather than on a page of its own so there is one kit list.
-    kit_rows = kit_view.kit_summaries(db, kitsort)
+    all_kit_rows = kit_view.kit_summaries(db, kitsort)
+    kit_rows = kit_view.search(all_kit_rows, kitq)
+    # The three sorts that read order records are identical to "sku" until a
+    # record exists, so they stay out of the dropdown until one does. They are
+    # still honoured here, and the attention banner links to kitsort=attention.
+    kitsorts = (kit_view.SORTS if any(r.record_count for r in all_kit_rows)
+                else {k: v for k, v in kit_view.SORTS.items()
+                      if k in ("oem", "sku", kitsort)})
     kit_groups = kit_view.grouped_by_oem(kit_rows) if kitsort == "oem" else {}
     unlinked = (db.query(SerialRecord)
                 .filter(SerialRecord.status == "active",
@@ -177,8 +184,8 @@ def index(request: Request, q: str = "", sort: str = "oem",
         request, "index.html",
         _ctx(request, forklifts=forklifts, oem_groups=oem_groups,
              kit_rows=kit_rows, kit_groups=kit_groups, kitsort=kitsort,
-             kitsorts=kit_view.SORTS, unlinked=unlinked,
-             needs_attention=sum(1 for r in kit_rows if r.attention),
+             kitsorts=kitsorts, kitq=kitq, unlinked=unlinked,
+             needs_attention=sum(1 for r in all_kit_rows if r.attention),
              all_forklifts=all_forklifts, q=q, sort=sort),
     )
 
