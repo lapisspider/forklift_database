@@ -188,11 +188,18 @@
 
 // ----- Preserve scroll position on the database list across navigation -----
 // Entering a record is a full page load, which resets scroll. Remember where
-// the list was scrolled and restore it on return. Per-tab (sessionStorage) and
-// keyed by the current view (path+sort+filter) so different views don't cross.
+// the list was scrolled and restore it on return. Per-tab (sessionStorage).
+//
+// Keyed on the PATH ALONE, deliberately. It used to include the query string,
+// which meant filtering or re-sorting -- the two things that change it -- were
+// treated as a brand-new view with nothing saved, so the page snapped back to
+// the top every time you touched a control. Keying on the path means the view
+// holds still while you work on it, which is the whole point. A filtered list
+// can be shorter than the saved offset; the browser clamps to the document
+// height, so that lands at the bottom rather than anywhere invalid.
 (function () {
   if (!document.querySelector('.tabs')) return; // list/index page only
-  const KEY = 'forklift_scroll:' + location.pathname + location.search;
+  const KEY = 'forklift_scroll:' + location.pathname;
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   let saved = null;

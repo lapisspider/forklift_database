@@ -76,15 +76,6 @@
 </div>
 
 <section class="panel">
-  {# `#kits` and `#forklifts` carry the tab state, but they also have to be
-     somewhere to LAND: no element had those ids, so the browser found no
-     target and left you at the top of the page -- which is what filtering
-     and re-sorting felt like, since both reload with a new query string.
-     Two empty markers give the fragment a target and let the browser do the
-     scrolling after layout, which beats computing an offset in JS before the
-     hero images have sized themselves. #}
-  <span id="kits" class="tab-anchor" aria-hidden="true"></span>
-  <span id="forklifts" class="tab-anchor" aria-hidden="true"></span>
   <div class="tabs" data-url-tabs>
     {# Kits sits first because it is the default and the kit is the spine now;
        the catalog is what you reach for second. #}

@@ -273,7 +273,3 @@
    carries Edit/Delete. Push those to the bottom so the part number and the
    models it fits stay the first things read. */
 .kit-card__actions { margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px solid var(--line-soft); }
-/* Fragment targets for the Kits / Forklifts tabs. Zero-height markers; the
-   scroll-margin keeps the tab strip clear of the sticky site header, which is
-   ~99px and wraps taller on a narrow window. */
-.tab-anchor { display: block; height: 0; scroll-margin-top: 7.5rem; }
