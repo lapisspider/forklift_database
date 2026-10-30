@@ -139,8 +139,6 @@ def index(request: Request, q: str = "", sort: str = "oem",
           kitsort: str = "oem", kitq: str = "", db: Session = Depends(get_db)):
     if sort not in SORTS:
         sort = "oem"
-    if kitsort not in kit_view.SORTS:
-        kitsort = "oem"
     query = db.query(Forklift).order_by(*SORTS[sort])
     if q:
         like = f"%{q.lower()}%"
@@ -162,9 +160,27 @@ def index(request: Request, q: str = "", sort: str = "oem",
             series = f.series or "(no series)"
             oem_groups.setdefault(f.manufacturer, {}).setdefault(series, []).append(f)
 
-    # The Kits tab is the kit-centric view: grouped by the TRUCK's OEM, because
-    # a salesperson arrives knowing the brand of the machine in front of them.
-    # It lives here rather than on a page of its own so there is one kit list.
+    # Full forklift list for the "add kit" picker (unaffected by the filter).
+    all_forklifts = db.query(Forklift).order_by(Forklift.manufacturer, Forklift.model).all()
+    return templates.TemplateResponse(
+        request, "index.html",
+        _ctx(request, forklifts=forklifts, oem_groups=oem_groups,
+             all_forklifts=all_forklifts, q=q, sort=sort,
+             **_kit_context(db, kitq, kitsort)),
+    )
+
+
+def _kit_context(db: Session, kitq: str, kitsort: str) -> dict:
+    """Everything the Kits tab renders, for the page and for the HTMX partial.
+
+    Shared so the two cannot drift: the partial has to produce exactly what a
+    full render would, or filtering would quietly show something different from
+    what loading the page shows.
+    """
+    if kitsort not in kit_view.SORTS:
+        kitsort = "oem"
+    # Grouped by the TRUCK's OEM, because a salesperson arrives knowing the
+    # brand of the machine in front of them.
     all_kit_rows = kit_view.kit_summaries(db, kitsort)
     kit_rows = kit_view.search(all_kit_rows, kitq)
     # The three sorts that read order records are identical to "sku" until a
@@ -173,20 +189,35 @@ def index(request: Request, q: str = "", sort: str = "oem",
     kitsorts = (kit_view.SORTS if any(r.record_count for r in all_kit_rows)
                 else {k: v for k, v in kit_view.SORTS.items()
                       if k in ("oem", "sku", kitsort)})
-    kit_groups = kit_view.grouped_by_oem(kit_rows) if kitsort == "oem" else {}
     unlinked = (db.query(SerialRecord)
                 .filter(SerialRecord.status == "active",
                         SerialRecord.kit_id.is_(None))
                 .count())
-    # Full forklift list for the "add kit" picker (unaffected by the filter).
-    all_forklifts = db.query(Forklift).order_by(Forklift.manufacturer, Forklift.model).all()
+    return {
+        "kit_rows": kit_rows,
+        "kit_groups": kit_view.grouped_by_oem(kit_rows) if kitsort == "oem" else {},
+        "kitsort": kitsort,
+        "kitsorts": kitsorts,
+        "kitq": kitq,
+        "unlinked": unlinked,
+        "needs_attention": sum(1 for r in all_kit_rows if r.attention),
+    }
+
+
+@app.get("/kits/list", response_class=HTMLResponse)
+def kit_list_partial(request: Request, kitq: str = "", kitsort: str = "oem",
+                     db: Session = Depends(get_db)):
+    """Just the Kits tab's body, for the filter to swap in place.
+
+    The filter used to submit a GET and reload the whole page, which put the
+    scroll position back to the top every time you touched a control.
+    Remembering and restoring the position across that reload was tried twice
+    and did not hold, so the page no longer navigates at all: there is nothing
+    to restore when nothing moves.
+    """
     return templates.TemplateResponse(
-        request, "index.html",
-        _ctx(request, forklifts=forklifts, oem_groups=oem_groups,
-             kit_rows=kit_rows, kit_groups=kit_groups, kitsort=kitsort,
-             kitsorts=kitsorts, kitq=kitq, unlinked=unlinked,
-             needs_attention=sum(1 for r in all_kit_rows if r.attention),
-             all_forklifts=all_forklifts, q=q, sort=sort),
+        request, "partials/kit_list.html",
+        _ctx(request, oob=True, **_kit_context(db, kitq, kitsort)),
     )
 
 
