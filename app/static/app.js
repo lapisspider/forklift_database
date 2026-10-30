@@ -16,12 +16,25 @@
       buttons.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
       panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
     }
-    buttons.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
-    // Any tab in this group can be opened by its hash. Kits is the default
-    // panel now, so `#forklifts` has to work as well as `#kits`; naming only
-    // one tab here would make the other unreachable by link.
+    const named = name => Array.from(buttons).some(b => b.dataset.tab === name);
+    // `data-url-tabs` marks the one group whose tab belongs in the URL. The
+    // lookup panel's Model/Serial tabs are deliberately not in it -- they are a
+    // control inside a card, not a place you can be.
+    const inUrl = tabs.hasAttribute('data-url-tabs');
+
+    buttons.forEach(t => t.addEventListener('click', () => {
+      activate(t.dataset.tab);
+      // Record the tab in the URL so anything that reloads the page comes back
+      // to it. replaceState rather than assigning location.hash, which would
+      // jump the page to the anchor and add a history entry per click.
+      if (inUrl) history.replaceState(null, '', '#' + t.dataset.tab);
+    }));
+
+    // Any tab in the group can be opened by its hash. Kits is the default
+    // panel, so `#forklifts` has to work as well as `#kits`; naming only one
+    // tab would make the other unreachable by link.
     const hash = location.hash.slice(1);
-    if (hash && Array.from(buttons).some(b => b.dataset.tab === hash)) activate(hash);
+    if (hash && named(hash)) activate(hash);
   });
 })();
 

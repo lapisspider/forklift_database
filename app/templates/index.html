@@ -76,7 +76,7 @@
 </div>
 
 <section class="panel">
-  <div class="tabs" data-hash-tab="kits">
+  <div class="tabs" data-url-tabs>
     {# Kits sits first because it is the default and the kit is the spine now;
        the catalog is what you reach for second. #}
     <button type="button" class="tab active" data-tab="kits">Kits ({{ kit_rows|length }})</button>
@@ -93,7 +93,10 @@
         <h2>Forklift database</h2>
         <p class="section-head__count">{{ forklifts|length }} model{{ 's' if forklifts|length != 1 }}{% if q %} matching &ldquo;{{ q }}&rdquo;{% endif %}</p>
       </div>
-      <form method="get" action="/" class="row section-head__controls">
+      {# The fragment is kept through a GET submit, so the results come back
+         on this tab instead of the default one. Without it, filtering from
+         here lands you on Kits. #}
+      <form method="get" action="/#forklifts" class="row section-head__controls">
         <input type="text" name="q" value="{{ q }}" placeholder="Filter by OEM, series, model or serial" aria-label="Filter the database">
         <select name="sort" onchange="this.form.submit()" aria-label="Sort order">
           <option value="oem" {% if sort == 'oem' %}selected{% endif %}>Sort: OEM (grouped)</option>
@@ -216,7 +219,7 @@
         <li>
           <strong>{{ needs_attention }}</strong> kit{{ 's' if needs_attention != 1 }}
           need{{ '' if needs_attention != 1 else 's' }} a look —
-          <a href="/?kitsort=attention#kits">show them</a>.
+          <a href="/?q={{ q|urlencode }}&amp;sort={{ sort }}&amp;kitsort=attention#kits">show them</a>.
         </li>
         {% endif %}
         {% if unlinked %}
@@ -237,7 +240,7 @@
         {% if key == kitsort %}
           <span class="badge ok">{{ label }}</span>
         {% else %}
-          <a class="button" href="/?kitsort={{ key }}#kits">{{ label }}</a>
+          <a class="button" href="/?q={{ q|urlencode }}&amp;sort={{ sort }}&amp;kitsort={{ key }}#kits">{{ label }}</a>
         {% endif %}
       {% endfor %}
     </div>
