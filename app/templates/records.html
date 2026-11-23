@@ -55,18 +55,10 @@
         <input type="text" name="location" placeholder="Dallas, TX">
       </label>
       <label>
-        <span class="label-text">Order reference</span>
+        <span class="label-text">System reference</span>
         <input type="text" name="order_ref" placeholder="SO-1001">
       </label>
       <div><button type="submit">Record it</button></div>
-      <p class="fit-form__hint">
-        {# Both of these are warnings in the importer for the same reason: the
-           fact is order management's, and dropping the row loses the only copy. #}
-        A part number not yet in the catalog, or a serial on a manufacturer
-        whose numbering we cannot place, is still recorded — it just will not
-        widen a range until it can be resolved. For a whole export, use
-        <code>import_serials.py</code> instead.
-      </p>
     </form>
   </div>
   {% endif %}
@@ -77,7 +69,7 @@
       <thead>
         <tr>
           <th>Part number</th><th>Truck</th><th>Serial</th><th>Customer</th>
-          <th>Location</th><th>Order</th><th>Status</th>
+          <th>Location</th><th>System ref</th><th>Status</th>
           {% if can_edit %}<th><span class="sr-only">Actions</span></th>{% endif %}
         </tr>
       </thead>
